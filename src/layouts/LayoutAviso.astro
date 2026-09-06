@@ -1,0 +1,33 @@
+---
+/**
+ * Layout de aviso (RF-11 / CA-12). Distinto del de artículo a propósito:
+ * es una comunicación al lector, no contenido. Sin autoría destacada, sin
+ * fuentes, sin compartir, color de señal.
+ */
+import type { CollectionEntry } from 'astro:content';
+import LayoutBase from './LayoutBase.astro';
+import { t } from '../i18n';
+import { fechaLarga } from '../lib/fechas';
+
+interface Props {
+  aviso: CollectionEntry<'avisos'>;
+}
+const { aviso } = Astro.props;
+---
+<LayoutBase titulo={aviso.data.titulo} descripcion={aviso.data.titulo} noindex={true}>
+  <article class="mx-auto max-w-2xl border-l-2 border-acento pl-6">
+    <p class="font-mono text-[11px] uppercase tracking-[0.14em] text-acento">
+      {t('aviso.etiqueta')} ·{' '}
+      <time datetime={aviso.data.fecha.toISOString().slice(0, 10)}>
+        {fechaLarga(aviso.data.fecha)}
+      </time>
+    </p>
+    <h1 class="mt-2 font-serif text-3xl font-semibold">{aviso.data.titulo}</h1>
+    <div class="contenido mt-6">
+      <slot />
+    </div>
+    <p class="mt-10">
+      <a href="/" class="text-sm border-b border-current">← {t('nav.inicio')}</a>
+    </p>
+  </article>
+</LayoutBase>

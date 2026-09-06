@@ -1,0 +1,47 @@
+---
+/**
+ * D-11 — Bloque de credenciales verificables (Credly u similar).
+ * Solo renderiza si el autor tiene elementos en `credenciales`. Al día 1 está
+ * vacío; cuando exista Security+ se agrega la entrada en el archivo del autor.
+ */
+import { t } from '../i18n';
+import { mesAnio } from '../lib/fechas';
+
+interface Credencial {
+  nombre: string;
+  emisor: string;
+  url?: string;
+  fecha?: Date;
+}
+interface Props {
+  credenciales: Credencial[];
+}
+const { credenciales } = Astro.props;
+---
+{
+  credenciales.length > 0 && (
+    <div class="mt-4">
+      <h3 class="font-mono text-xs uppercase tracking-[0.12em] text-tinta-tenue">
+        {t('autor.credenciales')}
+      </h3>
+      <ul class="mt-2 space-y-1 text-sm">
+        {credenciales.map((c) => (
+          <li>
+            {c.url ? (
+              <a href={c.url} rel="noopener" target="_blank" class="border-b border-current">
+                {c.nombre}
+              </a>
+            ) : (
+              <span>{c.nombre}</span>
+            )}
+            <span class="text-tinta-tenue">
+              {' — '}
+              {c.emisor}
+              {c.fecha ? `, ${mesAnio(c.fecha)}` : ''}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}

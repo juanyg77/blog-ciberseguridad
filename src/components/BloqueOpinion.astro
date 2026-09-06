@@ -1,0 +1,21 @@
+---
+/**
+ * RF-3 / CA-3 — Bloque de opinión del autor, visualmente diferenciado.
+ * Se embebe en el MDX del artículo:  <BloqueOpinion> ...texto... </BloqueOpinion>
+ * Diferenciación por filete de acento + superficie sutil + rótulo, sin bloque
+ * de color (dirección visual: un solo acento).
+ */
+import { t } from '../i18n';
+---
+<aside
+  class="my-10 border-l-2 border-acento bg-superficie px-5 py-5 sm:px-7"
+  aria-label={t('articulo.opinionTitulo')}
+>
+  <p class="m-0 font-mono text-[11px] uppercase tracking-[0.14em] text-acento">
+    {t('articulo.opinionTitulo')}
+  </p>
+  <p class="mt-1 mb-4 text-sm text-tinta-tenue">{t('articulo.opinionAclaracion')}</p>
+  <div class="prose-opinion space-y-4 text-tinta-suave">
+    <slot />
+  </div>
+</aside>

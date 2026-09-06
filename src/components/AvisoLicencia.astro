@@ -1,0 +1,35 @@
+---
+/**
+ * D-17 / 8.1 — Nota de licencia CC BY 4.0 del contenido.
+ * `variante="pie"` → aviso corto del pie de página del sitio.
+ * `variante="articulo"` → nota al final de cada artículo con atribución al autor.
+ */
+import { t } from '../i18n';
+
+interface Props {
+  variante: 'pie' | 'articulo';
+  autor?: string;
+}
+const { variante, autor } = Astro.props;
+const URL_LICENCIA = 'https://creativecommons.org/licenses/by/4.0/deed.es';
+---
+{
+  variante === 'pie' ? (
+    <span>
+      <a href={URL_LICENCIA} rel="license noopener" target="_blank">
+        {t('licencia.pie')}
+      </a>
+    </span>
+  ) : (
+    <aside class="mt-10 border-t border-borde pt-4 text-sm text-tinta-tenue">
+      <p class="m-0">
+        {t('licencia.nota', { autor: autor ?? '' })}{' '}
+        <a href={URL_LICENCIA} rel="license noopener" target="_blank" class="border-b border-current">
+          CC BY 4.0
+        </a>
+        .
+      </p>
+      <p class="m-0 mt-1">{t('licencia.imagenesTerceros')}</p>
+    </aside>
+  )
+}

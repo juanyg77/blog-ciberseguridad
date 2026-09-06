@@ -1,0 +1,299 @@
+@import 'tailwindcss';
+
+/* IBM Plex — familia tipográfica self-hosteada, subconjunto LATIN únicamente
+   (menos @font-face, CSS más liviano). @fontsource ya trae font-display: swap. */
+@import '@fontsource/ibm-plex-serif/latin-400.css';
+@import '@fontsource/ibm-plex-serif/latin-500.css';
+@import '@fontsource/ibm-plex-serif/latin-600.css';
+@import '@fontsource/ibm-plex-serif/latin-400-italic.css';
+@import '@fontsource/ibm-plex-sans/latin-400.css';
+@import '@fontsource/ibm-plex-sans/latin-500.css';
+@import '@fontsource/ibm-plex-sans/latin-600.css';
+@import '@fontsource/ibm-plex-mono/latin-400.css';
+@import '@fontsource/ibm-plex-mono/latin-500.css';
+
+/* Tema por clase en <html>: OSCURO es el modo por defecto (sin clase). El toggle
+   agrega .light para el modo claro. Referencia de enfoque: aviciicommunity.com
+   — fondo oscuro dominante, tipografía simple, imágenes y texto como protagonista. */
+@custom-variant light (&:where(.light, .light *));
+
+/*
+  TOKENS DE DISEÑO — ÚNICO LUGAR (ARQUITECTURA.md D-13 / sección 2).
+  Dirección visual definida por el autor: minimalismo, fondo + texto + UN acento.
+
+  MODO OSCURO: fondo gris muy oscuro (nunca negro), texto claro, acento celeste
+  eléctrico #4DA3FF (7.18:1 sobre el fondo).
+
+  MODO CLARO: NO es "pantalla blanca". Fondo papel cálido (#ECE6DA, HSL-L ~89%,
+  matiz cálido de croma bajísimo), texto marrón-gris muy oscuro cálido (#2A2621),
+  acento azul petróleo #1C5875 (no "vibra" sobre el crema). Contraste general
+  más bajo y cómodo, pero TODO el texto cumple WCAG AA.
+
+  ESTADOS: para errores reales (validación, callouts de peligro) se usa UN rojo
+  apagado (--color-error). Para avisos/notas se usa el acento o énfasis
+  tipográfico. No hay ámbar.
+   - Error oscuro  #E58E82 sobre #111114 -> 7.65:1  (sobre superficie 7.04:1)
+   - Error claro   #9C3226 sobre #ECE6DA -> 5.83:1  (sobre superficie 5.46:1)
+
+  Ratios modo claro (WCAG 2.x, sobre papel / sobre superficie):
+   - tinta       #2A2621  -> 12.09 / 11.33   (AAA)
+   - tinta-suave #554B3B  ->  6.88 /  6.45   (AAA)
+   - tinta-tenue #655C4B  ->  5.30 /  4.97   (AA)
+   - acento      #1C5875  ->  6.25 /  5.86   (AA + AAA)  azul petróleo / prusia:
+              mismo azul de identidad que el #4DA3FF del oscuro, pero hondo y
+              con un toque de calidez para leerse como "tinta sobre papel".
+   - acento-fuerte #123F52 -> 9.09 / 8.52    (AAA)
+   - borde-fuerte #463D30 ->  8.57 / 8.03    (divisorias / subrayados)
+*/
+@theme {
+  --font-serif: 'IBM Plex Serif', Georgia, 'Times New Roman', serif;
+  --font-sans: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', Consolas, ui-monospace, monospace;
+
+  /* --- MODO OSCURO (por defecto) --- */
+  /* Fondo: gris muy oscuro, nunca negro puro */
+  --color-papel: #111114;
+  --color-superficie: #1a1a1f;
+  --color-borde: #2b2b33;
+  --color-borde-fuerte: #4a4a55;
+
+  /* Texto: blanco / gris claro */
+  --color-tinta: #f3f3f5;
+  --color-tinta-suave: #c4c4cc;
+  --color-tinta-tenue: #8b8b96;
+
+  /* Único acento: celeste / azul eléctrico */
+  --color-acento: #4da3ff;
+  --color-acento-fuerte: #82c0ff;
+
+  /* Estado de error / peligro: rojo apagado, NO alarma */
+  --color-error: #e58e82;
+
+  /* Alias de compatibilidad: ya no hay segundo color temático; "senal"
+     apunta al mismo acento para no romper referencias existentes. */
+  --color-senal: #4da3ff;
+}
+
+/* --- MODO CLARO (.light) — papel cálido, no pantalla blanca --- */
+.light {
+  /* Fondo: blanco roto / crema cálido, croma muy bajo (hue ~43°) */
+  --color-papel: #ece6da;
+  --color-superficie: #e6dfd0;
+  --color-borde: #d7cdb8;
+  --color-borde-fuerte: #463d30;
+
+  /* Texto: marrón-gris muy oscuro cálido, nunca negro */
+  --color-tinta: #2a2621;
+  --color-tinta-suave: #554b3b;
+  --color-tinta-tenue: #655c4b;
+
+  /* Acento: mismo azul de identidad que el oscuro (#4da3ff) pero en azul
+     petróleo / prusia profundo — apenas desaturado y algo cálido — para leerse
+     como tinta sobre papel y armonizar con el crema, no destacar en frío. */
+  --color-acento: #1c5875;
+  --color-acento-fuerte: #123f52;
+  --color-senal: #1c5875;
+
+  --color-error: #9c3226;
+}
+
+html {
+  background-color: var(--color-papel);
+  color: var(--color-tinta);
+  font-family: var(--font-sans);
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+html.light {
+  color-scheme: light;
+}
+
+/* Nunca scroll horizontal en ningún ancho. `clip` (a diferencia de `hidden`)
+   no crea un contenedor de scroll ni rompe position: sticky. */
+body {
+  overflow-x: clip;
+}
+
+/* Mientras el menú móvil a pantalla completa está abierto, no scrollear el fondo. */
+html.menu-lock {
+  overflow: hidden;
+}
+
+/* Titulares: que uno largo no se desborde ni empuje el layout en móvil. */
+h1, h2, h3, h4 {
+  overflow-wrap: break-word;
+  text-wrap: balance;
+}
+
+/* Suavizar el cambio de tema al togglear (no en el load: la clase
+   .tema-cambiando solo la agrega ToggleTema durante ~240 ms). */
+@media (prefers-reduced-motion: no-preference) {
+  html.tema-cambiando,
+  html.tema-cambiando *,
+  html.tema-cambiando *::before,
+  html.tema-cambiando *::after {
+    transition:
+      background-color 180ms ease,
+      border-color 180ms ease,
+      color 180ms ease,
+      fill 180ms ease;
+  }
+}
+
+body {
+  margin: 0;
+  line-height: 1.6;
+}
+
+a {
+  color: var(--color-acento);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--color-acento-fuerte);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+
+code, pre, kbd, samp {
+  font-family: var(--font-mono);
+}
+
+/* Controles de formulario: heredan la tipografía; font-size ≥ 16px para que
+   iOS no haga zoom al enfocar un campo. */
+input, select, textarea {
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+button { font-family: inherit; }
+
+/* Área de toque cómoda (≥44px) para elementos marcados como tal. */
+.toque-comodo {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Tira con scroll horizontal prolija: sin barra visible, sin encadenar el
+   scroll a la página, con inercia en iOS. */
+.scroll-x-limpio {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scroll-x-limpio::-webkit-scrollbar {
+  display: none;
+}
+
+/* sr-only (skip link) — sin depender de plugins */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.focus\:not-sr-only:focus {
+  position: static;
+  width: auto; height: auto;
+  margin: 0; overflow: visible;
+  clip: auto; white-space: normal;
+}
+
+/*
+  Cuerpo de artículo — tratamiento editorial de long-read (MARCA.md 7.1 / 7.3):
+  columna cómoda, jerarquía marcada, decoración mínima.
+*/
+.contenido {
+  font-family: var(--font-serif);
+  /* Escala suave: ~1rem en móvil, ~1.075rem de 480px en adelante */
+  font-size: clamp(1rem, 0.96rem + 0.5vw, 1.075rem);
+  line-height: 1.75;
+  color: var(--color-tinta-suave);
+}
+.contenido > * + * { margin-top: 1.15em; }
+.contenido h2 {
+  font-size: clamp(1.3rem, 1.15rem + 1vw, 1.5rem);
+  margin-top: 1.9em;
+  line-height: 1.25;
+  color: var(--color-tinta);
+}
+.contenido h3 {
+  font-size: clamp(1.12rem, 1.05rem + 0.4vw, 1.2rem);
+  margin-top: 1.6em;
+  line-height: 1.3;
+  color: var(--color-tinta);
+}
+.contenido a {
+  border-bottom: 1px solid currentColor;
+  overflow-wrap: anywhere;
+}
+.contenido ul { list-style: disc; padding-left: 1.4em; }
+.contenido ol { list-style: decimal; padding-left: 1.4em; }
+.contenido li + li { margin-top: 0.4em; }
+.contenido blockquote {
+  border-left: 3px solid var(--color-borde-fuerte);
+  padding-left: 1em;
+  color: var(--color-tinta-tenue);
+  font-style: italic;
+}
+.contenido pre {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  padding: 1em;
+  overflow-x: auto;
+  line-height: 1.5;
+}
+.contenido :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--color-superficie);
+  padding: 0.1em 0.35em;
+  border-radius: 2px;
+}
+.contenido img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--color-borde);
+}
+.contenido figure { margin-inline: 0; }
+.contenido figcaption {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--color-tinta-tenue);
+  margin-top: 0.4em;
+}
+/* Tablas: nunca provocan scroll horizontal en la página; scrollean ellas. */
+.contenido .tabla-scroll,
+.contenido table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.contenido table {
+  border-collapse: collapse;
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+}
+.contenido th,
+.contenido td {
+  border: 1px solid var(--color-borde);
+  padding: 0.5em 0.7em;
+  text-align: left;
+  vertical-align: top;
+}
+.contenido th { color: var(--color-tinta); font-weight: 600; }

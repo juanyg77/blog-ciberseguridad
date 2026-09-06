@@ -1,0 +1,91 @@
+---
+titulo: "SolarWinds / SUNBURST: cuando el update es el ataque (2020)"
+slug: "solarwinds-sunburst"
+slugCanonico: "solarwinds-sunburst"
+idioma: "es"
+nivel: "tecnico"
+tipoArticulo: "analisis-caso"
+secciones: ["cadena-de-suministro"]
+autores: ["juan-garcia"]
+fechaPublicacion: 2026-09-01
+resumen: "Los atacantes metieron una puerta trasera dentro de una actualización firmada de SolarWinds Orion. La descargaron unas 18.000 organizaciones; el grupo eligió a mano a un puñado, incluidas agencias del gobierno de EE. UU."
+portada: "../../../../assets/images/articulos/solarwinds-sunburst/portada.svg"
+portadaAlt: "Portada de prueba del análisis de SolarWinds"
+tieneOpinion: true
+borrador: false
+destacado: true
+fuentes:
+  - titulo: "Emergency Directive 21-01: Mitigate SolarWinds Orion Code Compromise"
+    url: "https://www.cisa.gov/news-events/directives/ed-21-01-mitigate-solarwinds-orion-code-compromise"
+    organismo: "CISA"
+    fecha: 2020-12-13
+  - titulo: "Highly Evasive Attacker Leverages SolarWinds Supply Chain (SUNBURST)"
+    url: "https://cloud.google.com/blog/topics/threat-intelligence/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor"
+    organismo: "Mandiant"
+    fecha: 2020-12-13
+  - titulo: "Joint Statement by the FBI, CISA, ODNI, and NSA"
+    url: "https://www.cisa.gov/news-events/news/joint-statement-federal-bureau-investigation-fbi-cybersecurity-and-infrastructure"
+    organismo: "FBI / CISA / ODNI / NSA"
+    fecha: 2021-01-05
+tags: ["solarwinds", "sunburst", "apt29", "cadena de suministro"]
+---
+import BloqueOpinion from '../../../../components/BloqueOpinion.astro';
+
+{/* FIXTURE — contenido de prueba, no es contenido final del autor. Ver src/content/articulos/_LEEME-FIXTURES.md */}
+
+En diciembre de 2020 se supo que las actualizaciones de **SolarWinds Orion**, una
+plataforma de monitoreo de redes muy usada en empresas y gobiernos, venían con
+una puerta trasera desde marzo. El archivo estaba firmado digitalmente por
+SolarWinds. Para cualquier sistema de defensa, era software legítimo.
+
+## Cómo se metió el código malicioso
+
+Los atacantes no modificaron el código fuente en el repositorio. Comprometieron
+el **proceso de compilación**: un implante (bautizado SUNSPOT) vigilaba el
+servidor de build y, en el momento justo en que Orion se estaba compilando,
+sustituía un archivo fuente por una versión con la puerta trasera. El resultado
+se firmaba y se distribuía con total normalidad. Auditar el repositorio no
+alcanzaba: el problema estaba entre el código y el binario.
+
+## SUNBURST: paciencia primero
+
+La puerta trasera era deliberadamente sigilosa:
+
+- Esperaba **hasta dos semanas** antes de hacer nada.
+- Se comunicaba con dominios que imitaban tráfico legítimo de SolarWinds y
+  escondía comandos dentro de lo que parecían consultas DNS normales.
+- Chequeaba si estaba en un entorno de análisis y, si detectaba herramientas de
+  seguridad conocidas, se desactivaba.
+
+De las ~18.000 organizaciones que instalaron la versión troyanizada, el grupo
+solo profundizó en unas pocas decenas que le interesaban: agencias federales de
+EE. UU., empresas de tecnología y de seguridad. En esos casos usó la puerta
+trasera para robar credenciales, falsificar tokens SAML y moverse hacia entornos
+en la nube.
+
+## Qué aprendemos
+
+1. **La firma digital prueba origen, no bondad.** Un artefacto firmado por un
+   proveedor comprometido es firmado y malicioso a la vez.
+2. **El pipeline de build es infraestructura crítica.** Merece el mismo nivel de
+   control que producción: integridad reproducible, aislamiento, monitoreo.
+3. **Detección basada en comportamiento.** Lo que delató a varias víctimas no fue
+   una firma de antivirus, sino un servidor de monitoreo hablando con destinos
+   raros y una autenticación imposible.
+
+<BloqueOpinion>
+
+SolarWinds volvió mainstream un miedo que en seguridad ya se tenía: no podés
+confiar del todo en tu propia cadena de herramientas. La respuesta razonable no
+es la paranoia total —sería inoperante— sino asumir que cualquier proveedor puede
+ser el vector y diseñar para contener el daño: segmentar, minimizar privilegios,
+registrar y revisar el comportamiento de los sistemas de administración, que
+suelen ser los más poderosos y los menos vigilados.
+
+También me parece sano bajarle el tono épico. "Ataque de nación-Estado
+sofisticadísimo" es cierto y a la vez es una excusa cómoda. Muchas víctimas
+secundarias podrían haber limitado el alcance con higiene básica de identidad en
+la nube. Lo sofisticado fue entrar; lo que siguió fue, en varios casos,
+aprovechable con controles estándar.
+
+</BloqueOpinion>

@@ -1,0 +1,97 @@
+---
+titulo: "Análisis del ataque a Colonial Pipeline (2021)"
+slug: "colonial-pipeline-analisis"
+slugCanonico: "colonial-pipeline"
+idioma: "es"
+nivel: "tecnico"
+tipoArticulo: "analisis-caso"
+secciones: ["infraestructura-critica"]
+autores: ["juan-garcia"]
+fechaPublicacion: 2026-09-01
+fechaActualizacion: 2026-09-15
+resumen: "Qué pasó, cómo ocurrió y qué se aprende del incidente de ransomware que paralizó seis días el mayor oleoducto de combustible de Estados Unidos."
+portada: "../../../../assets/images/articulos/colonial-pipeline/portada.svg"
+portadaAlt: "Placeholder de portada del análisis de Colonial Pipeline"
+tieneOpinion: true
+borrador: false
+destacado: false
+fuentes:
+  - titulo: "FBI Statement on Compromise of Colonial Pipeline Networks"
+    url: "https://www.fbi.gov/news/press-releases/fbi-statement-on-compromise-of-colonial-pipeline-networks"
+    organismo: "FBI"
+    fecha: 2021-05-10
+  - titulo: "Alert AA21-131A: DarkSide Ransomware — Best Practices for Preventing Business Disruption"
+    url: "https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-131a"
+    organismo: "CISA"
+    fecha: 2021-05-11
+  - titulo: "Testimony of Joseph Blount, President and CEO, Colonial Pipeline, before the U.S. Senate"
+    url: "https://www.congress.gov/117/meeting/house/112837/witnesses/HHRG-117-HM00-Wstate-BlountJ-20210609.pdf"
+    organismo: "Congreso de EE. UU."
+    fecha: 2021-06-09
+tags: ["ransomware", "darkside", "OT", "eeuu"]
+---
+import BloqueOpinion from '../../../../components/BloqueOpinion.astro';
+
+En mayo de 2021, el oleoducto más grande de Estados Unidos —2,5 millones de
+barriles por día, casi la mitad del combustible de la costa este— estuvo seis
+días parado. No hubo sabotaje físico ni un actor sofisticado con un
+_zero-day_: hubo una cuenta de VPN vieja, sin segundo factor, cuya contraseña
+había aparecido en una filtración.
+
+## La escena
+
+Colonial Pipeline transporta gasolina, diésel y combustible de aviación desde
+Texas hasta Nueva Jersey. Su red de tecnología de la información (IT) —
+facturación, logística, correo— está separada de la red de control industrial
+(OT) que mueve el producto por el ducto.
+
+## Qué se fue complicando
+
+El 6 de mayo, el grupo DarkSide entró a la red IT a través de una cuenta de VPN
+que ya no se usaba pero seguía activa. Esa cuenta no tenía autenticación
+multifactor. En unas horas exfiltraron alrededor de 100 GB de datos y, al día
+siguiente, desplegaron el ransomware sobre los sistemas de IT.
+
+## El momento en que se rompe todo
+
+El 7 de mayo, al detectar el cifrado en la red IT y no poder determinar con
+certeza si el OT estaba comprometido, Colonial **decidió parar el oleoducto de
+forma preventiva**. La razón operativa que dio la empresa: sin los sistemas de
+facturación y medición de IT no podían saber cuánto producto entregaban a cada
+cliente ni cobrarlo.
+
+El pánico hizo el resto: compras por miedo, estaciones sin combustible en varios
+estados, precios en alza y una declaración de emergencia regional.
+
+## Qué quedó
+
+- Colonial pagó unos 4,4 millones de dólares en bitcoin. El Departamento de
+  Justicia recuperó más adelante una parte.
+- El oleoducto volvió a operar el 12 de mayo; la normalización tardó varios días
+  más.
+- DarkSide, presionado, anunció el cierre de su infraestructura poco después.
+
+## Qué aprendemos
+
+1. **Las cuentas que sobran son deuda.** Un acceso remoto sin uso y sin MFA es un
+   camino abierto. El inventario de identidades no es burocracia.
+2. **La separación IT/OT ayuda, pero la decisión de parar fue de negocio, no
+   técnica.** Sin visibilidad de IT, la operación física se vuelve insostenible.
+3. **El plan de respuesta necesita criterios de "cuándo paramos" escritos de
+   antemano**, no improvisados a las 2 de la mañana.
+
+<BloqueOpinion>
+
+Lo más incómodo de este caso no es la contraseña filtrada: es que una empresa que
+mueve el 45 % del combustible de una costa no tuviera MFA en todos sus accesos
+remotos en 2021. La lección que se suele repetir —"pongan multifactor"— es
+correcta pero corta. El problema de fondo es de gobierno: nadie era dueño del
+ciclo de vida de esas credenciales. Mientras la seguridad siga siendo un proyecto
+y no un proceso con responsables, vamos a seguir leyendo este mismo artículo con
+otros nombres.
+
+Con la información de hoy es fácil criticar la decisión de parar el ducto. En el
+momento, sin saber si el OT estaba tocado, probablemente fue lo prudente. El error
+estuvo mucho antes.
+
+</BloqueOpinion>

@@ -1,0 +1,5 @@
+# El sitio quiere ser encontrado (CA-14). No se bloquea nada.
+User-agent: *
+Allow: /
+
+Sitemap: https://elquelassabetodas.com/sitemap-index.xml

@@ -1,0 +1,128 @@
+---
+/**
+ * Layout raíz (patrón 4: Base → Artículo / Aviso / Página).
+ * Centraliza: <head>, Open Graph (RF-7), hreflang (RF-9), tema, analítica
+ * (D-7 / D-15), cabecera y pie.
+ */
+import '../styles/global.css';
+import { t, IDIOMA_UI_ACTIVO } from '../i18n';
+import Cabecera from '../components/Cabecera.astro';
+import PieSitio from '../components/PieSitio.astro';
+import Analitica from '../components/Analitica.astro';
+
+// Fuentes above-the-fold (masthead + chrome): se precargan para reducir el
+// "flash of unstyled text". El resto carga con font-display: swap.
+import serif600 from '@fontsource/ibm-plex-serif/files/ibm-plex-serif-latin-600-normal.woff2';
+import sans400 from '@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-400-normal.woff2';
+import mono400 from '@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2';
+
+interface Alternate {
+  lang: string;
+  href: string;
+}
+interface Props {
+  titulo: string;
+  descripcion?: string;
+  /** Idioma de CONTENIDO de la página (por defecto, el de la UI). */
+  lang?: string;
+  tipoOg?: 'website' | 'article';
+  imagenOg?: string;
+  /** Ruta canónica relativa (por defecto, la actual). */
+  canonical?: string;
+  /** Versiones idiomáticas para <link rel="alternate" hreflang> (RF-9). */
+  alternates?: Alternate[];
+  noindex?: boolean;
+}
+
+const {
+  titulo,
+  descripcion = t('sitio.descripcion'),
+  lang = IDIOMA_UI_ACTIVO,
+  tipoOg = 'website',
+  imagenOg,
+  canonical,
+  alternates = [],
+  noindex = false,
+} = Astro.props;
+
+const site = Astro.site ?? new URL('https://elquelassabetodas.com');
+const urlCanonica = new URL(canonical ?? Astro.url.pathname, site).toString();
+const tituloCompleto =
+  titulo === t('sitio.nombre') ? titulo : `${titulo} · ${t('sitio.nombre')}`;
+// Imagen OG: la de la página, o la de marca por defecto. Siempre absoluta.
+// NOTA: og-default.svg es un placeholder; conviene reemplazarlo por un PNG/JPG
+// 1200x630 real (algunos scrapers no renderizan SVG).
+const ogImageAbs = new URL(imagenOg ?? '/og-default.svg', site).toString();
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" as="font" type="font/woff2" href={serif600} crossorigin="anonymous" />
+    <link rel="preload" as="font" type="font/woff2" href={sans400} crossorigin="anonymous" />
+    <link rel="preload" as="font" type="font/woff2" href={mono400} crossorigin="anonymous" />
+    <title>{tituloCompleto}</title>
+    <meta name="description" content={descripcion} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={urlCanonica} />
+    <link rel="alternate" type="application/rss+xml" title={t('sitio.nombre')} href="/rss.xml" />
+
+    {/* hreflang — solo cuando hay par de traducciones (RF-9 / 3) */}
+    {
+      alternates.length > 0 && (
+        <>
+          {alternates.map((a) => (
+            <link rel="alternate" hreflang={a.lang} href={new URL(a.href, site).toString()} />
+          ))}
+          <link
+            rel="alternate"
+            hreflang="x-default"
+            href={new URL(alternates[0]!.href, site).toString()}
+          />
+        </>
+      )
+    }
+
+    {/* Open Graph (RF-7) */}
+    <meta property="og:type" content={tipoOg} />
+    <meta property="og:title" content={titulo} />
+    <meta property="og:description" content={descripcion} />
+    <meta property="og:url" content={urlCanonica} />
+    <meta property="og:site_name" content={t('sitio.nombre')} />
+    <meta property="og:locale" content={lang === 'es' ? 'es_AR' : 'en_US'} />
+    <meta property="og:image" content={ogImageAbs} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={titulo} />
+    <meta name="twitter:description" content={descripcion} />
+    <meta name="twitter:image" content={ogImageAbs} />
+
+    {/* Anti-parpadeo de tema: se ejecuta antes de pintar.
+        Oscuro es el modo por defecto; solo se aplica .light si el visitante lo
+        eligió explícitamente con el toggle (no se sigue prefers-color-scheme). */}
+    <script is:inline>
+      (function () {
+        try {
+          if (localStorage.getItem('tema') === 'claro') {
+            document.documentElement.classList.add('light');
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class="flex min-h-screen flex-col font-sans text-tinta">
+    <a
+      href="#contenido"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:border focus:border-acento focus:bg-papel focus:px-3 focus:py-2 focus:text-sm focus:text-tinta"
+    >
+      {t('nav.saltarAlContenido')}
+    </a>
+    <Cabecera />
+    <main id="contenido" class="mx-auto w-full max-w-5xl flex-1 px-6 py-10 sm:px-10">
+      <slot />
+    </main>
+    <PieSitio />
+    <Analitica />
+  </body>
+</html>

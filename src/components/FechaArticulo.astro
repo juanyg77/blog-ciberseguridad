@@ -1,0 +1,70 @@
+---
+/**
+ * ARQUITECTURA.md 3.1 — Tratamiento de la fecha SEGÚN tipoArticulo:
+ *
+ * - analisis-caso / explicativo (atemporales): fechaPublicacion DISCRETA (línea
+ *   de metadatos secundaria). Si hay fechaActualizacion distinta, se muestra
+ *   "Actualizado en <mes año>" con más visibilidad, cerca del título.
+ * - coyuntura (perecedero): la fecha va con PESO, en el encabezado.
+ *
+ * `posicion="encabezado"` se usa arriba del título; `posicion="pie"` al final.
+ */
+import { t } from '../i18n';
+import { fechaLarga, mesAnio, iso } from '../lib/fechas';
+
+interface Props {
+  tipoArticulo: 'analisis-caso' | 'explicativo' | 'coyuntura';
+  fechaPublicacion: Date;
+  fechaActualizacion?: Date;
+  minutosLectura?: number;
+  posicion: 'encabezado' | 'pie';
+}
+const { tipoArticulo, fechaPublicacion, fechaActualizacion, minutosLectura, posicion } =
+  Astro.props;
+
+const hayActualizacion =
+  !!fechaActualizacion &&
+  fechaActualizacion.getTime() > fechaPublicacion.getTime();
+
+const esCoyuntura = tipoArticulo === 'coyuntura';
+const lectura = minutosLectura ? t('articulo.lectura', { min: minutosLectura }) : null;
+---
+{
+  posicion === 'encabezado' && esCoyuntura && (
+    <p class="mt-3 text-sm text-tinta-tenue">
+      <time datetime={iso(fechaPublicacion)}>
+        {t('articulo.publicado')} {fechaLarga(fechaPublicacion)}
+      </time>
+      {lectura && <span> · {lectura}</span>}
+    </p>
+  )
+}
+
+{
+  posicion === 'encabezado' && !esCoyuntura && hayActualizacion && (
+    <p class="mt-3 font-mono text-[11px] uppercase tracking-[0.12em] text-tinta-tenue">
+      <time datetime={iso(fechaActualizacion!)}>
+        {t('articulo.actualizado')} {mesAnio(fechaActualizacion!)}
+      </time>
+    </p>
+  )
+}
+
+{
+  posicion === 'pie' && !esCoyuntura && (
+    <p class="mt-8 border-t border-borde pt-4 text-sm text-tinta-tenue">
+      <time datetime={iso(fechaPublicacion)}>
+        {t('articulo.publicado')} {fechaLarga(fechaPublicacion)}
+      </time>
+      {hayActualizacion && (
+        <span>
+          {' · '}
+          <time datetime={iso(fechaActualizacion!)}>
+            {t('articulo.actualizado')} {mesAnio(fechaActualizacion!)}
+          </time>
+        </span>
+      )}
+      {lectura && <span> · {lectura}</span>}
+    </p>
+  )
+}

@@ -1,0 +1,161 @@
+---
+/**
+ * Layout de artículo (RF-1..7, RF-9). Compone LayoutBase y arma la ficha:
+ * rótulos (tipo/nivel/sección), título, fecha según tipo (3.1), autoría (CA-6),
+ * portada, cuerpo, compartir (CA-7 + UTM), fuentes (CA-4), licencia (D-17) y
+ * enlace a la traducción si existe (RF-9).
+ */
+import type { CollectionEntry } from 'astro:content';
+import { getEntries } from 'astro:content';
+import { Image, getImage } from 'astro:assets';
+import LayoutBase from './LayoutBase.astro';
+import FichaAutor from '../components/FichaAutor.astro';
+import FechaArticulo from '../components/FechaArticulo.astro';
+import BotonesCompartir from '../components/BotonesCompartir.astro';
+import ListaFuentes from '../components/ListaFuentes.astro';
+import AvisoLicencia from '../components/AvisoLicencia.astro';
+import { dict, t } from '../i18n';
+import { rutaArticulo, minutosDeLectura } from '../lib/articulos';
+
+interface Props {
+  articulo: CollectionEntry<'articulos'>;
+  traduccion?: CollectionEntry<'articulos'>;
+  textoPlano?: string;
+}
+const { articulo, traduccion, textoPlano = '' } = Astro.props;
+const d = articulo.data;
+
+const autores = await getEntries(d.autores);
+const secciones = await getEntries(d.secciones);
+const ruta = rutaArticulo(articulo);
+const minutos = textoPlano ? minutosDeLectura(textoPlano) : undefined;
+
+const nivelLabel = dict().articulo.porNivel[d.nivel];
+const tipoLabel = dict().articulo.porTipo[d.tipoArticulo];
+
+const alternates = traduccion
+  ? [
+      { lang: d.idioma, href: ruta },
+      { lang: traduccion.data.idioma, href: rutaArticulo(traduccion) },
+    ]
+  : [];
+
+const autorPrincipal = autores[0]?.data.nombre ?? '';
+
+// Imagen para Open Graph: versión rasterizada/optimizada de la portada si la hay.
+let ogImage: string | undefined;
+if (d.portada) {
+  if (d.portada.format === 'svg') {
+    ogImage = d.portada.src;
+  } else {
+    const gen = await getImage({ src: d.portada, width: 1200, format: 'webp' });
+    ogImage = gen.src;
+  }
+}
+---
+<LayoutBase
+  titulo={d.titulo}
+  descripcion={d.resumen}
+  lang={d.idioma}
+  tipoOg="article"
+  imagenOg={ogImage}
+  canonical={ruta}
+  alternates={alternates}
+>
+  <article class="mx-auto max-w-2xl" data-pagefind-body data-pagefind-meta={`nivel:${d.nivel}`}>
+    <p class="font-mono text-[11px] uppercase tracking-[0.12em] text-acento">
+      <span>{tipoLabel}</span>
+      <span class="text-tinta-tenue"> · {nivelLabel}</span>
+      {
+        secciones.map((s) => (
+          <span class="text-tinta-tenue">
+            {' · '}
+            <a href={`/seccion/${s.id}`} class="hover:text-acento">{s.data.nombre}</a>
+          </span>
+        ))
+      }
+    </p>
+
+    <h1 class="mt-3 font-serif text-3xl font-semibold leading-tight sm:text-4xl">{d.titulo}</h1>
+
+    <FechaArticulo
+      tipoArticulo={d.tipoArticulo}
+      fechaPublicacion={d.fechaPublicacion}
+      fechaActualizacion={d.fechaActualizacion}
+      minutosLectura={minutos}
+      posicion="encabezado"
+    />
+
+    <p class="mt-4 font-serif text-lg italic text-tinta-suave">{d.resumen}</p>
+
+    <div class="mt-6 flex flex-col gap-4 border-y border-borde py-4">
+      {autores.map((a) => <FichaAutor autor={a} variante="compacta" />)}
+    </div>
+
+    {
+      traduccion && (
+        <p class="mt-4 text-sm text-tinta-tenue">
+          {t('articulo.tambienEnIdioma', {
+            idioma: dict().articulo.idioma[traduccion.data.idioma as 'es' | 'en'],
+          })}{' '}
+          <a href={rutaArticulo(traduccion)} class="border-b border-current">
+            {traduccion.data.titulo}
+          </a>
+        </p>
+      )
+    }
+
+    {
+      d.portada && (
+        <figure class="mt-8">
+          {d.portada.format === 'svg' ? (
+            <img
+              src={d.portada.src}
+              alt={d.portadaAlt ?? d.titulo}
+              width={d.portada.width}
+              height={d.portada.height}
+              class="w-full border border-borde"
+            />
+          ) : (
+            <Image
+              src={d.portada}
+              alt={d.portadaAlt ?? d.titulo}
+              width={1200}
+              widths={[480, 800, 1200]}
+              sizes="(min-width: 672px) 672px, 100vw"
+              class="w-full border border-borde"
+            />
+          )}
+        </figure>
+      )
+    }
+
+    <div class="contenido mt-8">
+      <slot />
+    </div>
+
+    <FechaArticulo
+      tipoArticulo={d.tipoArticulo}
+      fechaPublicacion={d.fechaPublicacion}
+      fechaActualizacion={d.fechaActualizacion}
+      minutosLectura={minutos}
+      posicion="pie"
+    />
+
+    <ListaFuentes fuentes={d.fuentes} />
+
+    <div class="mt-10 border-t border-borde pt-6" data-pagefind-ignore>
+      <BotonesCompartir ruta={ruta} titulo={d.titulo} />
+    </div>
+
+    <div data-pagefind-ignore>
+      <AvisoLicencia variante="articulo" autor={autorPrincipal} />
+    </div>
+
+    <p class="mt-8" data-pagefind-ignore>
+      <a href={`/${d.nivel}`} class="text-sm border-b border-current">
+        ← {t('articulo.volverAlListado')}
+      </a>
+    </p>
+  </article>
+</LayoutBase>

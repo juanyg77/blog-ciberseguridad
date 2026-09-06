@@ -1,0 +1,41 @@
+---
+import { getCollection } from 'astro:content';
+import { t } from '../i18n';
+import AvisoLicencia from './AvisoLicencia.astro';
+import Icono from './Icono.astro';
+
+// Autor principal para los enlaces sociales del pie (URLs aún placeholder).
+const autor = (await getCollection('autores'))
+  .filter((a) => a.data.activo)
+  .sort((a, b) => a.data.nombre.localeCompare(b.data.nombre))[0];
+
+const sociales = autor
+  ? [
+      { red: 'linkedin' as const, url: autor.data.enlaces.linkedin, nombre: 'LinkedIn' },
+      { red: 'github' as const, url: autor.data.enlaces.github, nombre: 'GitHub' },
+    ]
+  : [];
+---
+<footer class="mx-auto mt-16 max-w-5xl px-6 sm:px-10">
+  <div class="flex flex-col gap-3 border-t border-borde-fuerte pt-4 text-sm text-tinta-tenue sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+    <span>{t('pie.hechoPor', { autor: 'Juan Ignacio García' })}</span>
+    <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+      {
+        sociales.map((s) => (
+          <a
+            href={s.url}
+            rel="me noopener"
+            target="_blank"
+            aria-label={`${s.nombre} de ${autor!.data.nombre}`}
+            class="toque-comodo justify-center text-tinta-tenue hover:text-acento"
+          >
+            <Icono nombre={s.red} size={20} />
+          </a>
+        ))
+      }
+      <a href="/rss.xml" class="hover:text-acento">{t('pie.rss')}</a>
+      <AvisoLicencia variante="pie" />
+      <span>· {new Date().getFullYear()}</span>
+    </div>
+  </div>
+</footer>

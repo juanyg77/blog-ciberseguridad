@@ -1,0 +1,93 @@
+---
+/**
+ * RF-6 / CA-6 — Autoría visible: nombre real + foto de quien escribió el artículo.
+ * `variante="completa"` agrega bio, enlaces y credenciales (para /sobre).
+ * La foto es un asset optimizado en build (src/assets/images/autores/...).
+ */
+import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import { t } from '../i18n';
+import CredencialesAutor from './CredencialesAutor.astro';
+import Icono from './Icono.astro';
+
+interface Props {
+  autor: CollectionEntry<'autores'>;
+  variante?: 'compacta' | 'completa';
+}
+const { autor, variante = 'compacta' } = Astro.props;
+const d = autor.data;
+const lado = variante === 'completa' ? 96 : 44;
+const fotoCls = [
+  'shrink-0 rounded-full border border-borde object-cover',
+  variante === 'completa' ? 'h-24 w-24' : 'h-11 w-11',
+];
+const esVector = d.foto.format === 'svg';
+---
+<div class:list={[
+  'flex gap-4',
+  variante === 'completa'
+    ? 'flex-col items-start sm:flex-row'
+    : 'items-center',
+]}>
+  {esVector ? (
+    <img
+      src={d.foto.src}
+      alt={d.fotoAlt ?? `Foto de ${d.nombre}`}
+      width={lado}
+      height={lado}
+      loading="lazy"
+      class:list={fotoCls}
+    />
+  ) : (
+    <Image
+      src={d.foto}
+      alt={d.fotoAlt ?? `Foto de ${d.nombre}`}
+      width={lado}
+      height={lado}
+      densities={[1, 2]}
+      loading="lazy"
+      class:list={fotoCls}
+    />
+  )}
+  <div class="min-w-0">
+    <p class="m-0 font-serif text-base font-semibold text-tinta">{d.nombre}</p>
+    <p class="m-0 text-sm text-tinta-tenue">{d.rol}</p>
+
+    {variante === 'completa' && (
+      <>
+        <p class="mt-3 text-tinta-suave">{d.bio}</p>
+        <div class="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+          <a
+            href={d.enlaces.linkedin}
+            rel="me noopener"
+            target="_blank"
+            aria-label={`${t('autor.linkedin')} de ${d.nombre}`}
+            class="toque-comodo gap-2 text-tinta hover:text-acento"
+          >
+            <Icono nombre="linkedin" size={18} />{t('autor.linkedin')}
+          </a>
+          <a
+            href={d.enlaces.github}
+            rel="me noopener"
+            target="_blank"
+            aria-label={`${t('autor.github')} de ${d.nombre}`}
+            class="toque-comodo gap-2 text-tinta hover:text-acento"
+          >
+            <Icono nombre="github" size={18} />{t('autor.github')}
+          </a>
+          {d.enlaces.web && (
+            <a
+              href={d.enlaces.web}
+              rel="me noopener"
+              target="_blank"
+              class="toque-comodo text-tinta hover:text-acento"
+            >
+              {d.enlaces.web.replace(/^https?:\/\//, '')}
+            </a>
+          )}
+        </div>
+        <CredencialesAutor credenciales={d.credenciales} />
+      </>
+    )}
+  </div>
+</div>

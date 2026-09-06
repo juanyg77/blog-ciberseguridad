@@ -1,0 +1,37 @@
+CONTENIDO DEL SITIO — Creative Commons Attribution 4.0 Internacional (CC BY 4.0)
+==============================================================================
+
+ARQUITECTURA.md, decisión D-17 / sección 8.1.
+
+El CONTENIDO de este blog —el texto de los artículos, explicativos y análisis
+escrito por el/los autor(es)— se publica bajo la licencia Creative Commons
+Attribution 4.0 Internacional (CC BY 4.0).
+
+Sos libre de:
+  - Compartir: copiar y redistribuir el material en cualquier medio o formato.
+  - Adaptar: remezclar, transformar y crear a partir del material, incluso con
+    fines comerciales.
+
+Bajo la siguiente condición:
+  - Atribución: tenés que dar el crédito correspondiente al autor, enlazar a la
+    licencia e indicar si hiciste cambios. Podés hacerlo de cualquier forma
+    razonable, pero no de una manera que sugiera que el autor te respalda.
+
+Texto legal completo de la licencia:
+  https://creativecommons.org/licenses/by/4.0/legalcode.es
+Resumen legible:
+  https://creativecommons.org/licenses/by/4.0/deed.es
+
+QUÉ NO CUBRE ESTA LICENCIA
+-------------------------
+  1. El CÓDIGO del sitio (componentes Astro, estilos, configuración, scripts):
+     está bajo licencia MIT. Ver el archivo LICENSE.
+  2. Las IMÁGENES y el material de terceros: capturas de informes oficiales
+     (FBI, CISA, ENISA, proveedores), logos, diagramas ajenos, portadas de
+     noticias, etc. Son de sus respectivos titulares y se usan como cita. Cada
+     una se atribuye por separado al pie del artículo (ver CONTRIBUIR.md).
+
+Atribución sugerida:
+  "«<título del artículo>», por Juan Ignacio García, publicado en
+   El Que Se Las Sabe Todas (https://elquelassabetodas.com/<ruta del artículo>),
+   bajo CC BY 4.0."

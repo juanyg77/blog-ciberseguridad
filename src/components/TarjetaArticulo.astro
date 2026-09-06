@@ -1,0 +1,41 @@
+---
+/**
+ * Tarjeta de artículo para listados (home, /recientes, /no-tecnico, /tecnico,
+ * /seccion/[seccion]). Marca el nivel, la(s) sección(es), y si tiene opinión
+ * (RF-3: para poder identificarlo desde el listado).
+ */
+import { getEntries } from 'astro:content';
+import type { Articulo } from '../lib/articulos';
+import { rutaArticulo } from '../lib/articulos';
+import { dict } from '../i18n';
+import { fechaLarga, mesAnio } from '../lib/fechas';
+
+interface Props {
+  articulo: Articulo;
+}
+const { articulo } = Astro.props;
+const d = articulo.data;
+const secciones = await getEntries(d.secciones);
+const nivel = dict().articulo.porNivel[d.nivel];
+const tipo = dict().articulo.porTipo[d.tipoArticulo];
+const hayActualizacion =
+  !!d.fechaActualizacion && d.fechaActualizacion.getTime() > d.fechaPublicacion.getTime();
+---
+<article class="border-t border-borde pt-5">
+  <p class="font-mono text-[10.5px] uppercase tracking-[0.12em] text-tinta-tenue">
+    {d.tipoArticulo === 'analisis-caso' ? tipo : nivel}
+    {secciones.length > 0 && <span> · {secciones.map((s) => s.data.nombre).join(' · ')}</span>}
+  </p>
+  <h3 class="mt-2 font-serif text-xl leading-snug">
+    <a href={rutaArticulo(articulo)} class="text-tinta hover:text-acento">{d.titulo}</a>
+  </h3>
+  <p class="mt-2 text-tinta-suave">{d.resumen}</p>
+  <p class="mt-2 text-sm text-tinta-tenue">
+    {
+      hayActualizacion
+        ? `Actualizado en ${mesAnio(d.fechaActualizacion!)}`
+        : fechaLarga(d.fechaPublicacion)
+    }
+    {d.tieneOpinion && <span> · con opinión del autor</span>}
+  </p>
+</article>

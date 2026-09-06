@@ -1,0 +1,98 @@
+---
+/**
+ * RF-7 / CA-7 — Compartir en redes en ≤ 2 clics, con glifos monocromáticos
+ * (mismo sistema de íconos que el resto del sitio).
+ * Convención UTM de ARQUITECTURA.md 5.2: utm_source=<red>&utm_medium=social&utm_campaign=share.
+ * WhatsApp va primero y destacado (acento): es el canal clave para pasarle el
+ * enlace a un familiar (audiencia no técnica).
+ */
+import { t } from '../i18n';
+import { conUtm, enlaceCompartir, type RedSocial } from '../lib/utm';
+import Icono from './Icono.astro';
+
+interface Props {
+  /** Ruta relativa del artículo, p. ej. /es/tecnico/colonial-pipeline-analisis */
+  ruta: string;
+  titulo: string;
+}
+const { ruta, titulo } = Astro.props;
+
+const urlCanonica = new URL(ruta, Astro.site).toString();
+
+const redes: { id: RedSocial; icono: 'whatsapp' | 'linkedin' | 'x' | 'telegram'; nombre: string; destacado?: boolean }[] = [
+  { id: 'whatsapp', icono: 'whatsapp', nombre: 'WhatsApp', destacado: true },
+  { id: 'linkedin', icono: 'linkedin', nombre: 'LinkedIn' },
+  { id: 'twitter', icono: 'x', nombre: 'X' },
+  { id: 'telegram', icono: 'telegram', nombre: 'Telegram' },
+];
+
+const btnBase =
+  'toque-comodo min-w-[44px] justify-center border transition-colors';
+---
+<div class="flex flex-wrap items-center gap-2">
+  <span class="mr-1 font-mono text-[11px] uppercase tracking-[0.12em] text-tinta-tenue">
+    {t('articulo.compartir')}
+  </span>
+
+  {
+    redes.map((r) => (
+      <a
+        href={enlaceCompartir(r.id, conUtm(urlCanonica, r.id), titulo)}
+        rel="noopener nofollow"
+        target="_blank"
+        title={t('articulo.compartirEn', { red: r.nombre })}
+        aria-label={t('articulo.compartirEn', { red: r.nombre })}
+        class:list={[
+          btnBase,
+          r.destacado
+            ? 'border-acento text-acento hover:bg-acento hover:text-papel'
+            : 'border-borde text-tinta hover:border-acento hover:text-acento',
+        ]}
+      >
+        <Icono nombre={r.icono} size={18} />
+      </a>
+    ))
+  }
+
+  <button
+    type="button"
+    data-copiar-enlace={conUtm(urlCanonica, 'copiar')}
+    data-label-copiar={t('articulo.copiarEnlace')}
+    data-label-copiado={t('articulo.copiado')}
+    title={t('articulo.copiarEnlace')}
+    aria-label={t('articulo.copiarEnlace')}
+    class:list={[btnBase, 'border-borde text-tinta hover:border-acento hover:text-acento']}
+  >
+    <span data-icono-copiar class="inline-flex"><Icono nombre="enlace" size={18} /></span>
+    <span data-icono-copiado class="hidden text-acento"><Icono nombre="check" size={18} /></span>
+  </button>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-copiar-enlace]').forEach((btn) => {
+    const iconoCopiar = btn.querySelector<HTMLElement>('[data-icono-copiar]');
+    const iconoCopiado = btn.querySelector<HTMLElement>('[data-icono-copiado]');
+    const labelCopiar = btn.dataset.labelCopiar || 'Copiar enlace';
+    const labelCopiado = btn.dataset.labelCopiado || 'Copiado';
+
+    btn.addEventListener('click', async () => {
+      const url = btn.getAttribute('data-copiar-enlace');
+      if (!url) return;
+      try {
+        await navigator.clipboard.writeText(url);
+        iconoCopiar?.classList.add('hidden');
+        iconoCopiado?.classList.remove('hidden');
+        btn.setAttribute('aria-label', labelCopiado);
+        btn.setAttribute('title', labelCopiado);
+        setTimeout(() => {
+          iconoCopiado?.classList.add('hidden');
+          iconoCopiar?.classList.remove('hidden');
+          btn.setAttribute('aria-label', labelCopiar);
+          btn.setAttribute('title', labelCopiar);
+        }, 1500);
+      } catch {
+        /* sin API de portapapeles: no hacemos nada disruptivo */
+      }
+    });
+  });
+</script>

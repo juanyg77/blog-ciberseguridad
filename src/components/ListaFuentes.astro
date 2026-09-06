@@ -1,0 +1,44 @@
+---
+/**
+ * RF-4 / CA-4 — Lista de fuentes al pie del artículo.
+ * Se alimenta del array `fuentes` del frontmatter (ver src/content.config.ts).
+ * El schema exige al menos una fuente cuando tipoArticulo === 'analisis-caso'.
+ */
+import { t } from '../i18n';
+import { fechaLarga } from '../lib/fechas';
+
+interface Fuente {
+  titulo: string;
+  url: string;
+  organismo: string;
+  fecha?: Date;
+}
+interface Props {
+  fuentes: Fuente[];
+}
+const { fuentes } = Astro.props;
+---
+{
+  fuentes.length > 0 && (
+    <section class="mt-12 border-t border-borde-fuerte pt-6" aria-labelledby="fuentes-titulo">
+      <h2 id="fuentes-titulo" class="font-mono text-xs uppercase tracking-[0.12em] text-tinta-tenue">
+        {t('articulo.fuentes')}
+      </h2>
+      <p class="mt-1 text-sm text-tinta-tenue">{t('articulo.fuentesIntro')}</p>
+      <ol class="mt-4 space-y-3">
+        {fuentes.map((f) => (
+          <li class="text-sm [overflow-wrap:anywhere]">
+            <a href={f.url} rel="noopener nofollow" target="_blank" class="border-b border-current">
+              {f.titulo}
+            </a>
+            <span class="text-tinta-tenue">
+              {' — '}
+              {f.organismo}
+              {f.fecha ? `, ${fechaLarga(f.fecha)}` : ''}
+            </span>
+          </li>
+        ))}
+      </ol>
+    </section>
+  )
+}

@@ -1,0 +1,171 @@
+---
+/**
+ * Masthead + navegación. En móvil la nav vive en un panel <details> con filas
+ * tocables agrupadas (modos de lectura / utilitarios). El toggle de tema queda
+ * siempre visible. Sin JS el <details> abre/cierra igual; un script chico lo
+ * cierra al navegar, con Escape o al tocar fuera.
+ */
+import { t } from '../i18n';
+import ToggleTema from './ToggleTema.astro';
+import Icono from './Icono.astro';
+
+const ruta = Astro.url.pathname;
+const activo = (href: string) => {
+  const base = href.split('#')[0];
+  if (base === '/') return ruta === '/';
+  return ruta === base || ruta.startsWith(base + '/');
+};
+
+// Grupo 1: los dos modos de lectura (lo principal). Grupo 2: utilitarios.
+const modos = [
+  { href: '/no-tecnico', texto: t('nav.noTecnico') },
+  { href: '/tecnico', texto: t('nav.tecnico') },
+];
+const utilidades = [
+  { href: '/secciones', texto: t('nav.secciones') },
+  { href: '/sobre', texto: t('nav.sobre') },
+  { href: '/buscar', texto: t('nav.buscar') },
+  { href: '/contacto', texto: t('nav.contacto') },
+];
+const todos = [...modos, ...utilidades];
+---
+<header class="mx-auto max-w-5xl px-6 pt-7 sm:px-10 sm:pt-8">
+  <div class="flex flex-wrap items-start justify-between gap-x-4 gap-y-3 border-b border-borde pb-4">
+    <div class="min-w-0">
+      <a
+        href="/"
+        class="font-serif text-xl font-semibold uppercase leading-tight tracking-tight text-tinta hover:text-tinta sm:text-2xl"
+      >
+        {t('sitio.nombre')}
+      </a>
+      <p class="mt-2 max-w-md font-mono text-[10px] uppercase leading-snug tracking-[0.12em] text-tinta-tenue sm:text-[11px] sm:tracking-[0.14em]">
+        {t('sitio.tagline')}
+      </p>
+    </div>
+
+    <div class="flex shrink-0 items-center gap-2">
+      <ToggleTema />
+
+      {/* Menú móvil (< sm) — panel a pantalla completa, fondo opaco */}
+      <details id="menu-movil" class="sm:hidden">
+        <summary
+          class="toque-comodo cursor-pointer select-none gap-2 rounded border border-borde px-3 font-mono text-[11px] uppercase tracking-[0.14em] text-tinta [&::-webkit-details-marker]:hidden"
+        >
+          <span class="menu-cerrado inline-flex items-center gap-2">
+            <Icono nombre="menu" size={18} />{t('nav.menu')}
+          </span>
+          <span class="menu-abierto inline-flex items-center gap-2">
+            <Icono nombre="cerrar" size={18} />{t('nav.cerrar')}
+          </span>
+        </summary>
+
+        <div class="menu-panel fixed inset-0 z-[70] flex flex-col bg-papel">
+          <div class="flex items-center justify-between border-b border-borde px-6 py-4">
+            <span class="font-mono text-[11px] uppercase tracking-[0.14em] text-tinta-tenue">
+              {t('nav.menu')}
+            </span>
+            <button
+              type="button"
+              class="menu-cerrar toque-comodo gap-2 rounded font-mono text-[11px] uppercase tracking-[0.14em] text-tinta"
+            >
+              <Icono nombre="cerrar" size={18} />{t('nav.cerrar')}
+            </button>
+          </div>
+
+          <nav aria-label="Principal" class="flex-1 overflow-y-auto overscroll-contain px-4 py-5">
+            <div class="flex flex-col gap-1">
+              {
+                modos.map((e) => (
+                  <a
+                    href={e.href}
+                    aria-current={activo(e.href) ? 'page' : undefined}
+                    class:list={[
+                      'flex min-h-[52px] items-center rounded px-4 text-base hover:bg-superficie',
+                      activo(e.href)
+                        ? 'border-l-2 border-acento font-medium text-acento'
+                        : 'text-tinta',
+                    ]}
+                  >
+                    {e.texto}
+                  </a>
+                ))
+              }
+            </div>
+            <hr class="my-4 border-0 border-t border-borde" />
+            <div class="flex flex-col gap-1">
+              {
+                utilidades.map((e) => (
+                  <a
+                    href={e.href}
+                    aria-current={activo(e.href) ? 'page' : undefined}
+                    class:list={[
+                      'flex min-h-[52px] items-center rounded px-4 text-base hover:bg-superficie',
+                      activo(e.href)
+                        ? 'border-l-2 border-acento font-medium text-acento'
+                        : 'text-tinta',
+                    ]}
+                  >
+                    {e.texto}
+                  </a>
+                ))
+              }
+            </div>
+          </nav>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  {/* Nav inline (sm+) */}
+  <nav
+    class="hidden flex-wrap items-center gap-x-5 gap-y-2 pt-3 font-mono text-[11px] uppercase tracking-[0.14em] sm:flex"
+    aria-label="Principal"
+  >
+    {
+      todos.map((e) => (
+        <a
+          href={e.href}
+          aria-current={activo(e.href) ? 'page' : undefined}
+          class:list={['hover:text-acento', activo(e.href) ? 'text-acento' : 'text-tinta']}
+        >
+          {e.texto}
+        </a>
+      ))
+    }
+  </nav>
+</header>
+
+<style>
+  #menu-movil .menu-abierto { display: none; }
+  #menu-movil[open] .menu-cerrado { display: none; }
+  #menu-movil[open] .menu-abierto { display: inline-flex; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    #menu-movil[open] .menu-panel {
+      animation: menu-aparece 160ms ease-out;
+    }
+  }
+  @keyframes menu-aparece {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+
+<script>
+  const menu = document.getElementById('menu-movil') as HTMLDetailsElement | null;
+  if (menu) {
+    const cerrar = () => menu.removeAttribute('open');
+    menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', cerrar));
+    menu.querySelector<HTMLButtonElement>('.menu-cerrar')?.addEventListener('click', cerrar);
+    // Panel a pantalla completa: bloquear el scroll del fondo mientras está abierto.
+    menu.addEventListener('toggle', () => {
+      document.documentElement.classList.toggle('menu-lock', menu.open);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menu.open) {
+        cerrar();
+        menu.querySelector('summary')?.focus();
+      }
+    });
+  }
+</script>

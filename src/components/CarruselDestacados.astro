@@ -1,0 +1,144 @@
+---
+/**
+ * Carrusel de artículos destacados para la home (adición autorizada por el autor).
+ *
+ * Enfoque: CSS scroll-snap + un <script> vanilla scoped (~20 líneas, sin
+ * dependencias, sin framework). Astro lo empaqueta como módulo diferido: es la
+ * "isla" más liviana posible. No compromete RF-12 / CA-14 (si el JS no corre, el
+ * carrusel sigue siendo una fila scrolleable y todos los enlaces funcionan).
+ *
+ * Accesibilidad:
+ *  - El track es un contenedor focusable (tabindex=0) con role="group" +
+ *    aria-roledescription="carrusel"; el navegador da scroll con las flechas.
+ *  - Botones prev/next son <button> nativos, con aria-label y estado disabled.
+ *  - Respeta prefers-reduced-motion (sin scroll animado).
+ *  - Cada slide es un <a> alcanzable por Tab.
+ */
+import { Image } from 'astro:assets';
+import type { Articulo } from '../lib/articulos';
+import { rutaArticulo } from '../lib/articulos';
+import { dict, t } from '../i18n';
+
+interface Props {
+  articulos: Articulo[];
+}
+const { articulos } = Astro.props;
+const etiquetas = dict().articulo;
+---
+<section class="mt-4" aria-labelledby="destacados-titulo" data-carrusel>
+  <div class="flex items-center justify-between border-b border-borde-fuerte pb-3">
+    <h2 id="destacados-titulo" class="font-serif text-2xl font-semibold">
+      {t('home.destacados')}
+    </h2>
+    <div class="hidden gap-2 sm:flex">
+      <button
+        type="button"
+        data-carrusel-prev
+        aria-label={t('carrusel.anterior')}
+        class="border border-borde px-2 py-1 font-mono text-xs text-tinta-tenue hover:border-acento hover:text-acento disabled:opacity-30"
+      >←</button>
+      <button
+        type="button"
+        data-carrusel-next
+        aria-label={t('carrusel.siguiente')}
+        class="border border-borde px-2 py-1 font-mono text-xs text-tinta-tenue hover:border-acento hover:text-acento disabled:opacity-30"
+      >→</button>
+    </div>
+  </div>
+
+  {/* Móvil: pila vertical (robusto, sin recorte). sm+: carrusel horizontal con snap. */}
+  <ul
+    data-carrusel-track
+    class="carrusel-track mt-6 flex flex-col gap-9 sm:flex-row sm:snap-x sm:snap-proximity sm:gap-5 sm:overflow-x-auto sm:scroll-pl-1 sm:pb-3"
+    tabindex="0"
+    role="group"
+    aria-roledescription="carrusel"
+    aria-label={t('carrusel.region')}
+  >
+    {
+      articulos.map((a) => {
+        const d = a.data;
+        return (
+          <li class="sm:shrink-0 sm:basis-[47%] sm:snap-start lg:basis-[31%]">
+            <a href={rutaArticulo(a)} class="group block">
+              {d.portada &&
+                (d.portada.format === 'svg' ? (
+                  <img
+                    src={d.portada.src}
+                    alt={d.portadaAlt ?? d.titulo}
+                    width={d.portada.width}
+                    height={d.portada.height}
+                    class="aspect-[16/9] w-full border border-borde object-cover"
+                  />
+                ) : (
+                  <Image
+                    src={d.portada}
+                    alt={d.portadaAlt ?? d.titulo}
+                    width={640}
+                    widths={[320, 480, 640]}
+                    sizes="(min-width: 1024px) 31vw, (min-width: 640px) 47vw, 100vw"
+                    class="aspect-[16/9] w-full border border-borde object-cover"
+                  />
+                ))}
+              <p class="mt-3 font-mono text-[10.5px] uppercase tracking-[0.12em] text-tinta-tenue">
+                {etiquetas.porTipo[d.tipoArticulo]} · {etiquetas.porNivel[d.nivel]}
+              </p>
+              <h3 class="mt-1 font-serif text-lg leading-snug text-tinta group-hover:text-acento">
+                {d.titulo}
+              </h3>
+            </a>
+          </li>
+        );
+      })
+    }
+  </ul>
+</section>
+
+<style>
+  .carrusel-track {
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .carrusel-track::-webkit-scrollbar {
+    display: none;
+  }
+  .carrusel-track:focus-visible {
+    outline: 2px solid var(--color-acento);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .carrusel-track {
+      scroll-behavior: auto;
+    }
+  }
+</style>
+
+<script>
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.querySelectorAll<HTMLElement>('[data-carrusel]').forEach((scope) => {
+    const track = scope.querySelector<HTMLElement>('[data-carrusel-track]');
+    if (!track) return;
+    const prev = scope.querySelector<HTMLButtonElement>('[data-carrusel-prev]');
+    const next = scope.querySelector<HTMLButtonElement>('[data-carrusel-next]');
+
+    const paso = () => Math.round(track.clientWidth * 0.9);
+    const mover = (dir: number) =>
+      track.scrollBy({ left: dir * paso(), behavior: reduce ? 'auto' : 'smooth' });
+
+    prev?.addEventListener('click', () => mover(-1));
+    next?.addEventListener('click', () => mover(1));
+
+    const actualizar = () => {
+      const max = track.scrollWidth - track.clientWidth - 2;
+      if (prev) prev.disabled = track.scrollLeft <= 0;
+      if (next) next.disabled = track.scrollLeft >= max;
+    };
+    actualizar();
+    track.addEventListener('scroll', actualizar, { passive: true });
+    window.addEventListener('resize', actualizar);
+  });
+</script>

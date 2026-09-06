@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- PLACEHOLDER de favicon. La identidad visual concreta (logo, favicon) es
+       una etapa posterior y separada (MARCA.md 7.0 / 9). -->
+  <rect width="32" height="32" fill="#fbfaf8"/>
+  <circle cx="16" cy="16" r="10" fill="none" stroke="#1f6e43" stroke-width="2.5"/>
+  <path d="M16 7 L18 16 L16 25 L14 16 Z" fill="#1a1a17"/>
+</svg>

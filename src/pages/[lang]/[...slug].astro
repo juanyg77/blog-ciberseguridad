@@ -1,0 +1,37 @@
+---
+/**
+ * Artículos es/en — RF-9. getStaticPaths usa la CONSULTA CENTRAL
+ * (lib/articulos.ts): un borrador o un artículo con fechaPublicacion futura
+ * NO genera página → 404 real (ARQUITECTURA.md 3.2).
+ *
+ * URL: /{idioma}/{nivel}/{slug}  ej. /es/tecnico/colonial-pipeline-analisis
+ */
+import { render } from 'astro:content';
+import LayoutArticulo from '../../layouts/LayoutArticulo.astro';
+import { getArticulosPublicados, getTraduccion, paramsDeArticulo } from '../../lib/articulos';
+
+export async function getStaticPaths() {
+  const articulos = await getArticulosPublicados();
+  const paths = [];
+  for (const articulo of articulos) {
+    const { lang, slug } = paramsDeArticulo(articulo);
+    paths.push({
+      params: { lang, slug },
+      props: { articulo, traduccion: await getTraduccion(articulo) },
+    });
+  }
+  return paths;
+}
+
+const { articulo, traduccion } = Astro.props;
+const { Content } = await render(articulo);
+
+// Texto plano aproximado para el tiempo de lectura
+const textoPlano = (articulo.body ?? '')
+  .replace(/^---[\s\S]*?---/, '')
+  .replace(/```[\s\S]*?```/g, '')
+  .replace(/[#>*_`~\-]|\[[^\]]*\]\([^)]*\)/g, ' ');
+---
+<LayoutArticulo articulo={articulo} traduccion={traduccion} textoPlano={textoPlano}>
+  <Content />
+</LayoutArticulo>

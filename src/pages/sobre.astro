@@ -1,0 +1,35 @@
+---
+/**
+ * RF-5 / CA-5 — "Sobre mí / Sobre nosotros". Lista TODOS los autores de la
+ * colección: pasar de uno a varios no toca la arquitectura. Nombre real + foto
+ * + bio + enlaces (LinkedIn, GitHub) + credenciales (D-11, vacías al día 1).
+ */
+import { getCollection } from 'astro:content';
+import LayoutBase from '../layouts/LayoutBase.astro';
+import FichaAutor from '../components/FichaAutor.astro';
+import { t } from '../i18n';
+
+const autores = (await getCollection('autores'))
+  .filter((a) => a.data.activo)
+  .sort((a, b) => a.data.nombre.localeCompare(b.data.nombre));
+
+const multiples = autores.length > 1;
+---
+<LayoutBase
+  titulo={t('nav.sobre')}
+  descripcion="Quién escribe El Que Se Las Sabe Todas: Juan Ignacio García, estudiante de informática en reconversión hacia la ciberseguridad, desde Córdoba, Argentina. Nombre real, foto y enlaces."
+>
+  <h1 class="border-b border-borde-fuerte pb-3 font-serif text-2xl font-semibold sm:text-3xl">
+    {multiples ? 'Sobre nosotros' : t('nav.sobre')}
+  </h1>
+
+  <div class="mt-8 max-w-2xl space-y-10">
+    {autores.map((a) => <FichaAutor autor={a} variante="completa" />)}
+  </div>
+
+  <p class="mt-10 max-w-2xl text-sm text-tinta-tenue">
+    Este blog tiene dos líneas de contenido: explicaciones desde cero para
+    cualquiera («Modo humano») y análisis técnicos de casos («Modo nerd»). Nombre
+    real y foto van visibles acá y en cada artículo (RF-5 / RF-6).
+  </p>
+</LayoutBase>

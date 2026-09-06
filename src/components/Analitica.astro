@@ -1,0 +1,31 @@
+---
+/**
+ * D-7 / D-15 — CAPA INTERCAMBIABLE DE ANALÍTICA. Único punto de integración.
+ *
+ * Proveedor actual: GoatCounter (plan gratuito, sin cookies, sin banner — D-8).
+ * Cambiar de proveedor (p. ej. a Plausible) = editar SOLO este archivo.
+ *
+ * La clave/código va como variable de entorno, nunca en el repo (D-18):
+ *   PUBLIC_GOATCOUNTER_CODE  -> el subdominio de tu cuenta ("micodigo" de
+ *                               https://micodigo.goatcounter.com)
+ * Si la variable no está definida (dev local, previews), no se emite nada.
+ *
+ * El desglose por artículo + canal (RF-10 / CA-10) sale de:
+ *  - la URL propia y estable de cada artículo (vistas por path),
+ *  - el referrer (Search / Social / Referral / Direct),
+ *  - los parámetros UTM que agrega BotonesCompartir (ver src/lib/utm.ts).
+ */
+const code = import.meta.env.PUBLIC_GOATCOUNTER_CODE;
+const endpoint = code ? `https://${code}.goatcounter.com/count` : null;
+---
+{
+  endpoint && (
+    <script
+      is:inline
+      defer
+      data-goatcounter={endpoint}
+      src="https://gc.zgo.at/count.js"
+    />
+  )
+}
+{/* Sin PUBLIC_GOATCOUNTER_CODE no se emite ningún script de analítica. */}

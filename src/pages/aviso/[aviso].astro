@@ -1,0 +1,20 @@
+---
+/**
+ * Página de un aviso (RF-11 / CA-12). No está en el árbol de ARQUITECTURA.md
+ * pero da destino al enlace "Leer el aviso completo" del banner de la home.
+ * Usa LayoutAviso (comunicación al lector, no artículo).
+ */
+import { getCollection, render } from 'astro:content';
+import LayoutAviso from '../../layouts/LayoutAviso.astro';
+
+export async function getStaticPaths() {
+  const avisos = await getCollection('avisos');
+  return avisos.map((aviso) => ({ params: { aviso: aviso.id }, props: { aviso } }));
+}
+
+const { aviso } = Astro.props;
+const { Content } = await render(aviso);
+---
+<LayoutAviso aviso={aviso}>
+  <Content />
+</LayoutAviso>

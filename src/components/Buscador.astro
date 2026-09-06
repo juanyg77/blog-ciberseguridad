@@ -1,0 +1,64 @@
+---
+/**
+ * RF-13 / D-9 — UI de Pagefind. El índice se genera en el build
+ * (`pagefind --site dist`, ver package.json → script "build") desde el día 1.
+ *
+ * Pagefind se sirve desde /pagefind/ en el sitio compilado. En `astro dev` ese
+ * directorio no existe todavía (hay que correr un build antes de `astro preview`);
+ * el componente degrada de forma limpia si el script no está.
+ *
+ * Índice por idioma: Pagefind usa el atributo `lang` del <html> de cada página
+ * para segmentar el índice (RF-9).
+ */
+interface Props {
+  idioma?: string;
+}
+const { idioma = 'es' } = Astro.props;
+---
+<link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+<div id="buscador-pagefind" data-idioma={idioma}></div>
+<style is:global>
+  /* Pagefind UI adaptado a la paleta y a móvil (font-size >= 16px en el input
+     para que iOS no haga zoom). */
+  #buscador-pagefind {
+    --pagefind-ui-scale: 0.9;
+    --pagefind-ui-primary: var(--color-tinta);
+    --pagefind-ui-text: var(--color-tinta);
+    --pagefind-ui-background: var(--color-papel);
+    --pagefind-ui-border: var(--color-borde);
+    --pagefind-ui-tag: var(--color-superficie);
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: 2px;
+    --pagefind-ui-font: var(--font-sans);
+  }
+  #buscador-pagefind .pagefind-ui__search-input {
+    font-size: 1rem;
+    min-height: 44px;
+  }
+  #buscador-pagefind .pagefind-ui__result-link { color: var(--color-acento); }
+</style>
+<script is:inline>
+  /* pagefind-ui.js se genera en el build (no existe en `astro dev`). is:inline
+     evita que el bundler intente resolverlo. */
+  import('/pagefind/pagefind-ui.js')
+    .then(({ PagefindUI }) => {
+      const el = document.getElementById('buscador-pagefind');
+      new PagefindUI({
+        element: '#buscador-pagefind',
+        showSubResults: true,
+        showImages: false,
+        translations: {
+          placeholder: 'Buscá un tema, un caso, una amenaza…',
+          zero_results: 'No se encontró nada para "[SEARCH_TERM]".',
+        },
+        // Segmenta por idioma de contenido (RF-9)
+        ...(el?.dataset.idioma ? { language: el.dataset.idioma } : {}),
+      });
+    })
+    .catch(() => {
+      const el = document.getElementById('buscador-pagefind');
+      if (el)
+        el.innerHTML =
+          '<p class="text-tinta-tenue text-sm">El buscador se genera durante el build del sitio. Corré <code>npm run build</code> y probá con <code>npm run preview</code>.</p>';
+    });
+</script>

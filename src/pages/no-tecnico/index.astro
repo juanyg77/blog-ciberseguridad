@@ -1,0 +1,20 @@
+---
+import LayoutBase from '../../layouts/LayoutBase.astro';
+import TarjetaArticulo from '../../components/TarjetaArticulo.astro';
+import { t } from '../../i18n';
+import { getArticulosPorNivel } from '../../lib/articulos';
+
+// Ruta /no-tecnico (slug fijo). Etiqueta visible: t('nav.noTecnico') -> "Modo humano".
+const articulos = await getArticulosPorNivel('no-tecnico', 'es');
+const descripcion = t('nivel.descripcion.no-tecnico');
+---
+<LayoutBase titulo={t('nav.noTecnico')} descripcion={descripcion}>
+  <h1 class="border-b border-borde-fuerte pb-3 font-serif text-2xl font-semibold sm:text-3xl">
+    {t('nav.noTecnico')}
+  </h1>
+  <p class="mt-3 max-w-2xl text-tinta-suave">{descripcion}</p>
+  <div class="mt-8 grid gap-8 sm:grid-cols-2">
+    {articulos.map((a) => <TarjetaArticulo articulo={a} />)}
+    {articulos.length === 0 && <p class="text-tinta-tenue">{t('articulo.sinResultados')}</p>}
+  </div>
+</LayoutBase>

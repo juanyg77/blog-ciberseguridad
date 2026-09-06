@@ -1,0 +1,62 @@
+---
+/**
+ * Alterna modo oscuro (por defecto) / claro.
+ * Persiste en localStorage ('tema' = 'oscuro' | 'claro'). El modo oscuro es el
+ * estado sin clase; el claro agrega .light en <html>. El script anti-parpadeo
+ * (LayoutBase) aplica .light antes del render si corresponde.
+ *
+ * Ícono + label visible (el autor prefiere que se entienda):
+ *  - En OSCURO: sol + "Claro"  -> "vas a pasar a claro".
+ *  - En CLARO:  luna + "Oscuro" -> "vas a pasar a oscuro".
+ * `aria-label` dinámico para lectores de pantalla. Toque de 44px.
+ */
+import { t } from '../i18n';
+import Icono from './Icono.astro';
+---
+<button
+  type="button"
+  id="toggle-tema"
+  class="toque-comodo gap-1.5 rounded px-2 font-mono text-[11px] uppercase tracking-[0.14em] text-tinta-tenue hover:text-tinta"
+  aria-label={t('tema.alternar')}
+>
+  <span class="tema-en-oscuro inline-flex items-center gap-1.5">
+    <Icono nombre="sol" size={18} />{t('tema.claro')}
+  </span>
+  <span class="tema-en-claro inline-flex items-center gap-1.5">
+    <Icono nombre="luna" size={18} />{t('tema.oscuro')}
+  </span>
+</button>
+<style>
+  #toggle-tema .tema-en-claro { display: none; }
+  :global(html.light) #toggle-tema .tema-en-oscuro { display: none; }
+  :global(html.light) #toggle-tema .tema-en-claro { display: inline-flex; }
+</style>
+<script>
+  const btn = document.getElementById('toggle-tema');
+  const raiz = document.documentElement;
+
+  const sincronizar = () => {
+    const claro = raiz.classList.contains('light');
+    btn?.setAttribute(
+      'aria-label',
+      claro ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro',
+    );
+  };
+  sincronizar();
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let limpiar: ReturnType<typeof setTimeout> | undefined;
+
+  btn?.addEventListener('click', () => {
+    if (!reduce) {
+      raiz.classList.add('tema-cambiando');
+      clearTimeout(limpiar);
+      limpiar = setTimeout(() => raiz.classList.remove('tema-cambiando'), 240);
+    }
+    const claro = raiz.classList.toggle('light');
+    try {
+      localStorage.setItem('tema', claro ? 'claro' : 'oscuro');
+    } catch {}
+    sincronizar();
+  });
+</script>
