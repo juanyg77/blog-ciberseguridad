@@ -24,8 +24,8 @@ const fuente = z.object({
 
 // --- articulos -----------------------------------------------------------
 const articulos = defineCollection({
-  // `[!_]*` ignora archivos y carpetas que empiezan con "_" (p. ej. notas o
-  // fixtures: _LEEME-FIXTURES.md).
+  // `[!_]*` ignora archivos y carpetas que empiezan con "_" (notas / borradores
+  // locales). `plantilla-articulo.md` SÍ se carga pero es `borrador: true`.
   loader: glob({ pattern: '**/[!_]*.{md,mdx}', base: './src/content/articulos' }),
   schema: ({ image }) =>
     z

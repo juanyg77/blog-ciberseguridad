@@ -1,8 +1,8 @@
 # Cómo se publica en este blog
 
 Guía operativa para el/los autor(es). El contenido se edita en Markdown/MDX
-dentro del repo y se publica con `git push` (deploy automático en Cloudflare
-Pages, D-4). No hay CMS ni panel (D-3).
+dentro del repo. Para publicar: `npm run build` + `npx wrangler deploy`
+(Cloudflare Workers; ver README → "Deploy"). No hay CMS ni panel (D-3).
 
 > Sitio: **El Que Se Las Sabe Todas** — <https://elquelassabetodas.com>.
 > Contacto: `contacto@elquelassabetodas.com` (Web3Forms → Cloudflare Email
@@ -24,9 +24,9 @@ Pages, D-4). No hay CMS ni panel (D-3).
    `npm run build` falla con un mensaje claro. Esa es la red de seguridad.
 
    > Los archivos y carpetas que empiezan con `_` se ignoran (no se publican):
-   > sirven para notas o borradores locales. Hoy hay contenido de PRUEBA en
-   > `src/content/articulos/` (ver `_LEEME-FIXTURES.md`); hay que borrarlo o
-   > reemplazarlo antes de lanzar.
+   > sirven para notas y borradores locales. Como punto de partida, copiá
+   > `src/content/articulos/plantilla-articulo.md` (es un borrador: `borrador:
+   > true`, no se publica) y ponele `borrador: false` en tu copia.
 4. Escribí el cuerpo. Para el bloque de opinión (RF-3), en un `.mdx`:
    ```mdx
    import BloqueOpinion from '../../../../components/BloqueOpinion.astro';
@@ -37,7 +37,8 @@ Pages, D-4). No hay CMS ni panel (D-3).
    Acá va la interpretación del autor.
    </BloqueOpinion>
    ```
-5. `git add`, `git commit`, `git push`. En 1–3 minutos el sitio se regenera.
+5. `git add` + `git commit`, y publicá con `npm run build` + `npx wrangler deploy`
+   (o dejá que corra el deploy automático si está configurado). Ver README → "Deploy".
 
 ### Plantilla de frontmatter
 
@@ -236,12 +237,12 @@ El repo es **público**: los borradores y todo el historial de commits se ven.
 | **Cloudflare Turnstile** | Crear un widget para `elquelassabetodas.com`. La *secret key* se pega en Web3Forms; la *site key* va como variable. | `PUBLIC_TURNSTILE_SITE_KEY` |
 | **GoatCounter** | Crear sitio (plan gratuito). El "código" es el subdominio `<codigo>.goatcounter.com`. | `PUBLIC_GOATCOUNTER_CODE` |
 
-Todas las variables se cargan en **Cloudflare Pages → Settings → Environment
-Variables**, nunca en el repo (D-18).
+Todas las variables se cargan en el **dashboard del worker de Cloudflare**,
+nunca en el repo (D-18).
 
 ---
 
-## 9. Checklist antes de `git push`
+## 9. Checklist antes de publicar
 
 - [ ] `npm run build` pasa sin errores (valida frontmatter + genera el índice de
       búsqueda).
@@ -251,3 +252,4 @@ Variables**, nunca en el repo (D-18).
 - [ ] Imágenes de terceros citadas al pie.
 - [ ] `resumen` de 2–3 frases (se usa en listados, OG y RSS).
 - [ ] Fecha de publicación correcta (¿futura a propósito?).
+- [ ] `npx wrangler deploy` (o esperar al deploy automático si está configurado).

@@ -16,7 +16,7 @@ y análisis técnicos de casos. Construido según `REQUISITOS.md` y
 - **Pagefind** — buscador, índice generado en el build (D-9)
 - **GoatCounter** — analítica, capa intercambiable en `src/components/Analitica.astro` (D-7 / D-15)
 - **Web3Forms + Cloudflare Turnstile** — formulario de contacto (D-14, sección 6)
-- Hosting previsto: **Cloudflare Pages**, deploy-on-push (D-4)
+- Hosting: **Cloudflare Workers** (worker solo-assets) — ver "Deploy" abajo
 
 ## Requisitos
 
@@ -38,6 +38,24 @@ genera en el build. Para probarlo:
 npm run build             # astro build + pagefind --site dist
 npm run preview           # sirve dist/ con el índice ya generado
 ```
+
+## Deploy
+
+El sitio se publica en **Cloudflare Workers** (un worker solo-assets, sin código
+de servidor) con:
+
+```bash
+npm run build             # genera dist/ (incluye dist/pagefind/ y dist/404.html)
+npx wrangler deploy       # lee wrangler.jsonc y sube dist/ como assets
+```
+
+- La config vive en **`wrangler.jsonc`** (raíz del repo): `name`
+  `blog-ciberseguridad`, assets desde `./dist`, `not_found_handling: "404-page"`.
+- `dist/` está en `.gitignore` a propósito: Cloudflare corre `npm run build` en
+  cada deploy, así que el índice de Pagefind y el resto de los assets se
+  regeneran siempre desde la fuente.
+- Las variables de entorno (`PUBLIC_*`) se configuran en el dashboard del worker,
+  nunca en el repo (D-18).
 
 ## Estructura
 
@@ -75,8 +93,8 @@ Doble licencia, deliberada:
 
 ## Variables de entorno
 
-Ninguna se commitea (D-18). Ver `.env.example`. En producción se cargan como
-"Environment Variables" en Cloudflare Pages.
+Ninguna se commitea (D-18). Ver `.env.example`. En producción se cargan en el
+dashboard del worker de Cloudflare.
 
 | Variable | Para qué |
 |---|---|

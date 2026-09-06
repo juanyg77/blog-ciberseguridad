@@ -9,7 +9,10 @@ import LayoutAviso from '../../layouts/LayoutAviso.astro';
 
 export async function getStaticPaths() {
   const avisos = await getCollection('avisos');
-  return avisos.map((aviso) => ({ params: { aviso: aviso.id }, props: { aviso } }));
+  return avisos
+    // `plantilla-aviso` existe solo para mantener la colección no vacía; no es un aviso real.
+    .filter((aviso) => aviso.id !== 'plantilla-aviso')
+    .map((aviso) => ({ params: { aviso: aviso.id }, props: { aviso } }));
 }
 
 const { aviso } = Astro.props;

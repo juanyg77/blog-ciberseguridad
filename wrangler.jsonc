@@ -1,0 +1,12 @@
+{
+  // Worker solo-assets: publica el sitio estático de dist/ (Astro + índice de
+  // Pagefind). Sin "main" porque no hay código de servidor.
+  // Deploy:  npm run build  &&  npx wrangler deploy
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "blog-ciberseguridad",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  }
+}
