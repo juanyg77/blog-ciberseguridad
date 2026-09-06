@@ -49,10 +49,9 @@ const site = Astro.site ?? new URL('https://elquelassabetodas.com');
 const urlCanonica = new URL(canonical ?? Astro.url.pathname, site).toString();
 const tituloCompleto =
   titulo === t('sitio.nombre') ? titulo : `${titulo} · ${t('sitio.nombre')}`;
-// Imagen OG: la de la página, o la de marca por defecto. Siempre absoluta.
-// NOTA: og-default.svg es un placeholder; conviene reemplazarlo por un PNG/JPG
-// 1200x630 real (algunos scrapers no renderizan SVG).
-const ogImageAbs = new URL(imagenOg ?? '/og-default.svg', site).toString();
+// Imagen OG: la de la página, o la de marca por defecto (PNG 1200x630 real,
+// generado con scripts/generar-marca.mjs). Siempre absoluta.
+const ogImageAbs = new URL(imagenOg ?? '/og-default.png', site).toString();
 ---
 <!doctype html>
 <html lang={lang}>
@@ -60,6 +59,8 @@ const ogImageAbs = new URL(imagenOg ?? '/og-default.svg', site).toString();
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="preload" as="font" type="font/woff2" href={serif600} crossorigin="anonymous" />
     <link rel="preload" as="font" type="font/woff2" href={sans400} crossorigin="anonymous" />
     <link rel="preload" as="font" type="font/woff2" href={mono400} crossorigin="anonymous" />
@@ -93,6 +94,13 @@ const ogImageAbs = new URL(imagenOg ?? '/og-default.svg', site).toString();
     <meta property="og:site_name" content={t('sitio.nombre')} />
     <meta property="og:locale" content={lang === 'es' ? 'es_AR' : 'en_US'} />
     <meta property="og:image" content={ogImageAbs} />
+    {!imagenOg && (
+      <>
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:type" content="image/png" />
+      </>
+    )}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={titulo} />
     <meta name="twitter:description" content={descripcion} />
