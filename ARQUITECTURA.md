@@ -752,8 +752,11 @@ prueba); (b) el remitente **ve una confirmación de envío**.
 - **Cloudflare Email Routing** (gratis) reenvía `contacto@<dominio>` a la casilla
   Gmail del autor (D-6).
 - Tras el envío, redirección a **`/contacto/gracias`** (CA-8b).
-- **Anti-spam:** campo honeypot oculto + captcha no intrusivo
-  (Cloudflare Turnstile, que además ya está en el ecosistema del hosting).
+- **Anti-spam:** campo honeypot oculto + captcha.
+  > **Actualización (implementación):** se usa **hCaptcha** por la integración
+  > **gratuita** de Web3Forms (se activa en su panel; sin cuenta propia de
+  > hCaptcha ni site key en el repo), en lugar de Cloudflare Turnstile —
+  > conectar Turnstile a Web3Forms exige su plan Pro (de pago).
 
 ### Comparativa de opciones
 

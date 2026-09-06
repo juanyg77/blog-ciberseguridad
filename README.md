@@ -15,7 +15,8 @@ y análisis técnicos de casos. Construido según `REQUISITOS.md` y
 - **Content Collections + Zod** — `src/content.config.ts` (D-3, patrón 1)
 - **Pagefind** — buscador, índice generado en el build (D-9)
 - **GoatCounter** — analítica, capa intercambiable en `src/components/Analitica.astro` (D-7 / D-15)
-- **Web3Forms + Cloudflare Turnstile** — formulario de contacto (D-14, sección 6)
+- **Web3Forms** — formulario de contacto (D-14, sección 6); anti-spam con honeypot
+  + hCaptcha por la integración gratuita de Web3Forms
 - Hosting: **Cloudflare Workers** (worker solo-assets) — ver "Deploy" abajo
 
 ## Requisitos
@@ -101,7 +102,6 @@ dashboard del worker de Cloudflare.
 | `PUBLIC_SITE_URL` | dominio canónico (URLs, hreflang, UTM, OG). Por defecto `https://elquelassabetodas.com` |
 | `PUBLIC_GOATCOUNTER_CODE` | subdominio de la cuenta de GoatCounter |
 | `PUBLIC_WEB3FORMS_ACCESS_KEY` | access key del formulario de contacto |
-| `PUBLIC_TURNSTILE_SITE_KEY` | site key del captcha del formulario |
 
 ## Pendientes conocidos
 

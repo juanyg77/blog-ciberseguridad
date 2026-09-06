@@ -1,19 +1,26 @@
 ---
 /**
  * RF-8 / CA-8 — Formulario de contacto (ARQUITECTURA.md sección 6).
- * <form> que postea a Web3Forms (D-14). Anti-spam: honeypot (`botcheck`) +
- * Cloudflare Turnstile. Tras enviar, redirección a /contacto/gracias (CA-8b).
+ * <form> que postea a Web3Forms (D-14). Tras enviar, redirección a
+ * /contacto/gracias (CA-8b).
  *
- * Secretos como variables de entorno, NUNCA en el repo (D-18):
+ * Anti-spam:
+ *  - honeypot (`botcheck`) — Web3Forms descarta el envío si viene lleno;
+ *  - hCaptcha vía la integración GRATUITA de Web3Forms (`<div class="h-captcha">`
+ *    + su script). No requiere cuenta propia de hCaptcha ni site key en el repo:
+ *    la key del plan gratis va hardcodeada en el script de Web3Forms. El método
+ *    de captcha se elige en el panel de Web3Forms.
+ *  (Reemplaza a Cloudflare Turnstile: conectar Turnstile a Web3Forms requiere su
+ *   plan Pro; hCaptcha es gratis.)
+ *
+ * Secreto como variable de entorno, NUNCA en el repo (D-18):
  *   PUBLIC_WEB3FORMS_ACCESS_KEY   access key de Web3Forms
- *   PUBLIC_TURNSTILE_SITE_KEY     site key de Turnstile (opcional pero recomendado)
  * Ver .env.example.
  */
 import LayoutBase from '../layouts/LayoutBase.astro';
 import { t } from '../i18n';
 
 const accessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY;
-const turnstileKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 const site = Astro.site ?? new URL('https://elquelassabetodas.com');
 const redirect = new URL('/contacto/gracias', site).toString();
 // min-h 44px + font-size 1rem (global) => buen toque y sin zoom en iOS.
@@ -74,9 +81,11 @@ const labelCls = 'block text-sm font-medium';
         <textarea id="mensaje" name="message" rows="6" required class={inputCls}></textarea>
       </div>
 
-      {turnstileKey && (
-        <div class="cf-turnstile" data-sitekey={turnstileKey} data-theme="auto"></div>
-      )}
+      {/* hCaptcha — integración gratuita de Web3Forms (ver comentario del head) */}
+      <div class="h-captcha" data-captcha="true"></div>
+      <p id="captcha-error" hidden role="alert" class="text-sm font-medium text-error">
+        {t('contacto.captchaFalta')}
+      </p>
 
       <button
         type="submit"
@@ -95,7 +104,23 @@ const labelCls = 'block text-sm font-medium';
     </p>
   </div>
 
-  {turnstileKey && (
-    <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-  )}
+  {/* Script de Web3Forms: renderiza el widget de hCaptcha y agrega el campo
+      h-captcha-response al form. */}
+  <script is:inline src="https://web3forms.com/client/script.js" async defer></script>
+
+  {/* No dejar enviar sin resolver el captcha. */}
+  <script is:inline>
+    (function () {
+      var form = document.getElementById('form-contacto');
+      if (!form) return;
+      form.addEventListener('submit', function (e) {
+        var resp = form.querySelector('textarea[name="h-captcha-response"]');
+        var err = document.getElementById('captcha-error');
+        if (!resp || !resp.value) {
+          e.preventDefault();
+          if (err) err.hidden = false;
+        }
+      });
+    })();
+  </script>
 </LayoutBase>

@@ -136,6 +136,7 @@ const es = {
     graciasVolver: 'Volver al inicio',
     errorEnvio:
       'No se pudo enviar el mensaje. Probá de nuevo en un rato o escribime por otro canal.',
+    captchaFalta: 'Resolvé el captcha antes de enviar.',
     otroCanal: 'También podés escribir directo a',
     casilla: 'contacto@elquelassabetodas.com',
   },

@@ -233,8 +233,7 @@ El repo es **público**: los borradores y todo el historial de commits se ven.
 |---|---|---|
 | **Dominio** | `elquelassabetodas.com` ya comprado; DNS en Cloudflare (D-4). | `PUBLIC_SITE_URL` |
 | **Cloudflare Email Routing** | Crear la regla `contacto@elquelassabetodas.com` → Gmail del autor (D-6). | — |
-| **Web3Forms** | Crear cuenta con destino `contacto@elquelassabetodas.com`. **Verificar el dominio `elquelassabetodas.com`** en el panel de Web3Forms para que el `redirect` a `/contacto/gracias` (CA-8b) funcione. Copiar la access key. | `PUBLIC_WEB3FORMS_ACCESS_KEY` |
-| **Cloudflare Turnstile** | Crear un widget para `elquelassabetodas.com`. La *secret key* se pega en Web3Forms; la *site key* va como variable. | `PUBLIC_TURNSTILE_SITE_KEY` |
+| **Web3Forms** | Crear cuenta con destino `contacto@elquelassabetodas.com`. **Verificar el dominio `elquelassabetodas.com`** en el panel de Web3Forms para que el `redirect` a `/contacto/gracias` (CA-8b) funcione. Activar **hCaptcha** como método de captcha en el panel (integración gratuita, sin cuenta propia de hCaptcha). Copiar la access key. | `PUBLIC_WEB3FORMS_ACCESS_KEY` |
 | **GoatCounter** | Crear sitio (plan gratuito). El "código" es el subdominio `<codigo>.goatcounter.com`. | `PUBLIC_GOATCOUNTER_CODE` |
 
 Todas las variables se cargan en el **dashboard del worker de Cloudflare**,
