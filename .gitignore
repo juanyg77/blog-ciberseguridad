@@ -27,8 +27,5 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
-# Pagefind (se genera en el build)
-/pagefind/
-
 # Exploración de diseño (scratch; el .html de canvas pesa ~2.5MB y se regenera)
 design/

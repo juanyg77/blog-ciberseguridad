@@ -18,16 +18,16 @@
     "@fontsource/ibm-plex-mono": "^5.3.0",
     "@fontsource/ibm-plex-sans": "^5.3.0",
     "@fontsource/ibm-plex-serif": "^5.3.0",
-    "astro": "^7.3.1"
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.3.1",
+    "pagefind": "^1.5.2",
+    "tailwindcss": "^4.3.3"
   },
   "allowScripts": {
     "esbuild": true
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
-    "@tailwindcss/vite": "^4.3.3",
-    "pagefind": "^1.5.2",
-    "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3"
   }
 }
