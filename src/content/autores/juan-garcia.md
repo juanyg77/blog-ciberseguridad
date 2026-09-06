@@ -9,11 +9,10 @@ bio: >
   hacia la ciberseguridad, con interés en blue team e infraestructura crítica.
   Escribe este blog desde Córdoba, Argentina, como bitácora de aprendizaje y
   como recurso para quien necesite entender un incidente o una amenaza sin
-  tecnicismos. PENDIENTE: alcance final de la bio (REQUISITOS.md, "Pendiente de
-  definir").
+  tecnicismos.
 enlaces:
-  linkedin: "https://www.linkedin.com/in/PENDIENTE"
-  github: "https://github.com/PENDIENTE"
+  linkedin: "https://www.linkedin.com/in/juan-garcia-id77/"
+  github: "https://github.com/juanyg77"
 credenciales: []
 activo: true
 ---
