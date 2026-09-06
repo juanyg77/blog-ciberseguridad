@@ -1,7 +1,7 @@
 ---
 titulo: "Pausa por finales — vuelvo en abril"
 fecha: 2026-03-01
-activo: true
+activo: false
 ---
 
 Me tomo unas semanas para rendir finales de la facultad, así que en marzo no voy
