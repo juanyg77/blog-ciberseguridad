@@ -17,9 +17,10 @@ const sociales = autor
   : [];
 ---
 <footer class="mx-auto mt-16 max-w-5xl px-6 sm:px-10">
-  <div class="flex flex-col gap-3 border-t border-borde-fuerte pt-4 text-sm text-tinta-tenue sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-    <span>{t('pie.hechoPor', { autor: 'Juan Ignacio García' })}</span>
-    <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+  <div class="flex flex-col gap-2 border-t border-borde-fuerte pt-3 text-sm text-tinta-tenue sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+    <span class="py-1">{t('pie.hechoPor', { autor: 'Juan Ignacio García' })}</span>
+    {/* M-2: cada enlace del pie es un objetivo de toque de 44px con separación clara */}
+    <div class="flex flex-wrap items-center gap-x-2 gap-y-1 -mx-2 sm:mx-0">
       {
         sociales.map((s) => (
           <a
@@ -27,15 +28,15 @@ const sociales = autor
             rel="me noopener"
             target="_blank"
             aria-label={`${s.nombre} de ${autor!.data.nombre}`}
-            class="toque-comodo justify-center text-tinta-tenue hover:text-acento"
+            class="toque-comodo min-w-[44px] justify-center px-2 text-tinta-tenue hover:text-acento"
           >
             <Icono nombre={s.red} size={20} />
           </a>
         ))
       }
-      <a href="/rss.xml" class="hover:text-acento">{t('pie.rss')}</a>
+      <a href="/rss.xml" class="toque-comodo px-2 hover:text-acento">{t('pie.rss')}</a>
       <AvisoLicencia variante="pie" />
-      <span>· {new Date().getFullYear()}</span>
+      <span class="px-2 py-1">· {new Date().getFullYear()}</span>
     </div>
   </div>
 </footer>

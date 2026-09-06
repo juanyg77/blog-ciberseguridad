@@ -123,8 +123,11 @@ html.menu-lock {
 /* Titulares: que uno largo no se desborde ni empuje el layout en móvil. */
 h1, h2, h3, h4 {
   overflow-wrap: break-word;
-  text-wrap: balance;
 }
+/* `balance` en titulares grandes (2-4 líneas); `pretty` en los chicos —típicos de
+   tarjeta— para evitar cortes irregulares de 3 líneas a 375px (K-3). */
+h1, h2 { text-wrap: balance; }
+h3, h4 { text-wrap: pretty; }
 
 /* Suavizar el cambio de tema al togglear (no en el load: la clase
    .tema-cambiando solo la agrega ToggleTema durante ~240 ms). */
@@ -146,12 +149,24 @@ body {
   line-height: 1.6;
 }
 
-a {
-  color: var(--color-acento);
-  text-decoration: none;
-}
-a:hover {
-  color: var(--color-acento-fuerte);
+/*
+  Color de enlaces (C-2 de la auditoría). En @layer base para que las utilidades
+  de color de Tailwind (text-tinta, text-acento, …) siempre ganen:
+   - un <a> "pelado" HEREDA el color del texto (nav, tarjetas, logo, pie = tinta);
+   - el acento (azul) queda SOLO en la prosa de artículos (.contenido a, abajo)
+     y en los enlaces marcados explícitamente con `text-acento` (CTAs, enlaces
+     inline en texto corrido).
+  El hover se envuelve en @media (hover: hover) para que en pantallas táctiles
+  no quede el último enlace tocado "pegado" en color de hover (M-4).
+*/
+@layer base {
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  @media (hover: hover) {
+    a:hover { color: var(--color-acento); }
+  }
 }
 
 h1, h2, h3, h4 {
@@ -235,9 +250,15 @@ button { font-family: inherit; }
   line-height: 1.3;
   color: var(--color-tinta);
 }
+/* Enlaces de PROSA: siempre acento + subrayado (fuera de @layer para ganarle
+   a la base y no depender de utilidades en el Markdown). */
 .contenido a {
+  color: var(--color-acento);
   border-bottom: 1px solid currentColor;
   overflow-wrap: anywhere;
+}
+@media (hover: hover) {
+  .contenido a:hover { color: var(--color-acento-fuerte); }
 }
 .contenido ul { list-style: disc; padding-left: 1.4em; }
 .contenido ol { list-style: decimal; padding-left: 1.4em; }

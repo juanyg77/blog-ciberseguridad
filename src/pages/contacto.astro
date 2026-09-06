@@ -16,9 +16,10 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY;
 const turnstileKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 const site = Astro.site ?? new URL('https://elquelassabetodas.com');
 const redirect = new URL('/contacto/gracias', site).toString();
-// min-h 44px + font-size 1rem (global) => buen toque y sin zoom en iOS
+// min-h 44px + font-size 1rem (global) => buen toque y sin zoom en iOS.
+// border-borde-fuerte en reposo: en oscuro #borde (1.36:1) era casi invisible (M-1).
 const inputCls =
-  'mt-1 block w-full min-h-[44px] border border-borde bg-papel px-3 py-2.5 text-tinta outline-none focus:border-acento focus:ring-1 focus:ring-acento [&:user-invalid]:border-error';
+  'mt-1 block w-full min-h-[44px] border border-borde-fuerte bg-papel px-3 py-2.5 text-tinta outline-none focus:border-acento focus:ring-1 focus:ring-acento [&:user-invalid]:border-error';
 const labelCls = 'block text-sm font-medium';
 ---
 <LayoutBase titulo={t('contacto.titulo')} descripcion={t('contacto.intro')}>
@@ -88,7 +89,7 @@ const labelCls = 'block text-sm font-medium';
 
     <p class="mt-6 text-sm text-tinta-tenue">
       {t('contacto.otroCanal')}{' '}
-      <a href={`mailto:${t('contacto.casilla')}`} class="border-b border-current">
+      <a href={`mailto:${t('contacto.casilla')}`} class="border-b border-current text-acento">
         {t('contacto.casilla')}
       </a>.
     </p>

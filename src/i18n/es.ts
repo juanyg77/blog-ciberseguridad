@@ -34,8 +34,10 @@ const es = {
     abrirMenu: 'Abrir el menú de navegación',
   },
   tema: {
-    claro: 'Claro',
-    oscuro: 'Oscuro',
+    // Texto del toggle = ACCIÓN (lo que pasás a ser al tocarlo), no el estado
+    // actual. En oscuro el botón dice "Modo claro".
+    claro: 'Modo claro',
+    oscuro: 'Modo oscuro',
     alternar: 'Cambiar tema',
   },
   articulo: {

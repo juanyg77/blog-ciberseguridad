@@ -28,7 +28,7 @@ const { credenciales } = Astro.props;
         {credenciales.map((c) => (
           <li>
             {c.url ? (
-              <a href={c.url} rel="noopener" target="_blank" class="border-b border-current">
+              <a href={c.url} rel="noopener" target="_blank" class="border-b border-current text-acento">
                 {c.nombre}
               </a>
             ) : (

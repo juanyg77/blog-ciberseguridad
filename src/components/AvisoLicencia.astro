@@ -15,16 +15,19 @@ const URL_LICENCIA = 'https://creativecommons.org/licenses/by/4.0/deed.es';
 ---
 {
   variante === 'pie' ? (
-    <span>
-      <a href={URL_LICENCIA} rel="license noopener" target="_blank">
-        {t('licencia.pie')}
-      </a>
-    </span>
+    <a
+      href={URL_LICENCIA}
+      rel="license noopener"
+      target="_blank"
+      class="toque-comodo px-2 hover:text-acento"
+    >
+      {t('licencia.pie')}
+    </a>
   ) : (
     <aside class="mt-10 border-t border-borde pt-4 text-sm text-tinta-tenue">
       <p class="m-0">
         {t('licencia.nota', { autor: autor ?? '' })}{' '}
-        <a href={URL_LICENCIA} rel="license noopener" target="_blank" class="border-b border-current">
+        <a href={URL_LICENCIA} rel="license noopener" target="_blank" class="border-b border-current text-acento">
           CC BY 4.0
         </a>
         .

@@ -1,9 +1,12 @@
 ---
 /**
- * Masthead + navegación. En móvil la nav vive en un panel <details> con filas
- * tocables agrupadas (modos de lectura / utilitarios). El toggle de tema queda
- * siempre visible. Sin JS el <details> abre/cierra igual; un script chico lo
- * cierra al navegar, con Escape o al tocar fuera.
+ * Masthead + navegación. En móvil la nav vive en un panel <details> a PANTALLA
+ * COMPLETA con fondo opaco y filas tocables agrupadas (modos de lectura /
+ * utilitarios). El toggle de tema queda siempre visible.
+ *
+ * Cierre del panel: botón "Cerrar", click en cualquier enlace, o tecla Escape.
+ * (No hay "tocar fuera": el panel cubre toda la pantalla, no hay un afuera
+ * visible.) Sin JS el <details> abre y cierra igual con su <summary>.
  */
 import { t } from '../i18n';
 import ToggleTema from './ToggleTema.astro';

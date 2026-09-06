@@ -37,28 +37,46 @@ const { idioma = 'es' } = Astro.props;
   }
   #buscador-pagefind .pagefind-ui__result-link { color: var(--color-acento); }
 </style>
+{/*
+  Default UI de Pagefind: pagefind-ui.js es un IIFE que setea window.PagefindUI
+  (NO exporta nada como módulo ESM). Se carga con <script src> y se inicializa
+  con window.PagefindUI. `is:inline` para que Astro no lo procese. Si el archivo
+  no está (dev, o build sin índice) el onerror marca la falla y se muestra un
+  mensaje neutro para el lector.
+*/}
+<script is:inline src="/pagefind/pagefind-ui.js" onerror="window.__pagefindFallo=true"></script>
 <script is:inline>
-  /* pagefind-ui.js se genera en el build (no existe en `astro dev`). is:inline
-     evita que el bundler intente resolverlo. */
-  import('/pagefind/pagefind-ui.js')
-    .then(({ PagefindUI }) => {
-      const el = document.getElementById('buscador-pagefind');
-      new PagefindUI({
-        element: '#buscador-pagefind',
-        showSubResults: true,
-        showImages: false,
-        translations: {
-          placeholder: 'Buscá un tema, un caso, una amenaza…',
-          zero_results: 'No se encontró nada para "[SEARCH_TERM]".',
-        },
-        // Segmenta por idioma de contenido (RF-9)
-        ...(el?.dataset.idioma ? { language: el.dataset.idioma } : {}),
-      });
-    })
-    .catch(() => {
-      const el = document.getElementById('buscador-pagefind');
-      if (el)
-        el.innerHTML =
-          '<p class="text-tinta-tenue text-sm">El buscador se genera durante el build del sitio. Corré <code>npm run build</code> y probá con <code>npm run preview</code>.</p>';
-    });
+  (function () {
+    var el = document.getElementById('buscador-pagefind');
+    if (!el) return;
+    function fallback() {
+      el.innerHTML =
+        '<p class="text-sm text-tinta-tenue">El buscador no está disponible en este momento.</p>';
+    }
+    function init() {
+      if (window.__pagefindFallo || typeof window.PagefindUI === 'undefined') {
+        fallback();
+        return;
+      }
+      try {
+        new window.PagefindUI({
+          element: '#buscador-pagefind',
+          showSubResults: true,
+          showImages: false,
+          translations: {
+            placeholder: 'Buscá un tema, un caso, una amenaza…',
+            zero_results: 'No se encontró nada para "[SEARCH_TERM]".',
+          },
+          ...(el.dataset.idioma ? { language: el.dataset.idioma } : {}),
+        });
+      } catch (e) {
+        fallback();
+      }
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
 </script>

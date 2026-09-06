@@ -39,10 +39,14 @@ const inicial = datos[0]?.id;
   </h1>
   <p class="mt-3 max-w-2xl text-tinta-suave">{t('secciones.intro')}</p>
 
-  <div class="mt-8 grid gap-8 lg:grid-cols-[15rem_1fr]" data-secciones>
+  {/* grid-cols-1 explícito + min-w-0 en ambos ítems: sin esto, en < lg cada
+      ítem toma su ancho intrínseco (chips whitespace-nowrap, resúmenes en 1
+      línea) y estira toda la página -> overflow horizontal recortado por
+      body{overflow-x:clip} (C-1 / M-3). Con min-w-0 la tira scrollea sola. */}
+  <div class="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[15rem_1fr]" data-secciones>
     {/* Panel de secciones: tira scrolleable en móvil, lista vertical sticky en desktop */}
     <nav
-      class="-mx-6 border-y border-borde sm:mx-0 lg:sticky lg:top-6 lg:self-start lg:border-y-0"
+      class="min-w-0 -mx-6 border-y border-borde sm:mx-0 lg:sticky lg:top-6 lg:self-start lg:border-y-0"
       aria-label={t('secciones.titulo')}
     >
       <ul
@@ -68,7 +72,7 @@ const inicial = datos[0]?.id;
     </nav>
 
     {/* Paneles de artículos, uno por sección */}
-    <div>
+    <div class="min-w-0">
       {
         datos.map((s) => (
           <section

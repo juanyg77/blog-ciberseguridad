@@ -98,7 +98,7 @@ if (d.portada) {
           {t('articulo.tambienEnIdioma', {
             idioma: dict().articulo.idioma[traduccion.data.idioma as 'es' | 'en'],
           })}{' '}
-          <a href={rutaArticulo(traduccion)} class="border-b border-current">
+          <a href={rutaArticulo(traduccion)} class="border-b border-current text-acento">
             {traduccion.data.titulo}
           </a>
         </p>
@@ -153,7 +153,7 @@ if (d.portada) {
     </div>
 
     <p class="mt-8" data-pagefind-ignore>
-      <a href={`/${d.nivel}`} class="text-sm border-b border-current">
+      <a href={`/${d.nivel}`} class="border-b border-current text-sm text-acento">
         ← {t('articulo.volverAlListado')}
       </a>
     </p>
