@@ -7,7 +7,7 @@ nivel: "no-tecnico"
 tipoArticulo: "explicativo"
 secciones: ["viajero-digital"]
 autores: ["juan-garcia"]
-fechaPublicacion: 2026-09-06
+fechaPublicacion: 2026-09-10
 resumen: "15% de batería, el vuelo sale en 40 minutos y al lado del asiento hay un puerto USB. Parece la solución perfecta, pero el FBI lleva años advirtiendo que no lo es. Así funciona el juice jacking y así se evita."
 portada: "../../../../assets/images/articulos/juice-jacking-puertos-usb-aeropuertos/portada.webp"
 portadaAlt: "Puerto USB de carga en una sala de embarque de un aeropuerto"
