@@ -31,3 +31,7 @@ pnpm-debug.log*
 
 # Exploración de diseño (scratch; el .html de canvas pesa ~2.5MB y se regenera)
 design/
+
+# Borradores / auditorías de trabajo (no van al repo público)
+/SOBRE-MI-BORRADOR.md
+/AUDITORIA-COPY.md
