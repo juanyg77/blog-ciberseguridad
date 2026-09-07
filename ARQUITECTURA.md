@@ -752,25 +752,26 @@ prueba); (b) el remitente **ve una confirmación de envío**.
 - **Cloudflare Email Routing** (gratis) reenvía `contacto@<dominio>` a la casilla
   Gmail del autor (D-6).
 - Tras el envío, redirección a **`/contacto/gracias`** (CA-8b).
-- **Anti-spam:** campo honeypot oculto + captcha.
-  > **Actualización (implementación):** se usa **hCaptcha** por la integración
-  > **gratuita** de Web3Forms (se activa en su panel; sin cuenta propia de
-  > hCaptcha ni site key en el repo), en lugar de Cloudflare Turnstile —
-  > conectar Turnstile a Web3Forms exige su plan Pro (de pago).
+- **Anti-spam:** campo honeypot oculto + **hCaptcha**, ambos por la integración
+  **gratuita** de Web3Forms. El método de captcha se elige en el panel de
+  Web3Forms; **no hace falta cuenta propia de hCaptcha ni site key en el repo**
+  (el script de Web3Forms renderiza el widget en `/contacto`). **No se usa
+  Cloudflare Turnstile:** conectarlo a Web3Forms exige su plan Pro (de pago),
+  mientras que hCaptcha entra en el plan gratuito.
 
 ### Comparativa de opciones
 
 | Opción | Cómo funciona | CA-8 | Costo | Mantenimiento (RF-12) | Riesgos |
 |---|---|---|---|---|---|
 | `mailto:` | Abre el cliente de correo del visitante | **No** cumple (sin confirmación del sitio; muchos no tienen cliente; expone la dirección) | 0 | Nulo | Descartada |
-| **Web3Forms** (elegido, D-14) | El form postea a su API con una "access key"; reenvía a cualquier email; página/redirect de éxito | **Sí** | Gratis (uso normal); honeypot y captcha incluidos | **Bajo**: sin backend propio | Los mensajes pasan por su infraestructura; dependencia de plan gratuito |
+| **Web3Forms** (elegido, D-14) | El form postea a su API con una "access key"; reenvía a cualquier email; página/redirect de éxito | **Sí** | Gratis (uso normal); honeypot y hCaptcha incluidos | **Bajo**: sin backend propio | Los mensajes pasan por su infraestructura; dependencia de plan gratuito |
 | **Formspree** (alternativa documentada) | Similar, con panel, filtros de spam, autorespuesta | **Sí** | Gratis 50 envíos/mes | Bajo | Requiere verificar el email destino; límite mensual |
 | Función serverless propia + API de email (Resend/MailChannels) | Código propio recibe el POST y llama a la API | Sí | Free tiers disponibles | **Medio**: código y claves que mantener y rotar | Sobre-dimensionado para el volumen; más superficie que puede romperse en pausas |
 
 ### Decisión (D-14)
 
-**Web3Forms**, plan gratuito: sin cuenta atada a un backend, honeypot/captcha
-incluidos, reenvía a cualquier email. **Formspree** queda solo como alternativa
+**Web3Forms**, plan gratuito: sin cuenta atada a un backend, honeypot + hCaptcha
+incluidos (Turnstile quedaría detrás de su plan Pro), reenvía a cualquier email. **Formspree** queda solo como alternativa
 documentada por si Web3Forms deja de servir. La **función serverless propia se
 descarta** por sobre-ingeniería para un contacto de bajo volumen. El autor
 descarta pagar por formularios por ahora.
