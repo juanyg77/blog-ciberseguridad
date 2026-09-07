@@ -1,10 +1,17 @@
 /**
- * Formateo de fechas para la UI. Zona de referencia del sitio:
- * America/Argentina/Cordoba (ARQUITECTURA.md 3.2).
+ * Formateo de fechas para la UI.
+ *
+ * Las fechas del frontmatter (`fechaPublicacion`, `fechaActualizacion`) son
+ * fechas de CALENDARIO sin hora: el parser YAML las deja como medianoche UTC.
+ * Para MOSTRARLAS se formatean en UTC, así el día que ve el lector es el que
+ * escribió el autor (`2026-09-06` -> "6 de septiembre"), sin correrse por el
+ * huso horario. El filtro de visibilidad (src/lib/articulos.ts) hace su propia
+ * interpretación en zona Córdoba (ARQUITECTURA.md 3.2) y es un tema aparte.
  */
 import { t } from '../i18n';
 
 const ZONA = 'America/Argentina/Cordoba';
+const ZONA_DISPLAY = 'UTC';
 
 const MESES = [
   'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
@@ -14,7 +21,7 @@ const MESES = [
 /** "10 de septiembre de 2026" */
 export function fechaLarga(fecha: Date): string {
   const f = new Intl.DateTimeFormat('es-AR', {
-    day: 'numeric', month: 'long', year: 'numeric', timeZone: ZONA,
+    day: 'numeric', month: 'long', year: 'numeric', timeZone: ZONA_DISPLAY,
   });
   return f.format(fecha);
 }
@@ -22,7 +29,7 @@ export function fechaLarga(fecha: Date): string {
 /** "septiembre de 2026" — para "Actualizado en <mes año>" (ARQUITECTURA.md 3.1). */
 export function mesAnio(fecha: Date): string {
   const partes = new Intl.DateTimeFormat('es-AR', {
-    month: 'long', year: 'numeric', timeZone: ZONA,
+    month: 'long', year: 'numeric', timeZone: ZONA_DISPLAY,
   }).formatToParts(fecha);
   const mes = partes.find((p) => p.type === 'month')?.value ?? '';
   const anio = partes.find((p) => p.type === 'year')?.value ?? '';

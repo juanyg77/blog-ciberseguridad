@@ -36,9 +36,10 @@ const labelCls = 'block text-sm font-medium';
     </h1>
     <p class="mt-3 text-tinta-suave">{t('contacto.intro')}</p>
 
-    {!accessKey && (
+    {/* Recordatorio SOLO en desarrollo — el visitante nunca lo ve. */}
+    {import.meta.env.DEV && !accessKey && (
       <p class="mt-6 border-l-2 border-acento bg-superficie px-4 py-3 text-sm text-tinta-suave">
-        Falta configurar <code>PUBLIC_WEB3FORMS_ACCESS_KEY</code>. El formulario se
+        [dev] Falta <code>PUBLIC_WEB3FORMS_ACCESS_KEY</code>. El formulario se
         muestra pero no envía hasta cargar la clave como variable de entorno (D-18).
       </p>
     )}
