@@ -17,26 +17,39 @@ const sociales = autor
   : [];
 ---
 <footer class="mx-auto mt-16 max-w-5xl px-6 sm:px-10">
-  <div class="flex flex-col gap-2 border-t border-borde-fuerte pt-3 text-sm text-tinta-tenue sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-    <span class="py-1">{t('pie.hechoPor', { autor: 'Juan Ignacio García' })}</span>
-    {/* M-2: cada enlace del pie es un objetivo de toque de 44px con separación clara */}
-    <div class="flex flex-wrap items-center gap-x-2 gap-y-1 -mx-2 sm:mx-0">
-      {
-        sociales.map((s) => (
-          <a
-            href={s.url}
-            rel="me noopener"
-            target="_blank"
-            aria-label={`${s.nombre} de ${autor!.data.nombre}`}
-            class="toque-comodo min-w-[44px] justify-center px-2 text-tinta-tenue hover:text-acento"
-          >
-            <Icono nombre={s.red} size={20} />
-          </a>
-        ))
-      }
-      <a href="/rss.xml" class="toque-comodo px-2 text-tinta-tenue underline underline-offset-2 hover:text-acento">{t('pie.rss')}</a>
+  <div class="border-t border-borde-fuerte pt-5">
+    {/* --- Bloque 1: identidad y navegación (peso normal/alto) --- */}
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-8">
+      <div class="text-sm text-tinta-suave">
+        <p class="m-0 text-tinta">{t('pie.hechoPor', { autor: 'Juan Ignacio García' })}</p>
+        <p class="m-0 mt-1.5 max-w-sm text-pretty">{t('pie.tagline')}</p>
+      </div>
+
+      {/* M-2: cada enlace/ícono es un objetivo de toque de 44px con separación clara */}
+      <div class="flex flex-wrap items-center gap-x-1 gap-y-1 -mx-2 sm:mx-0 sm:justify-end">
+        <a href="/sobre" class="toque-comodo px-2 text-sm font-medium text-tinta hover:text-acento">{t('nav.sobre')}</a>
+        <a href="/contacto" class="toque-comodo px-2 text-sm font-medium text-tinta hover:text-acento">{t('nav.contacto')}</a>
+        {
+          sociales.map((s) => (
+            <a
+              href={s.url}
+              rel="me noopener"
+              target="_blank"
+              aria-label={`${s.nombre} de ${autor!.data.nombre}`}
+              class="toque-comodo min-w-[44px] justify-center px-2 text-tinta-tenue hover:text-acento"
+            >
+              <Icono nombre={s.red} size={20} />
+            </a>
+          ))
+        }
+      </div>
+    </div>
+
+    {/* --- Bloque 2: metadata técnica y legal (peso bajo, no compite con el bloque 1) --- */}
+    <div class="mt-5 flex flex-wrap items-start gap-x-3 gap-y-1 border-t border-borde pt-3 text-xs leading-relaxed text-tinta-tenue">
+      <a href="/rss.xml" class="hover:text-acento">{t('pie.rss')}</a>
       <AvisoLicencia variante="pie" />
-      <span class="px-2 py-1">· {new Date().getFullYear()}</span>
+      <span>{new Date().getFullYear()}</span>
     </div>
   </div>
 </footer>

@@ -149,12 +149,14 @@ const es = {
   },
   licencia: {
     nota: 'Este texto está bajo licencia CC BY 4.0. Podés reutilizarlo citando a {autor} y enlazando al original.',
-    pie: 'Contenido bajo CC BY 4.0',
+    pie: 'Podés compartir este contenido citando la fuente (licencia CC BY 4.0)',
     imagenesTerceros:
       'Las imágenes de terceros no están cubiertas por esta licencia y se citan aparte.',
   },
   pie: {
-    hechoPor: 'Lo escribe {autor} · Córdoba, Argentina',
+    hechoPor: 'Lo escribe {autor} · Alta Gracia, Córdoba, Argentina',
+    tagline:
+      'Explicaciones simples para que las entienda hasta mi abuela, y contenido técnico para el ingeniero de la NASA. Porque acá nadie se las sabe todas.',
     rss: 'RSS',
   },
   error404: {
