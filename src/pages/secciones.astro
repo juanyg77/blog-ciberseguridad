@@ -83,7 +83,7 @@ const inicial = datos[0]?.id;
             <p class="mt-1 font-mono text-[11px] uppercase tracking-[0.12em] text-tinta-tenue">
               {t('secciones.conteo', { n: s.articulos.length })}
               {' · '}
-              <a href={`/seccion/${s.id}`} class="hover:text-acento">/seccion/{s.id}</a>
+              <a href={`/seccion/${s.id}`} class="hover:text-acento">{t('secciones.verSeccion')} →</a>
             </p>
             <div class="mt-6 grid gap-8 sm:grid-cols-2">
               {s.articulos.map((a) => (

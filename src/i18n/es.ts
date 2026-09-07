@@ -111,14 +111,14 @@ const es = {
     todas: 'Todas',
     conteo: '{n} artículo(s)',
     vacia: 'Todavía no hay artículos en esta sección.',
+    verSeccion: 'Ver la página de esta sección',
   },
   buscador: {
     titulo: 'Buscar en el sitio',
     metaDescripcion:
       'Buscá un tema, un caso o una amenaza dentro del blog: phishing, ransomware, estafas por mensaje, análisis de incidentes y más.',
     placeholder: 'Buscá un tema, un caso, una amenaza…',
-    ayuda:
-      'El buscador indexa los artículos publicados. Se genera en cada build (Pagefind).',
+    ayuda: 'Buscá en todos los artículos publicados del sitio.',
   },
   contacto: {
     titulo: 'Contacto',
