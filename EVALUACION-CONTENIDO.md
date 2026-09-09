@@ -1,10 +1,46 @@
 # Evaluación de contenido — textos de identidad
 
-**Fecha:** 2026-09-09 — 19ª pasada.
-**Cubre:** tagline del masthead, nombres y descripciones de las secciones, rótulos de nivel (VIGENTE desde la 19ª pasada: "Aprender / Profundizar") y sus descripciones, y el footer del sitio.
+**Fecha:** 2026-09-09 — 22ª pasada.
+**Cubre:** tagline del masthead (VIGENTE desde la 22ª pasada: "De la estafa que te llega por SMS…"), nombres y descripciones de las secciones, rótulos de nivel (VIGENTE desde la 19ª pasada: "Aprender / Profundizar") y sus descripciones, y el footer del sitio.
 **Fuera de alcance:** la página "Sobre mí" (tiene evaluador propio) y el contenido de los artículos.
 
 ## Cambios aplicados desde la pasada anterior
+
+- **BLOQUE 1 — nuevo `sitio.tagline` APLICADO al código** (verificado en `src/i18n/es.ts` y
+  `src/components/Cabecera.astro`). Deja de ser propuesta: es el texto vigente. Con los dos
+  ajustes pedidos en la 21ª pasada sobre la 2.ª propuesta:
+  - `sitio.tagline` (kicker visible del masthead, en todas las páginas): **"De la estafa que te
+    llega por SMS al ataque que dejó a media región haciendo cola por combustible."**
+    — (1) "un país sin combustible" → "media región haciendo cola por combustible" (consecuencia
+    verificable de Colonial Pipeline, sin la sobreafirmación); (2) se eliminó el remate "En dos
+    niveles".
+  - **Separación de campos:** `sitio.descripcion` (invisible: `<meta>` por defecto + feed RSS)
+    pasó a un texto estable y sin voz —"Ciberseguridad en dos niveles: las amenazas de todos los
+    días explicadas desde cero, y el análisis técnico de los grandes incidentes. Sin humo y sin
+    alarmismo."— y ya no coincide con el tagline.
+  - **Tratamiento del kicker aflojado** en `Cabecera.astro`: se sacaron `uppercase`, `font-mono`
+    y el tracking ancho; ahora es `text-xs` sans, `text-tinta-tenue`, `leading-snug`, `max-w-md`
+    (~2 líneas).
+  - `MARCA.md` §3.5 actualizado (nota de iteración + tabla de los dos campos).
+  Se reevalúa **solo el bloque 1**, consolidando las pasadas 20ª y 21ª en una evaluación única
+  del texto vigente. Los bloques 2, 3 y 4 quedan intactos, sin re-auditar.
+
+### (Pasada anterior — 21ª) Cambios evaluados
+
+- **BLOQUE 1 — 2.ª PROPUESTA de nuevo tagline, NO aplicada entonces.** "De la estafa que te llega
+  por SMS al ataque que dejó a un país sin combustible. En dos niveles." Veredicto: avance neto
+  real (cerraba la línea de casos invisible, el dedo a la audiencia 1 y el "a él" masculino), no
+  adoptable tal cual por dos pendientes ("un país sin combustible" sobreafirmaba; "En dos niveles"
+  críptico). Ambos resueltos en la 22ª.
+
+### (Pasada anterior — 20ª) Cambios aplicados
+
+- **BLOQUE 1 — 1.ª PROPUESTA de nuevo tagline del masthead, NO aplicada.** Se evaluó **"De por
+  qué esa app 'gratis' te puede costar cara, a por qué un truco de hace 3000 años sigue vaciando
+  cuentas."** Veredicto: no adoptable / movimiento lateral (angostaba el blog a fraude financiero;
+  la 2.ª mitad era un acertijo sin resolver). Se reevaluó solo el bloque 1.
+
+### (Pasada anterior — 19ª) Cambios aplicados
 
 - **BLOQUE 3 — la propuesta "Aprender / Profundizar" se APLICÓ al código** (verificado en el
   build). Deja de ser propuesta: es el texto vigente. En concreto:
@@ -44,26 +80,127 @@ documento del proyecto; era una idea suelta.
 
 ---
 
-## 1. Tagline del masthead
+## 1. Tagline del masthead — VIGENTE desde la 22ª pasada
 
-**Sin cambios desde la 4ª pasada.**
+**Texto VIGENTE (aplicado al código; `src/i18n/es.ts`):**
 
-**Texto:** "Ciberseguridad explicada para el que cree que a él no le va a pasar"
-Se renderiza bajo el nombre "EL QUE SE LAS SABE TODAS" en mono, mayúsculas, 10–11px, `text-tinta-tenue` (es un kicker chico y apagado, no un subtítulo con peso).
+> **"De la estafa que te llega por SMS al ataque que dejó a media región haciendo cola por combustible."**
+
+`sitio.tagline`. Se renderiza bajo "EL QUE SE LAS SABE TODAS" en la cabecera de **todas** las
+páginas. **Tratamiento nuevo** (`src/components/Cabecera.astro`): `text-xs`, sans —se sacaron
+`font-mono`, `uppercase` y el tracking ancho—, `text-tinta-tenue`, `leading-snug`, dentro de
+`max-w-md` → entra en ~2 líneas. Ya no es un kicker en versalitas mono; es un subtítulo chico y
+apagado.
+
+**Separación de campos (aplicada):** `sitio.descripcion` —invisible: `<meta description>` por
+defecto + descripción del feed RSS— dejó de coincidir con el tagline. Ahora es un texto estable
+y sin voz: "Ciberseguridad en dos niveles: las amenazas de todos los días explicadas desde cero,
+y el análisis técnico de los grandes incidentes. Sin humo y sin alarmismo."
+
+Esta evaluación consolida las pasadas 20ª (1.ª propuesta —"…app 'gratis'… un truco de hace 3000
+años…"—, descartada por angostar a fraude financiero) y 21ª (2.ª propuesta —"…un país sin
+combustible. En dos niveles."—, avance con dos pendientes) en una evaluación única del texto hoy
+vigente. **Referencia velada:** "el ataque que dejó a media región haciendo cola por combustible"
+= Colonial Pipeline, 2021, sin nombrarlo.
+
+**Los 5 problemas del tagline anterior (referencia):** (1) no daba ninguna señal de la línea de
+análisis de casos; (2) "no le va a pasar" era encuadre de miedo y rozaba "sin humo y sin
+alarmismo"; (3) "el que cree que a él no le va a pasar" le pegaba el dedo a la audiencia 1;
+(4) "a él" en masculino; (5) para el reclutador sonaba a eslogan de marketing.
+
+### Las 3 preguntas
 
 **1. ¿Genérico o con identidad propia?**
-Mitad y mitad. El armazón "Ciberseguridad explicada para…" es la fórmula de arranque de cualquier blog de divulgación del rubro; es intercambiable. El remate "el que cree que a él no le va a pasar" sí aporta un punto de vista y engancha con el nombre del sitio (la persona sobreconfiada). Salva la frase de ser plenamente genérica, pero la primera mitad podría estar en cualquier lado.
+Con identidad, por descripción antes que por juego. La estructura "De [lo cotidiano] a [el gran
+incidente]" es un recurso de copy corriente, pero los dos polos concretos —una estafa por SMS y
+un ciberataque que deja a una región haciendo cola en las estaciones de servicio— no son
+intercambiables con el tagline de otro blog del rubro: nombran las dos líneas reales de
+contenido. Registro de índice, más sobrio que "el que cree que a él no le va a pasar". Dos
+anotaciones, ambas decisiones y no defectos:
+- **El tagline ya no engancha con el nombre del sitio.** El anterior lo hacía ("el que cree que a
+  él no le va a pasar" ↔ "El Que Se Las Sabe Todas"); este no evoca al sobreconfiado del nombre.
+  El footer carga ese guiño ("los que creen saber").
+- "media región" es una unidad imprecisa a propósito (¿región de qué? un lector no estadounidense
+  solo capta "una zona grande"). Para un tagline, preferible impreciso a inflado.
 
 **2. ¿Se entiende sin contexto previo?**
-Se entiende el qué (ciberseguridad explicada) y el a quién (el que se cree a salvo). Lo que queda afuera: **no hay ninguna señal de la segunda línea del blog**, el análisis de casos. Un lector que llega buscando "qué pasó con Colonial Pipeline" no se siente interpelado. Tampoco aclara formato: ¿blog, newsletter, servicio? El nombre irónico + tagline exige que el lector agarre la ironía solo; si no la agarra, "El Que Se Las Sabe Todas" + "explicada para el que cree que no le va a pasar" puede leerse como soberbia.
+Sí, mejor que cualquiera de las versiones anteriores.
+- Primera mitad ("la estafa que te llega por SMS"): clara y reconocible al instante. Nombra el
+  vector más común (smishing) sin jerga y sin acusar —"te llega", no "vos caíste".
+- Segunda mitad ("el ataque que dejó a media región haciendo cola por combustible"): se parsea de
+  inmediato —"hubo un ciberataque que dejó a mucha gente sin poder cargar nafta"— sin necesidad
+  de identificar Colonial Pipeline. Reconocer el caso es enriquecimiento opcional, no requisito de
+  comprensión. **Por primera vez el masthead señala la línea de análisis de incidentes.**
+- **Sin remate colgado.** El arco "De X a Y" comunica el rango solo; al sacar "En dos niveles" la
+  frase cierra como fragmento completo (sin verbo, como un título) y no queda nada pidiendo
+  resolución. La noción "dos niveles" pasó al campo invisible (`descripcion`), que es donde hay
+  lugar para explicarla.
 
 **3. ¿Funciona para las 5 audiencias?**
-- **Audiencia 1 (familiar que ya recibió una estafa):** parcial. "a él no le va a pasar" le habla al que todavía no fue víctima; el que está googleando asustado ya sabe que le puede pasar. El encuadre le queda un paso atrás.
-- **Audiencia 2 (curioso de casos):** no le habla. Nada de casos, noticias ni incidentes.
-- **Audiencia 3 (contacto de LinkedIn):** funciona.
-- **Audiencia 4 (colega/estudiante técnico):** no le habla e incluso puede espantarlo: "explicada para el que cree que no le va a pasar" suena a contenido de principiante y sugiere que ahí no hay nada para él.
-- **Audiencia 5 (reclutador):** lo lee como un eslogan con oficio de copy y con postura, lo cual suma algo. Pero no transmite competencia técnica ni criterio profesional; transmite gancho de marketing. Riesgo de que suene a tagline de proveedor de capacitación en concientización. Depende de que el reclutador procese la ironía del nombre.
-- **Roce transversal:** "no le va a pasar" es encuadre de miedo ("te va a pasar"), y la meta-descripción del sitio promete "sin humo y sin alarmismo". Hay una pequeña contradicción de tono entre la promesa y el eslogan de portada.
+- **Audiencia 1 (familiar tras una estafa):** "la estafa que te llega por SMS" nombra su
+  escenario exacto sin acusarla. No dice "qué hacer", pero la reconoce desde la portada.
+- **Audiencia 2 (curioso de casos):** por primera vez el tagline le habla — "el ataque que dejó a
+  media región haciendo cola por combustible" es literalmente el gancho "escuché una noticia / vi
+  un video sobre un caso". Gap cerrado en la portada. (El "esto es para vos" explícito sigue
+  faltando más adentro, pero eso es arquitectura de contenido —los casos son un *nivel*, no una
+  *sección*— y vive en la Prioridad 1.)
+- **Audiencia 3 (contacto de LinkedIn):** teaser con rango y voz. Sin objeción.
+- **Audiencia 4 (colega / estudiante técnico):** la mención de un ataque a infraestructura
+  gestiona su interés. Con "media región haciendo cola por combustible" —consecuencia observable y
+  verificable, no "un país sin combustible"— ya no hay una sobreafirmación que la haga torcer la
+  nariz. La redacción sigue siendo de cara al público general (no promete método ni profundidad);
+  eso lo cubren las descripciones de nivel y el contenido.
+- **Audiencia 5 (reclutador):** describe alcance en vez de prometer valor; se lee como un blog con
+  rango, no como eslogan. Al corregir la sobreafirmación factual desaparece el riesgo de que se
+  leyera como hipérbole y restara al efecto "criterio". Neutro-positivo.
+
+**¿Repite la tesis del H1?** No. El H1 ("Todo lo que usás tiene un punto débil. El riesgo más
+grande no es tenerlo — es ignorarlo.") es principio abstracto; el tagline es índice concreto de
+contenido. Sin redundancia.
+
+### Los pendientes de la 21ª pasada — estado
+
+| Pendiente (21ª) | Estado con el texto vigente |
+|---|---|
+| (i) "un país sin combustible" sobreafirmaba la consecuencia real de Colonial Pipeline (desabastecimiento regional y compras de pánico, no un país sin nafta) → rozaba el efectismo; lo notaban las audiencias 4 y 5 | **Resuelto.** "media región haciendo cola por combustible" describe una consecuencia observable y verificable —las colas en las estaciones del sureste de EE. UU. fueron el recuerdo público del caso—, sin inflar. Queda la elección de ilustrar con la imagen vívida (las colas) en vez de la seca (la operadora pagó el rescate; 6 días de parada): es copy legítimo, no efectismo, porque ya no agrega un dato falso. Mención única, no bloqueante. |
+| (ii) "En dos niveles" — remate subespecificado en un kicker permanente; ecoaba el eje "nivel" que el bloque 3 dejó atrás | **Resuelto por eliminación.** El arco "de X a Y" comunica el rango sin el remate; la frase cierra limpia. La noción "dos niveles" quedó en `sitio.descripcion` (invisible), que es donde corresponde. |
+| (iii, secundario) formato/largo: ~100 car. + dos oraciones con punto en slot mono-mayúsculas-10px → 3–4 líneas | **Resuelto.** El tratamiento nuevo baja la frase a ~2 líneas de subtítulo apagado, y ahora es **una sola** oración con un solo punto; el slot dejó de ser un micro-rótulo. Residuo mínimo: ~98 caracteres siguen siendo largo para un tagline que aparece en todas las páginas, pero con este tratamiento no molesta. |
+
+### La separación tagline / `descripcion`
+
+`sitio.descripcion` cubre bien el rol de RSS + `<meta>` por defecto: nombra el tema
+("Ciberseguridad"), explicita los dos niveles, incluye "sin humo y sin alarmismo" y es
+autocontenida. Es —por diseño— genérica y sin voz, que es el registro correcto para una
+meta-descripción (tiene que ser clara y completa, no ingeniosa). Sin objeción. Nota lateral:
+queda muy cerca de `metaHome` ("Blog de ciberseguridad en dos niveles: explicaciones desde cero
+sobre estafas y amenazas comunes, y análisis técnicos de incidentes reales. Sin humo y sin
+alarmismo."); son slots distintos (home vs. resto + feed) y la redundancia es tolerable, pero si
+el autor quiere una sola fuente de verdad para ese texto, es candidato a unificar. Prioridad
+mínima.
+
+### Veredicto del bloque 1 (22ª pasada) — CERRADO / publicable
+
+El tagline vigente **no tiene ningún error objetivo** (nada agramatical; ningún dato falso
+—"media región haciendo cola por combustible" es una descripción verificable de Colonial
+Pipeline—; ningún link roto).
+
+**Cierra los 5 problemas del tagline anterior:** (1) la línea de casos —por primera vez visible
+desde el masthead—; (2) el encuadre de miedo (describe escenarios y una consecuencia sistémica,
+sin amenaza personal ni adversario personificado); (3) el dedo a la audiencia 1; (4) el "a él"
+masculino; (5) el tono de eslogan ante el reclutador. **Cierra los tres pendientes de la 21ª**
+(sobreafirmación factual, remate críptico, formato/largo). **Resuelve la separación
+tagline/descripción.**
+
+Las observaciones que quedan vivas son **todas decisiones de estilo/tono, no bloqueantes — el
+texto ya es publicable tal como está:**
+- el tagline no engancha con el nombre del sitio (lo carga el footer);
+- ilustra la línea de casos con un solo tipo de incidente (infraestructura/energía) — foco
+  declarado del autor; riesgo chico de que se lea como "el blog solo trata ataques a
+  infraestructura";
+- "media región" es una unidad imprecisa por diseño;
+- ~98 caracteres es largo para un tagline omnipresente;
+- `descripcion` y `metaHome` casi se repiten.
+Ninguna requiere otra vuelta. **La Prioridad 2 (el tagline del masthead) queda CERRADA.**
 
 ---
 
@@ -357,7 +494,7 @@ Ninguna requiere otra vuelta salvo que el autor quiera pulir esos puntos deliber
 
 ### Punto final: consistencia con el masthead (decisión de estilo, no error)
 
-2. **La línea ahora lleva punto; el masthead no.** En la 11ª pasada la observación era que la ausencia de punto era coherente con el masthead ("Ciberseguridad explicada para el que cree que a él no le va a pasar", sin punto). Al agregar el punto, footer y masthead dejan de ser consistentes en ese detalle: dos piezas de identidad de la misma familia, una puntúa el fragmento y la otra no. **No es error objetivo** —un tagline-fragmento se escribe con o sin punto y ambas son defendibles— pero es una inconsistencia de criterio tipográfico entre las dos piezas. Si el autor quiere paridad, la vía es que las dos lleven punto o ninguna. Prioridad mínima, no bloquea.
+2. **La línea ahora lleva punto; el masthead no.** En la 11ª pasada la observación era que la ausencia de punto era coherente con el masthead ("Ciberseguridad explicada para el que cree que a él no le va a pasar", sin punto). Al agregar el punto, footer y masthead dejan de ser consistentes en ese detalle: dos piezas de identidad de la misma familia, una puntúa el fragmento y la otra no. **No es error objetivo** —un tagline-fragmento se escribe con o sin punto y ambas son defendibles— pero es una inconsistencia de criterio tipográfico entre las dos piezas. Si el autor quiere paridad, la vía es que las dos lleven punto o ninguna. Prioridad mínima, no bloquea. **(Nota 22ª pasada: el nuevo `sitio.tagline` sí lleva punto final —una sola oración, un solo punto—, así que masthead y footer quedaron alineados en este detalle. La observación pierde vigencia.)**
 
 ### Coma antes de "y" en la enumeración
 
@@ -380,13 +517,13 @@ Sin cambios de sustancia respecto de la 11ª pasada:
 ### Qué se resolvió / qué sigue
 
 - **Paralelismo del tricolon ("quienes" vs "los que"):** **resuelto** — los tres miembros comparten molde. Era la Prioridad 5 y el único retoque que la 11ª pasada recomendaba antes de fijar la línea.
-- **Punto final:** nuevo detalle. No es error; es una inconsistencia de criterio tipográfico con el masthead (que no puntúa). Decisión de estilo, prioridad mínima.
+- **Punto final:** nuevo detalle. No es error; era una inconsistencia de criterio tipográfico con el masthead (que no puntuaba). **Con el nuevo tagline de la 22ª pasada —que sí lleva punto— la inconsistencia desaparece.** Decisión de estilo, prioridad mínima.
 - **Pérdida del callback "nadie se las sabe todas" / de la autoironía:** sigue como estaba — decisión de tono/identidad, consecuencia directa de sacar la caricatura. Prioridad mínima, no requiere otra vuelta (Prioridad 6).
 - **Línea de casos no nombrada en el pie:** sigue, mismo hueco del masthead (Prioridad 3), no ítem propio del footer.
 - **Ítems previos** (participio sin referente, eco footer/masthead "Ciberseguridad explicada para…", condescendencia "hasta mi abuela", pinchazo "ingenieros de la NASA", primera oración con dos "para" de función distinta): resueltos en las pasadas 10 y 11, sin recaída.
 - **Bloque 2 (RSS + licencia + año), "Lo escribe" en singular, "2026" huérfano:** sin cambios.
 
-**Veredicto de publicabilidad del footer — cierre:** el footer **no tiene ningún error objetivo** (no hay gramática rota, dato falso, participio colgado ni link roto), y el único retoque que quedaba pendiente de la 11ª pasada —el paralelismo del tricolon— **está aplicado.** La línea está **cerrada y publicable como está.** Las observaciones que quedan vivas son todas decisiones de estilo, no bloqueantes: (a) el punto final rompe la paridad tipográfica con el masthead; (b) la identidad del pie depende de un solo guiño implícito al nombre, sin ancla explícita. Ninguna requiere otra vuelta salvo que el autor quiera abrir esos puntos deliberadamente.
+**Veredicto de publicabilidad del footer — cierre:** el footer **no tiene ningún error objetivo** (no hay gramática rota, dato falso, participio colgado ni link roto), y el único retoque que quedaba pendiente de la 11ª pasada —el paralelismo del tricolon— **está aplicado.** La línea está **cerrada y publicable como está.** Las observaciones que quedan vivas son todas decisiones de estilo, no bloqueantes: (a) el punto final rompía la paridad tipográfica con el masthead (**ya no: el nuevo tagline también puntúa**); (b) la identidad del pie depende de un solo guiño implícito al nombre, sin ancla explícita. Ninguna requiere otra vuelta salvo que el autor quiera abrir esos puntos deliberadamente.
 
 **Otras observaciones del footer (sin cambios):**
 - **Bloque 2 mezcla tres cosas no relacionadas** en una línea a `text-xs`: RSS (prestación para el lector), licencia (legal) y año (metadata). RSS quedó sepultado en el estrato legal. Para la audiencia 4, principal usuaria de RSS, quedó findable pero deshidratado. Costo menor.
@@ -403,32 +540,29 @@ Ordenadas de mayor a menor por daño a la identidad/claridad, cantidad de audien
 
 > **La Prioridad 1 de las pasadas 15ª–18ª — "rótulos de nivel como eje de navegación" — queda CERRADA en la 19ª pasada.** Se aplicó "Aprender / Profundizar" al código: cierra (b) el toggle inexistente, (c) "nerd" resta seriedad y (d) el rótulo ambiguo suelto; cierra también el desajuste rótulo/ruta (rutas `/aprender` y `/profundizar`); y adopta el H1-C, que no reabre ningún reproche de fondo. El único residual —(a) la audiencia 2 no recibe un "esto es para vos" porque los casos son un *nivel* y no una *sección*— **se absorbe entero en la Prioridad 1 nueva (ex-Prioridad 2)**. Detalle en el bloque 3.
 
+> **La Prioridad 2 (viva desde la 4ª pasada) — "el tagline del masthead no cubre la línea de casos y roza el alarmismo" — queda CERRADA en la 22ª pasada.** Se aplicó al código el nuevo `sitio.tagline`: **"De la estafa que te llega por SMS al ataque que dejó a media región haciendo cola por combustible."** Cierra los 5 problemas del tagline anterior —(1) la línea de casos, por primera vez visible desde el masthead; (2) el encuadre de miedo; (3) el dedo a la audiencia 1; (4) el "a él" masculino; (5) el tono de eslogan ante el reclutador— y los 3 pendientes de la 21ª: "un país sin combustible" sobreafirmaba → "media región haciendo cola por combustible" (consecuencia verificable de Colonial Pipeline); "En dos niveles" críptico → eliminado; formato/largo → tratamiento aflojado (sans, `text-xs`, ~2 líneas). Se separó `sitio.descripcion` (RSS/meta) como texto estable sin voz. Lo que queda son decisiones de estilo no bloqueantes (el tagline no engancha con el nombre; ilustra los casos con un solo tipo de incidente). Detalle en el bloque 1.
+
 1. **Secciones: la coherencia de ejes a futuro no está garantizada por el criterio "crecimiento orgánico", y los casos siguen siendo un *nivel* y no una *sección*.**
-   Problema: el autor fijó *cuándo* nace una sección (cuando hay contenido que la llena), no *cuál es el eje de clasificación*. El solapamiento amenaza vs. hábito/contexto que tenían las 4 secciones semilla (p. ej. Higiene digital vs. Viajero digital) no se manifiesta hoy con una sola, pero reaparece intacto al crear la #2 — y se decidirá ad hoc, artículo por artículo, sin modelo previo que lo guíe. **Absorbe el residual (a) de la ex-Prioridad de rótulos:** la audiencia 2 (curioso de casos, sin tecnicismos) recibe una puerta mucho más amable con "Aprender / Profundizar" ("Incidentes que marcaron a la industria y al mundo…"), pero todavía no un "esto es para vos" explícito, porque los casos siguen siendo el *nivel* "Profundizar" —calibrado por tecnicidad, "con el nivel técnico que cada caso merece"— y no una *sección* de casos accesible. Eso no lo arregla ningún rótulo.
+   Problema: el autor fijó *cuándo* nace una sección (cuando hay contenido que la llena), no *cuál es el eje de clasificación*. El solapamiento amenaza vs. hábito/contexto que tenían las 4 secciones semilla (p. ej. Higiene digital vs. Viajero digital) no se manifiesta hoy con una sola, pero reaparece intacto al crear la #2 — y se decidirá ad hoc, artículo por artículo, sin modelo previo que lo guíe. **Absorbe el residual (a) de la ex-Prioridad de rótulos:** la audiencia 2 (curioso de casos, sin tecnicismos) recibe una puerta mucho más amable con "Aprender / Profundizar" ("Incidentes que marcaron a la industria y al mundo…"), pero todavía no un "esto es para vos" explícito, porque los casos siguen siendo el *nivel* "Profundizar" —calibrado por tecnicidad, "con el nivel técnico que cada caso merece"— y no una *sección* de casos accesible. Eso no lo arregla ningún rótulo. **Nota (22ª pasada):** el nuevo tagline del masthead ya le señala a la audiencia 2, desde la portada, que el blog analiza casos ("el ataque que dejó a media región haciendo cola por combustible"); lo que sigue faltando es el "esto es para vos" más adentro, en la puerta / sección.
    Audiencias: 1 y 2 (predecir dónde buscar, y —para la 2— entrar a los casos sin sentir que necesita saber de tecnología); 5 (percepción de orden) — latente hoy, activo apenas haya 2+ secciones o cuando se decida si los casos merecen su propio cajón.
    **Decisión de fondo.** No urgente mientras haya una sola sección.
 
-2. **El tagline del masthead no cubre la línea de análisis de casos y roza el alarmismo.**
-   Problema: "Ciberseguridad explicada para el que cree que a él no le va a pasar" no da ninguna señal de que el blog también analiza incidentes; deja afuera a la audiencia 2 y 4 desde la portada. Además "no le va a pasar" es encuadre de miedo y contradice la promesa "sin humo y sin alarmismo" de la meta-descripción. Nota: el footer nombra el tema ("ciberseguridad") pero tampoco nombra la línea de casos — el hueco de "casos/incidentes" sigue siendo de las dos piezas. **Nota (19ª pasada):** con la aplicación de H1-C ("El riesgo más grande no es tenerlo — es ignorarlo.") el H1 de la home **no** tiene el roce con "sin alarmismo" que sí tenían H1-A ("miedo" en el hero) y H1-B (adversario al acecho). Este ítem queda **circunscripto al masthead.**
-   Audiencias: 2 y 4 (no se sienten aludidos), 5 (lo lee como eslogan de marketing, no como criterio).
-   **Decisión de fondo** en cuanto al alcance de qué debe abarcar el tagline; **ajuste de copy** en cuanto al tono de miedo.
-
-3. **Secciones: sigue sin haber un cajón con el vocabulario de la audiencia 1 ("estafa", "fraude", "me estafaron").**
+2. **Secciones: sigue sin haber un cajón con el vocabulario de la audiencia 1 ("estafa", "fraude", "me estafaron").**
    Problema: antes ese contenido caía —mal— en "Ingeniería social"; hoy no existe ni ese proxy. El primer artículo publicado (juice jacking) ancló la sección más angosta posible ("Viajero digital") en vez de una de "amenazas cotidianas". Pendiente natural del crecimiento orgánico —se cierra cuando se escriba contenido de estafas y nazca su sección—, pero hoy la taxonomía (cuando reaparezca) le dirá a la audiencia 1 "no hay nada para vos". **Nota (19ª pasada): el anexo de copy de este ítem quedó CERRADO.** La descripción de "Aprender" aplicada —"Amenazas y estafas del día a día… cómo funcionan y qué hacer, explicado desde cero"— **recupera** "estafa" y "qué hacer" que el mockup había perdido; el léxico de la audiencia 1 vuelve a tener lugar en una descripción de nivel. Lo que queda es solo el problema de fondo (la *sección* de estafas).
    Audiencias: 1 (fuerte).
    **Decisión de fondo** (qué sección abrir primero), ligada al ritmo de publicación.
 
-4. **Bloque 2 del footer mezcla RSS con lo legal y lo entierra.**
+3. **Bloque 2 del footer mezcla RSS con lo legal y lo entierra.**
    Problema: RSS es una prestación para el lector y quedó a `text-xs` en el estrato legal/metadata, junto a licencia y año. La audiencia 4 (principal usuaria de RSS) lo encuentra pero deshidratado.
    Audiencias: 4.
    **Ajuste de copy / layout**, prioridad baja.
 
-5. **Footer: pérdida del callback al nombre en `pie.tagline`.**
-   Problema: al sacar "Porque acá nadie se las sabe todas" desaparece el ancla explícita al nombre del sitio y el gesto de autoironía/humildad que incluía al autor. El enganche con "El Que Se Las Sabe Todas" queda colgado de un solo guiño implícito ("los que creen saber"); si el lector no lo agarra, el pie se lee genérico ("explico para todos los niveles").
+4. **Footer: pérdida del callback al nombre en `pie.tagline`.**
+   Problema: al sacar "Porque acá nadie se las sabe todas" desaparece el ancla explícita al nombre del sitio y el gesto de autoironía/humildad que incluía al autor. El enganche con "El Que Se Las Sabe Todas" queda colgado de un solo guiño implícito ("los que creen saber"); si el lector no lo agarra, el pie se lee genérico ("explico para todos los niveles"). **Nota (22ª pasada):** el nuevo tagline del masthead tampoco engancha con el nombre, así que el guiño del footer es hoy el único ancla explícita al nombre en los textos de identidad. Sigue siendo decisión de estilo, no error.
    Audiencias: transversal (identidad), 5 (menos distintivo).
-   **Decisión de tono / identidad.** Consecuencia directa de sacar la caricatura de la vieja Prioridad 6; misma tensión de fondo con otras palabras → **aceptable como decisión de estilo, prioridad mínima, no requiere otra vuelta** salvo que el autor quiera recuperar un guiño más explícito al nombre. (Comparte familia con el detalle del punto final, también decisión de estilo no bloqueante.)
+   **Decisión de tono / identidad.** Consecuencia directa de sacar la caricatura de la vieja Prioridad 6; misma tensión de fondo con otras palabras → **aceptable como decisión de estilo, prioridad mínima, no requiere otra vuelta** salvo que el autor quiera recuperar un guiño más explícito al nombre.
 
-6. **"Lo escribe Juan Ignacio García" en singular.**
+5. **"Lo escribe Juan Ignacio García" en singular.**
    Problema: la arquitectura quiere tolerar co-autores sin rediseño (RF-5); esta cadena habría que cambiarla si aparece un segundo autor.
    Audiencias: ninguna hoy; deuda futura.
    **Ajuste de copy**, sin urgencia.
@@ -465,9 +599,12 @@ nivel") **se disuelve** y todo el ranking se corre un lugar hacia arriba:
 - **14ª pasada:** **BLOQUE 2** — poda a una sola sección ("Viajero digital"), regla de crecimiento orgánico. **Resuelto:** sub-problema (a) de la vieja Prioridad 2. **Dormido:** la vieja Prioridad 4 (nombres de sección opacos). **Pospuesto, no resuelto:** (b) coherencia de ejes. **Sigue pendiente:** (c) cajón con el vocabulario de la audiencia 1. **Nuevo, vivo:** la UI de secciones quedó publicada con una sola sección (nueva Prioridad 1).
 - **15ª pasada:** **BLOQUE 2** — implementado el umbral `MIN_SECCIONES_NAVEGABLES = 2` (`src/lib/secciones.ts`). RF-2 y CA-2 reescritos en REQUISITOS.md. **CERRADA la Prioridad 1 de la 14ª pasada.** **Residuo mínimo, no rankeado:** "Viajero digital" como texto plano huérfano en la ficha del artículo y el stub de redirección de `/secciones`. **Sin cambios:** coherencia de ejes a futuro y cajón con vocabulario de la audiencia 1 siguen pospuestos. Con la Prioridad 1 cerrada, los rótulos de nivel suben a Prioridad 1.
 - **16ª pasada:** evaluada la **2.ª PROPUESTA del bloque 3** (mockup `niveles-aprender-profundizar.html`): rótulos de nivel = dos acciones, **"Aprender" / "Profundizar"**, con las descripciones de nivel reescritas, bajo el H1 "¿Sabés de ciberseguridad?", en nav y badge. **Veredicto: sin catástrofe ni error objetivo — ADOPTABLE.** Cierra (b), (c) y (d); ablanda fuerte (a); disuelve la inconsistencia con el footer. **Residuales, no bloqueantes:** la audiencia 2 no recibe un "esto es para vos" explícito; la descripción de "Aprender" tira "estafa" y "qué hacer" (→ Prioridad 4); el H1 sigue flojo para audiencias 1 y 5.
-- **17ª pasada:** **BLOQUE 3** — cambió **solo el H1** del mockup: de **"¿Sabés de ciberseguridad?"** (quiz) a **"Todo lo que usás tiene un punto débil. Conocerlo no da miedo, ignorarlo sí."** (tesis). **Cerrado:** el reproche de fondo del H1-quiz y la nota de "emparejamiento H1↔puertas aflojado". **Mejora el recibimiento** para audiencias 1, 3 y 5. **Residuales, todos decisión de tono:** (i) "Todo lo que usás tiene un punto débil" es un lugar común; (ii) "ignorarlo sí [da miedo]" roza "sin alarmismo"; (iii) el H1 pierde la palabra "ciberseguridad" (cubierta por el masthead). **Veredicto: mejora. Adoptable.**
+- **17ª pasada:** **BLOQUE 3** — cambió **solo el H1** del mockup: de **"¿Sabés de ciberseguridad?"** (quiz) a **"Todo lo que usás tiene un punto débil. Conocerlo no da miedo, ignorarlo sí."** (tesis). **Cerrado:** el reproche de fondo del H1-quiz y la nota de "emparejamiento H1↔puertas aflojado". **Mejora el recibimiento** para audiencias 1, 3 y 5. **Residuales, todos decisión de tono:** (i) "Todo lo que usás tiene un punto débil" es un lugar común; (ii) "ignorarlo sí [da miedo]" roza "sin alarmismo"; (iii) el H1 pierde la palabra "ciberseguridad" (cubierta por el masthead).
 - **18ª pasada:** **BLOQUE 3** — comparados **tres candidatos para el H1**. **RANKING: 1º H1-C · 2º H1-A · 3º H1-B.** — **H1-C:** conserva el giro con postura pero suelta "miedo"; el que mejor respeta "sin alarmismo", el que no le pega el dedo a la audiencia 1, el que más lee como criterio. **Adoptable tal cual.** — **H1-A:** casi empatado; gana en ritmo, pierde por "miedo" en el hero. — **H1-B:** **no debía adoptarse** — el más genérico, el que peor respeta "sin alarmismo", "decidió ignorar el riesgo" culpabiliza a la audiencia 1.
 - **19ª pasada:** **BLOQUE 3** — la 2.ª propuesta **se aplicó al código**: "Aprender / Profundizar" en nav/badge/puertas/listados, campo `nivel` a `aprender | profundizar`, rutas `/aprender` y `/profundizar` (redirects desde las viejas), descripciones de nivel con "estafa/qué hacer" **recuperado** en "Aprender", CTAs "Empezar por acá" / "Ver los análisis", **H1-C** en `home.heroH1` reemplazando el kicker "Primera vez acá", badge "Aprender" + "Viajero digital" como texto, MARCA §3.3 actualizado. **CERRADA la Prioridad 1 de las pasadas 15ª–18ª ("rótulos de nivel"):** (b), (c), (d) cerrados; desajuste rótulo/ruta cerrado; H1-C adoptado sin reproche de fondo; el residual (a) —audiencia 2 sin "esto es para vos", casos como nivel y no sección— se absorbe entero en la Prioridad 1 nueva (ex-P2). **CERRADO el anexo de copy de la Prioridad 4:** la descripción de "Aprender" recupera el léxico de la audiencia 1. El bloque 3 **no tiene ningún error objetivo** y es **publicable / cerrado**; lo que queda (etiquetas genéricas, "Profundizar" solo algo vago, "marcaron a la industria", primera frase del H1) son decisiones de estilo no bloqueantes. Ranking resultante: **1.** ejes de secciones / casos no son sección · **2.** tagline no cubre casos + alarmismo (circunscripto al masthead) · **3.** cajón vocabulario audiencia 1 (fondo) · **4.** RSS en el footer · **5.** callback al nombre · **6.** "Lo escribe" singular.
+- **20ª pasada:** **BLOQUE 1** — evaluada una **1.ª PROPUESTA de nuevo tagline del masthead, NO aplicada:** "De por qué esa app 'gratis' te puede costar cara, a por qué un truco de hace 3000 años sigue vaciando cuentas." (el campo `sitio.descripcion` — RSS/meta — se separaría y fijaría aparte, fuera de esta evaluación). **De los 5 problemas del tagline vigente cierra 2:** (3) el dedo a la audiencia 1 y (4) el "a él" masculino; ablanda apenas (5) el tono de marketing. **No cierra:** (1) la falta de la línea de casos —los dos polos de "De X a Y" son explicativos de amenazas cotidianas, ninguno señala incidentes— ni (2) el roce con "sin alarmismo", que se transforma en dread de plata ("vaciando cuentas"). **Introduce 2 problemas nuevos:** (i) ambas mitades hablan de dinero → angosta el alcance aparente a fraude financiero (deja afuera infra crítica, privacidad, viajes), contra la nota del plan; (ii) "un truco de hace 3000 años" es un acertijo que no resuelve en un kicker permanente y sin contexto — opaco para las audiencias 1, 2, 3 y 5 (decisión de tono cuya ubicación la hace misfire). Además: ~107 caracteres no entran en el slot mono-mayúsculas-10px sin envolver a 4+ líneas. Sin error objetivo duro. **Veredicto: no adoptable tal cual — movimiento lateral; la dirección es correcta, el string necesita trabajo.** La Prioridad 2 (tagline) se mantiene en su lugar, ahora con la nota de la propuesta evaluada.
+- **21ª pasada:** **BLOQUE 1** — evaluada la **2.ª PROPUESTA de nuevo tagline del masthead, NO aplicada:** "De la estafa que te llega por SMS al ataque que dejó a un país sin combustible. En dos niveles." **De los 5 problemas del tagline vigente cierra 3-4:** (1) la línea de casos invisible —**por primera vez el masthead la señala**—, (3) el dedo a la audiencia 1, (4) el "a él" masculino; mejora (5) el tono de marketing; ablanda mucho (2) el alarmismo (se va el miedo dirigido al lector). **Se fue** el angostamiento a fraude financiero; las dos mitades cubren las dos líneas reales del blog (cotidiano ↔ grandes incidentes) y quedan bien balanceadas. **Pendiente:** (i) "un país sin combustible" sobreafirma la consecuencia real de Colonial Pipeline; (ii) "En dos niveles" es un remate subespecificado en un kicker permanente; (iii) ~100 car. + dos oraciones con punto no entran limpio en el slot mono-mayúsculas-10px. Sin error objetivo duro. **Veredicto: avance neto real —no movimiento lateral—; ya supera al tagline vigente en el balance; no adoptable tal cual por un margen chico** (resolver (i) y (ii)). La Prioridad 2 se mantiene en su lugar (la propuesta no está aplicada), ahora anotada con esta 2.ª evaluación.
+- **22ª pasada:** **BLOQUE 1** — el nuevo `sitio.tagline` **se aplicó al código** con los dos ajustes de la 21ª: **"De la estafa que te llega por SMS al ataque que dejó a media región haciendo cola por combustible."** "un país sin combustible" → "media región haciendo cola por combustible" (consecuencia verificable de Colonial Pipeline, sin sobreafirmar); remate "En dos niveles" eliminado; `sitio.descripcion` (RSS/meta) separado como texto estable sin voz; tratamiento del kicker aflojado en `Cabecera.astro` (sans, `text-xs`, sin mayúsculas ni tracking, ~2 líneas); MARCA §3.5 actualizado. **CERRADA la Prioridad 2 (el tagline del masthead), viva desde la 4ª pasada.** Cierra los 5 problemas del tagline anterior y los 3 pendientes de la 21ª; resuelve la separación tagline/descripción; y de paso alinea el punto final con el footer (era una nota abierta del bloque 4). El bloque 1 **no tiene ningún error objetivo** y es **publicable / cerrado**; lo que queda (no engancha con el nombre; ilustra los casos con un solo tipo de incidente; ~98 car. es largo; `descripcion`≈`metaHome`) son decisiones de estilo no bloqueantes. Ranking resultante: **1.** ejes de secciones / casos no son sección · **2.** cajón vocabulario audiencia 1 (fondo) · **3.** RSS en el footer · **4.** callback al nombre · **5.** "Lo escribe" singular.
 
 ### Veredicto de la 15ª pasada
 
@@ -530,3 +667,101 @@ identidad la cargan el H1 y las descripciones), "Profundizar" solo en la nav es 
 ("Todo lo que usás tiene un punto débil") es un lugar común del rubro. Ninguna requiere otra
 vuelta. El foco pasa a la Prioridad 1 (los casos como sección vs. como nivel) y a la Prioridad 2
 (el tagline del masthead).
+
+### Veredicto de la 20ª pasada
+
+Se evaluó una **1.ª PROPUESTA de nuevo tagline del masthead** (bloque 1), no aplicada al código:
+"De por qué esa app 'gratis' te puede costar cara, a por qué un truco de hace 3000 años sigue
+vaciando cuentas." El campo `sitio.descripcion` (RSS + meta) se separaría y fijaría aparte —
+fuera de esta evaluación.
+
+**La propuesta no es adoptable tal cual — es un movimiento lateral.** Cierra dos de los cinco
+problemas del tagline vigente (el dedo a la audiencia 1; "a él" masculino) y ablanda apenas el
+tono de marketing ante el reclutador. Pero:
+- **no cierra** la falta de señal de la línea de análisis de casos: los dos polos de "De X a Y"
+  son explicativos de amenazas cotidianas, ninguno dice "acá se analizan los grandes incidentes";
+- **no cierra** el roce con "sin humo y sin alarmismo": lo transforma de encuadre por negación
+  ("no le va a pasar") a dread de pérdida de plata ("vaciando cuentas");
+- **introduce** un angostamiento del alcance aparente del blog a fraude financiero ("costar cara"
+  + "vaciando cuentas"), dejando afuera infraestructura crítica, privacidad y viajes — en contra
+  de la amplitud real del blog y de la nota del propio plan;
+- **introduce** un acertijo ("un truco de hace 3000 años" = el troyano, sin nombrarlo) que no se
+  resuelve en un kicker que aparece suelto en todas las páginas y sin contenido al lado: opaco
+  para las audiencias 1, 2, 3 y 5. La intriga es decisión de tono, pero la ubicación la hace
+  misfire;
+- **no entra en el slot:** ~107 caracteres en mono, mayúsculas, 10–11px con tracking ancho,
+  dentro de `max-w-md` → 4+ líneas de kicker apagado, mucho peso visual, y la estructura de coma
+  se amontona en mayúsculas.
+
+No hay error objetivo duro (nada agramatical ni falso; "hace 3000 años" es un redondeo
+defendible del caballo de Troya). **La dirección es correcta** —describir el contenido por su
+rango en vez de retar al lector— y conviene conservarla; el string concreto necesita trabajo
+antes de reemplazar al vigente: quitar el doble encuadre monetario, que una de las dos mitades
+hable de la línea de casos, y resolver o acortar la referencia velada para que quepa en el slot.
+La Prioridad 2 (el tagline del masthead) se mantiene en su lugar, ahora anotada con esta
+propuesta y su veredicto.
+
+### Veredicto de la 21ª pasada
+
+Se evaluó una **2.ª PROPUESTA de nuevo tagline del masthead** (bloque 1), no aplicada al código:
+"De la estafa que te llega por SMS al ataque que dejó a un país sin combustible. En dos niveles."
+Reemplaza en la evaluación a la 1.ª propuesta (20ª pasada), que quedó como movimiento lateral.
+
+**Esta vez es un avance neto real, no lateral.** La 1.ª propuesta arreglaba 2 problemas y rompía
+2; esta **cierra el reparo de fondo del tagline vigente —(1) la línea de análisis de casos, por
+primera vez visible desde el masthead ("el ataque que dejó a un país sin combustible")— y cierra
+(3) el dedo a la audiencia 1 y (4) el "a él" masculino, mejora (5) el tono ante el reclutador y
+ablanda mucho (2) el alarmismo** (se va el miedo dirigido al lector). Se fue el angostamiento a
+fraude financiero: las dos mitades por fin cubren las dos líneas reales del blog y quedan
+balanceadas (mitad 1 → audiencia 1; mitad 2 → audiencias 2 y 4).
+
+**No adoptable tal cual, pero por un margen chico.** Dos puntos a resolver antes de fijar la
+frase:
+1. **"un país sin combustible"** sobreafirma la consecuencia real de Colonial Pipeline
+   (desabastecimiento y compras de pánico en una región de EE. UU. durante días, no un país sin
+   nafta). Tal cual, roza el efectismo que "sin humo" promete evitar; las audiencias 4 y 5 lo
+   notan. Ajuste del autor; acá solo se marca.
+2. **"En dos niveles"** es un remate subespecificado en un kicker que aparece en todas las
+   páginas sin la home a la vista — misma nota de "'nivel' / 'modo' ambiguo" de pasadas
+   anteriores, y ecoa el eje que el bloque 3 dejó atrás ("Aprender / Profundizar").
+El desajuste de formato/largo (~100 car. + dos oraciones con punto en el slot mono-mayúsculas-10px
+→ 3–4 líneas) es un tercer punto, secundario.
+
+No hay error objetivo duro (nada agramatical ni dato falso verificable en la frase aislada).
+**La propuesta ya supera al tagline vigente en el balance** —cosa que la 1.ª no lograba—; los
+dos ajustes de arriba la dejarían lista. La Prioridad 2 (el tagline del masthead) se mantiene en
+su lugar porque la propuesta no está aplicada, ahora anotada con esta 2.ª evaluación y su
+veredicto.
+
+### Veredicto de la 22ª pasada
+
+El autor **aplicó al código** el nuevo `sitio.tagline` con los dos ajustes pedidos en la 21ª
+pasada, separó `sitio.descripcion` (RSS + meta) como texto estable aparte y aflojó el
+tratamiento visual del kicker.
+
+**El tagline vigente no tiene ningún error objetivo.** "media región haciendo cola por
+combustible" es una descripción verificable de Colonial Pipeline (2021) —las colas en las
+estaciones del sureste de EE. UU. fueron el recuerdo público del caso—; ya no hay la
+sobreafirmación de "un país sin combustible". Al eliminar "En dos niveles" la frase cierra como
+fragmento completo, sin remate colgado ni eco con "Aprender / Profundizar". El tratamiento nuevo
+(sans, `text-xs`, sin mayúsculas, `leading-snug`, `max-w-md`) baja la frase a ~2 líneas de
+subtítulo apagado y el slot deja de ser un micro-rótulo mono.
+
+**Cierra los 5 problemas del tagline anterior** (línea de casos invisible, encuadre de miedo,
+dedo a la audiencia 1, "a él" masculino, tono de eslogan) **y los 3 pendientes de la 21ª**
+(sobreafirmación factual, remate críptico, formato/largo). `sitio.descripcion` cubre bien el rol
+de RSS/meta: clara, completa y sin voz —el registro correcto para una meta-descripción.
+
+**La Prioridad 2 (el tagline del masthead), viva desde la 4ª pasada, queda CERRADA.** Las
+observaciones que quedan son de estilo, no bloqueantes — el texto ya es publicable tal como está:
+el tagline no engancha con el nombre del sitio (lo carga el footer); ilustra la línea de casos
+con un solo tipo de incidente (foco declarado del autor); ~98 caracteres es largo para un tagline
+omnipresente; `sitio.descripcion` y `metaHome` casi se repiten (candidato a unificar). Ninguna
+requiere otra vuelta.
+
+Con el bloque 1 cerrado, el ranking se corre: **1.** ejes de secciones / los casos no son sección
+(decisión de fondo, latente hasta la 2ª sección) · **2.** cajón con el vocabulario de la
+audiencia 1 (decisión de fondo, ligada al ritmo de publicación) · **3.** bloque 2 del footer
+mezcla RSS con lo legal (ajuste de layout) · **4.** callback al nombre en el footer (decisión de
+estilo) · **5.** "Lo escribe" en singular (deuda futura). **Los bloques 2, 3 y 4 no se
+re-auditaron en esta pasada.**

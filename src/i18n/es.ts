@@ -11,9 +11,14 @@
 const es = {
   sitio: {
     nombre: 'El Que Se Las Sabe Todas',
+    // `descripcion` es la versión ESTABLE y sin voz: alimenta la <meta
+    // description> por defecto y la descripción del feed RSS. `tagline` es el
+    // kicker visible del masthead, con voz y concreto. No tienen por qué
+    // coincidir (ver MARCA.md 3.5).
     descripcion:
-      'Ciberseguridad explicada para el que cree que a él no le va a pasar',
-    tagline: 'Ciberseguridad explicada para el que cree que a él no le va a pasar',
+      'Ciberseguridad en dos niveles: las amenazas de todos los días explicadas desde cero, y el análisis técnico de los grandes incidentes. Sin humo y sin alarmismo.',
+    tagline:
+      'De la estafa que te llega por SMS al ataque que dejó a media región haciendo cola por combustible.',
     metaHome:
       'Blog de ciberseguridad en dos niveles: explicaciones desde cero sobre estafas y amenazas comunes, y análisis técnicos de incidentes reales. Sin humo y sin alarmismo.',
   },

@@ -373,27 +373,28 @@ tenerlo — es ignorarlo."*
 
 ### 3.5 Taglines / bajadas
 
-El nombre es un **gancho**, no una descripción → **necesita bajada**. La bajada
-tiene que aclarar que es ciberseguridad y **no** sonar excluyente (el nombre
-nombra a un tipo de lector, pero el contenido sirve a todos).
+> **Iteración (2026-09-09).** La sugerida original —*"Ciberseguridad explicada
+> para el que cree que a él no le va a pasar"*— se descartó tras varias pasadas
+> del evaluador de contenido: encuadre de miedo (choca con "sin humo y sin
+> alarmismo"), le pega el dedo a la audiencia 1 (la que llega tras una estafa),
+> "a él" masculino genérico, y no daba señal de la línea de análisis de casos.
 
-**Sugerida (ajustable):**
+El nombre es un **gancho**, no una descripción. Se usan **dos textos distintos**,
+que ya **no coinciden**:
 
-> **"Ciberseguridad explicada para el que cree que a él no le va a pasar."**
+| Campo | Rol | Texto vigente |
+|---|---|---|
+| `sitio.tagline` | **Kicker visible** del masthead (todas las páginas). Concreto, con voz, cubre las dos líneas por el arco "de lo cotidiano a lo grande". | *"De la estafa que te llega por SMS al ataque que dejó a media región haciendo cola por combustible."* |
+| `sitio.descripcion` | **Invisible:** `<meta description>` por defecto + descripción del feed RSS. Estable, sin voz, sin sesgo. | *"Ciberseguridad en dos niveles: las amenazas de todos los días explicadas desde cero, y el análisis técnico de los grandes incidentes. Sin humo y sin alarmismo."* |
 
-**Variantes:**
-
-1. *"Ciberseguridad para todos — sobre todo para el que se las sabe todas."*
-2. *"Cómo funcionan las estafas y los grandes ataques, explicado sin humo y sin
-   pánico."*
-3. *"Seguridad informática contada en criollo: qué pasó, cómo pasó y qué hacés
-   vos."*
-4. *"Porque 'a mí no me va a pasar' es justo lo que pensábamos todos."*
-
-**Advertencia sobre la sugerida:** *"para el que cree que a él no le va a pasar"*
-es un **gancho retórico**, no una definición de a quién le sirve el contenido. Si
-en la práctica se lee como excluyente ("esto no es para mí, yo sí sé"), conviene
-ir a la variante 1 o 2. Decisión en 6, pregunta 2.
+- El kicker visible **no** debe repetir la tesis del H1 de la home (*"Todo lo que
+  usás tiene un punto débil…"*), que ya carga la ironía de la sobreconfianza.
+- **A futuro:** el kicker puede volverse **rotativo** con la estructura "De
+  [lo cotidiano], a [el incidente famoso]" (SolarWinds, WannaCry, etc.) a medida
+  que existan esos artículos — nunca titular un caso que no está escrito.
+- Variantes que quedaron en carpeta: *"Cómo funcionan las estafas y los grandes
+  ataques, explicado sin humo y sin pánico"* · *"Seguridad informática contada en
+  criollo: qué pasó, cómo pasó y qué hacés vos"*.
 
 ### 3.6 Do / Don't de lenguaje
 
