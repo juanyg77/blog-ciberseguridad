@@ -72,7 +72,7 @@ conecten a dicho punto de carga.
 Luego del comunicado de la agencia estadounidense, ocurrió un verdadero revuelo
 en la comunidad tecnológica, dado que los medios masivos lo viralizaron generando
 un pánico global, lo cual obligó a que expertos en ciberseguridad tuvieran que
-salir a aclarar la situación. El FBI tuvo que admitir que no se basaba en casos
+salir a aclarar la situación. El FBI admitió que no se basaba en casos
 reales detectados en las calles, sino en una advertencia puramente preventiva.
 Además, los teléfonos modernos (con las actualizaciones recientes de iOS y
 Android) ya bloquean la transferencia de datos por defecto y exigen tu Face ID o
