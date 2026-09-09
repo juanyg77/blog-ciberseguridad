@@ -17,6 +17,11 @@ import LayoutBase from '../layouts/LayoutBase.astro';
 import TarjetaArticulo from '../components/TarjetaArticulo.astro';
 import { t } from '../i18n';
 import { getArticulosPorSeccion } from '../lib/articulos';
+import { seccionesNavegables } from '../lib/secciones';
+
+// RF-2: con menos de 2 secciones no hay navegación por sección — esta página
+// no tiene sentido (ver src/lib/secciones.ts). Se manda a la home.
+if (!(await seccionesNavegables())) return Astro.redirect('/');
 
 const secciones = (await getCollection('secciones')).sort(
   (a, b) => (a.data.orden ?? 99) - (b.data.orden ?? 99) || a.data.nombre.localeCompare(b.data.nombre),

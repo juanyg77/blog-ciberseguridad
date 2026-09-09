@@ -62,9 +62,11 @@ npx wrangler deploy       # lee wrangler.jsonc y sube dist/ como assets
 
 ```
 src/
-  content/          artículos, avisos, autores, secciones (Markdown/MDX)
+  content/
+    articulos/      1 carpeta por artículo (= slugCanonico): es.md / en.md + sus imágenes
+    avisos/ autores/ secciones/   (Markdown/MDX)
   content.config.ts esquemas Zod de todas las colecciones
-  assets/images/    imágenes optimizadas en build (autores/, articulos/<slug>/)
+  assets/images/    fotos de autor optimizadas en build (autores/)
   i18n/             diccionario de cadenas de interfaz (es.ts) — D-10
   lib/              articulos.ts (consulta central), fechas.ts, utm.ts
   components/       BloqueOpinion, ListaFuentes, FichaAutor, BotonesCompartir,
@@ -72,13 +74,14 @@ src/
                     AvisoLicencia, AvisoDestacado, ...
   layouts/          LayoutBase, LayoutArticulo, LayoutAviso
   pages/            index, sobre, contacto(+gracias), buscar, recientes,
-                    secciones, no-tecnico/, tecnico/, seccion/[seccion],
+                    secciones, aprender/, profundizar/, seccion/[seccion],
                     [lang]/[...slug], aviso/[aviso], rss.xml.ts, 404
 ```
 
-Las imágenes van en `src/assets/images/` (Astro las optimiza a WebP/AVIF y
-genera tamaños responsivos en el build — D-16 + optimización). Presupuesto de
-peso y detalle en `CONTRIBUIR.md`.
+Las imágenes de cada artículo van **en su misma carpeta** (`./portada.webp`); las
+fotos de autor en `src/assets/images/autores/`. Astro las optimiza a WebP/AVIF y
+genera tamaños responsivos en el build (D-16). Presupuesto de peso y detalle en
+`CONTRIBUIR.md`.
 
 Para publicar contenido, ver **`CONTRIBUIR.md`**.
 
@@ -112,6 +115,9 @@ dashboard del worker de Cloudflare.
   Es un paso manual al crear la cuenta. La recepción final es
   `contacto@elquelassabetodas.com` vía Cloudflare Email Routing → Gmail (D-6).
 - **Identidad visual final** (paleta, tipografía definitiva, logo, prolijidad
-  móvil) y **nombres con más carácter para las secciones "Técnico" / "No
-  técnico"**: etapas posteriores. Los slugs de ruta (`/tecnico`, `/no-tecnico`)
-  y el campo `nivel` no se tocan.
+  móvil): etapas posteriores.
+- **Rótulos de nivel** (RF-1): los dos niveles se muestran como **"Aprender"** y
+  **"Profundizar"** (2026-09-09; antes "Modo humano" / "Modo nerd"). El campo
+  `nivel` y las rutas acompañan: valores `aprender` / `profundizar`, rutas
+  `/aprender` y `/profundizar` (redirects desde las viejas en `astro.config.mjs`).
+  Ver `MARCA.md` 3.3.

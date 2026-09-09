@@ -50,7 +50,12 @@ pública, complementaria a LinkedIn. No tiene experiencia laboral formal en IT.
   artículos separados por nivel de audiencia (no técnico / técnico).
 - **RF-2 — Lectura de artículos por categoría/sección**: además del nivel, los
   artículos se agrupan por temática/sección, y la estructura permite **agregar
-  nuevas secciones a futuro** sin rehacer el sitio.
+  nuevas secciones a futuro** sin rehacer el sitio. Las secciones crecen de forma
+  **orgánica**: una sección se crea recién cuando hay contenido que la llena, no
+  se dejan secciones vacías ni se define una taxonomía completa por adelantado.
+  Mientras haya una sola sección, la navegación por sección (menú, vitrina de la
+  home, página `/secciones`) se oculta y reaparece sola al haber dos o más; el
+  artículo conserva su etiqueta de sección en cualquier caso.
 - **RF-3 — Ficha de artículo con distinción hecho/opinión**: cada artículo
   presenta el desarrollo basado en hechos y, cuando corresponde, un **bloque final
   claramente identificado como opinión/análisis del autor**, visualmente separado
@@ -102,10 +107,13 @@ pública, complementaria a LinkedIn. No tiene experiencia laboral formal en IT.
   formulario de contacto.
 - **Contenido en video o podcast**: fuera.
 - **Foro o comunidad**: fuera en esta etapa; es una aspiración a futuro.
-- **Cobertura de actualidad semanal** (estar al día con brechas y CVE del
-  momento): el blog **no asume ningún compromiso** de cobertura periódica de
-  novedades. Se permite alguna nota puntual de coyuntura solo si el autor la
-  encuentra interesante, sin periodicidad ni obligación.
+- **Cobertura de actualidad con obligación de frecuencia** (comprometerse a estar
+  al día semana a semana con brechas y CVE del momento, sostener un calendario
+  editorial de novedades): fuera. El blog **no asume un compromiso de frecuencia**
+  ni de ritmo de publicación. Sí forma parte del proyecto la **nota de coyuntura**
+  —una noticia reciente con su análisis, o una entrada de bitácora sobre lo que el
+  autor está estudiando— cuando el autor la encuentra relevante; se publica sin
+  periodicidad fija y una pausa no se lee como incumplimiento.
 - **Traducción completa del sitio al inglés**: fuera del alcance inicial. El foco
   de audiencia es LATAM. Solo se prepara la estructura (RF-9); la traducción
   efectiva de artículos es posterior y selectiva.
@@ -121,9 +129,12 @@ Los umbrales numéricos de adopción (CA-9 a CA-11) son metas iniciales y
 
 - **CA-1**: Desde la página principal, un lector puede llegar a la lista de
   artículos "no técnicos" y a la de "técnicos" en **1 clic** cada una.
-- **CA-2**: Existen al menos **2 secciones temáticas** navegables y agregar una
-  tercera sección no requiere cambios de diseño ni de navegación (se documenta el
-  procedimiento).
+- **CA-2**: La navegación por sección funciona con **crecimiento orgánico**:
+  agregar una sección (crear un archivo en `src/content/secciones/` y etiquetar
+  artículos) no requiere cambios de diseño ni de navegación (se documenta el
+  procedimiento). Con una sola sección, la navegación por sección está oculta;
+  al llegar a la **segunda** aparece automáticamente (menú, vitrina de la home,
+  página `/secciones`, rutas `/seccion/[x]`) sin tocar código.
 - **CA-3**: En un artículo que incluye opinión, el bloque de opinión del autor
   está **visualmente diferenciado** (título o recuadro propio) y un lector que
   hojea el artículo puede identificar sin leerlo entero qué parte es opinión.

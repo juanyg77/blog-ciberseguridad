@@ -11,6 +11,13 @@ const SITE = process.env.PUBLIC_SITE_URL || 'https://elquelassabetodas.com';
 export default defineConfig({
   site: SITE,
   trailingSlash: 'never',
+  // RF-1 — los rótulos de nivel pasaron a "Aprender" / "Profundizar" y las rutas
+  // acompañan. Se dejan estos redirects por si algún enlace viejo a /no-tecnico o
+  // /tecnico anda dando vueltas (el sitio aún no tiene tráfico).
+  redirects: {
+    '/no-tecnico': '/aprender',
+    '/tecnico': '/profundizar',
+  },
   integrations: [
     mdx(),
     sitemap({

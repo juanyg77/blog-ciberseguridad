@@ -16,6 +16,7 @@ import ListaFuentes from '../components/ListaFuentes.astro';
 import AvisoLicencia from '../components/AvisoLicencia.astro';
 import { dict, t } from '../i18n';
 import { rutaArticulo, minutosDeLectura } from '../lib/articulos';
+import { seccionesNavegables } from '../lib/secciones';
 
 interface Props {
   articulo: CollectionEntry<'articulos'>;
@@ -27,6 +28,9 @@ const d = articulo.data;
 
 const autores = await getEntries(d.autores);
 const secciones = await getEntries(d.secciones);
+// Con < 2 secciones la sección se muestra como texto, no como enlace (la ruta
+// /seccion/[x] no se genera). Ver src/lib/secciones.ts.
+const seccionEnlazable = await seccionesNavegables();
 const ruta = rutaArticulo(articulo);
 const minutos = textoPlano ? minutosDeLectura(textoPlano) : undefined;
 
@@ -70,7 +74,11 @@ if (d.portada) {
         secciones.map((s) => (
           <span class="text-tinta-tenue">
             {' · '}
-            <a href={`/seccion/${s.id}`} class="underline underline-offset-2 hover:text-acento">{s.data.nombre}</a>
+            {seccionEnlazable ? (
+              <a href={`/seccion/${s.id}`} class="underline underline-offset-2 hover:text-acento">{s.data.nombre}</a>
+            ) : (
+              s.data.nombre
+            )}
           </span>
         ))
       }

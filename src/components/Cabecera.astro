@@ -11,6 +11,9 @@
 import { t } from '../i18n';
 import ToggleTema from './ToggleTema.astro';
 import Icono from './Icono.astro';
+import { seccionesNavegables } from '../lib/secciones';
+
+const navSecciones = await seccionesNavegables();
 
 const ruta = Astro.url.pathname;
 const activo = (href: string) => {
@@ -21,11 +24,11 @@ const activo = (href: string) => {
 
 // Grupo 1: los dos modos de lectura (lo principal). Grupo 2: utilitarios.
 const modos = [
-  { href: '/no-tecnico', texto: t('nav.noTecnico') },
-  { href: '/tecnico', texto: t('nav.tecnico') },
+  { href: '/aprender', texto: t('nav.aprender') },
+  { href: '/profundizar', texto: t('nav.profundizar') },
 ];
 const utilidades = [
-  { href: '/secciones', texto: t('nav.secciones') },
+  ...(navSecciones ? [{ href: '/secciones', texto: t('nav.secciones') }] : []),
   { href: '/sobre', texto: t('nav.sobre') },
   { href: '/buscar', texto: t('nav.buscar') },
   { href: '/contacto', texto: t('nav.contacto') },

@@ -10,7 +10,9 @@ import { glob } from 'astro/loaders';
   Colecciones: articulos · avisos · autores · secciones.
 */
 
-const NIVELES = ['no-tecnico', 'tecnico'] as const;
+// RF-1 — nivel del artículo. El valor es también el slug de ruta (/aprender,
+// /profundizar) y la clave de i18n (articulo.porNivel, nivel.descripcion).
+const NIVELES = ['aprender', 'profundizar'] as const;
 const TIPOS_ARTICULO = ['analisis-caso', 'explicativo', 'coyuntura'] as const;
 const IDIOMAS = ['es', 'en'] as const;
 
@@ -23,9 +25,20 @@ const fuente = z.object({
 });
 
 // --- articulos -----------------------------------------------------------
+// Contenido CO-LOCADO: un artículo = una carpeta cuyo nombre es el
+// `slugCanonico`, y adentro viven las versiones idiomáticas (`es.md` / `en.md`
+// / `es.mdx`…) junto con TODAS sus imágenes (portada + capturas). La portada y
+// las capturas se referencian con ruta relativa corta (`./portada.webp`), nunca
+// con `../../../..`. El nivel y el idioma son DATOS del frontmatter, no carpetas
+// (fuente de verdad: los campos `nivel` / `idioma`, ver src/lib/articulos.ts).
+//   src/content/articulos/
+//     colonial-pipeline/            ← carpeta = slugCanonico
+//       es.md   en.md   portada.webp   diagrama-1.webp
+//     plantilla-articulo.md         ← plantilla suelta (borrador: true)
 const articulos = defineCollection({
   // `[!_]*` ignora archivos y carpetas que empiezan con "_" (notas / borradores
   // locales). `plantilla-articulo.md` SÍ se carga pero es `borrador: true`.
+  // El id de cada entrada es `<slugCanonico>/<idioma>` (o `plantilla-articulo`).
   loader: glob({ pattern: '**/[!_]*.{md,mdx}', base: './src/content/articulos' }),
   schema: ({ image }) =>
     z
@@ -33,7 +46,9 @@ const articulos = defineCollection({
         titulo: z.string().min(1),
         // slug de la URL dentro de su nivel/idioma (organización humana en carpetas)
         slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'slug en kebab-case'),
-        // RF-9: une la versión es y en del mismo artículo
+        // RF-9: une la versión es y en del mismo artículo. DEBE coincidir con el
+        // nombre de la carpeta que contiene el archivo (se valida en
+        // src/lib/articulos.ts: assertArticulosConsistentes()).
         slugCanonico: z
           .string()
           .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'slugCanonico en kebab-case'),
@@ -48,8 +63,8 @@ const articulos = defineCollection({
         // 3.1: opcional. Si existe y difiere, se muestra "Actualizado en <mes año>"
         fechaActualizacion: z.coerce.date().optional(),
         resumen: z.string().min(1).max(400),
-        // 3.3: imagen en src/assets/images/... optimizada en build. En el
-        // frontmatter, ruta relativa al archivo (ver CONTRIBUIR.md).
+        // 3.3: imagen co-locada en la carpeta del artículo, optimizada en build.
+        // En el frontmatter, ruta relativa corta: `./portada.webp` (ver CONTRIBUIR.md).
         portada: image().optional(),
         portadaAlt: z.string().optional(),
         tieneOpinion: z.boolean().default(false), // RF-3

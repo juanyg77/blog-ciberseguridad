@@ -1,20 +1,46 @@
 # Evaluación de contenido — textos de identidad
 
-**Fecha:** 2026-09-07 — 5ª pasada.
-**Cubre:** tagline del masthead, nombres y descripciones de las secciones, rótulos "Modo humano / Modo nerd" y sus descripciones, y el footer del sitio.
+**Fecha:** 2026-09-09 — 19ª pasada.
+**Cubre:** tagline del masthead, nombres y descripciones de las secciones, rótulos de nivel (VIGENTE desde la 19ª pasada: "Aprender / Profundizar") y sus descripciones, y el footer del sitio.
 **Fuera de alcance:** la página "Sobre mí" (tiene evaluador propio) y el contenido de los artículos.
 
 ## Cambios aplicados desde la pasada anterior
 
-- **Footer, línea `pie.tagline` (`src/i18n/es.ts`):** se antepuso "Esto es " y "ciberseguridad" pasó a minúscula.
-  - Antes: "Ciberseguridad explicada para mi abuela y para el ingeniero de la NASA. Porque acá nadie se las sabe todas."
-  - Ahora: "Esto es ciberseguridad explicada para mi abuela y para el ingeniero de la NASA. Porque acá nadie se las sabe todas."
-  - Objetivo declarado: romper la repetición palabra por palabra con el kicker del masthead ("Ciberseguridad explicada para…"), marcada como ítem 6 en la 4ª pasada.
-- El resto de los textos (tagline del masthead, secciones, Modo humano/nerd, estructura del footer y su bloque legal) **no cambió** respecto de la 4ª pasada.
+- **BLOQUE 3 — la propuesta "Aprender / Profundizar" se APLICÓ al código** (verificado en el
+  build). Deja de ser propuesta: es el texto vigente. En concreto:
+  - Rótulos de nivel: "Modo humano" / "Modo nerd" → **"Aprender" / "Profundizar"** en la nav, en
+    el badge de la ficha, en las dos puertas de la home y como título de las páginas de listado.
+    El campo `nivel` pasó a `aprender | profundizar`; las rutas a `/aprender` y `/profundizar`
+    (con redirect desde `/no-tecnico` y `/tecnico`).
+  - Descripciones de nivel (`nivel.descripcion`, `src/i18n/es.ts`):
+    - **Aprender:** "Amenazas y estafas del día a día —en casa, en el trabajo, de viaje—: cómo
+      funcionan y qué hacer, explicado desde cero." — **recupera "estafa" y "qué hacer"** que el
+      mockup había perdido (cierra el retroceso anotado en la Prioridad 4).
+    - **Profundizar:** "Incidentes que marcaron a la industria y al mundo, sus consecuencias, y
+      cómo pasaron —con el nivel técnico que cada caso merece. De vez en cuando, algo de
+      actualidad."
+  - CTAs de la home: "Empezar por acá" / "Ver los análisis".
+  - **H1 de la home** (`home.heroH1`, reemplaza el kicker "Primera vez acá"): **"Todo lo que
+    usás tiene un punto débil. El riesgo más grande no es tenerlo — es ignorarlo."** — es
+    **H1-C**, el candidato que la 18ª pasada rankeó 1º.
+  - Badge de la ficha: "Aprender" (nivel) · "Viajero digital" (sección, como texto, no enlace,
+    porque la navegación por sección está oculta).
+  - `MARCA.md` §3.3 actualizado a "Aprender / Profundizar".
+- Se reevalúa **solo el bloque 3**, ahora como texto vigente, consolidando lo que quedó de las
+  pasadas 13ª, 16ª, 17ª y 18ª. Los bloques 1, 2 y 4 quedan intactos, sin re-auditar.
 
 ## Nota sobre las secciones
 
-Las secciones son un catálogo dinámico (`src/content/secciones/`). Hoy hay **cuatro**: Ingeniería social, Infraestructura crítica, Higiene digital y **Viajero digital**. No hay una lista canónica de secciones en REQUISITOS.md ni en MARCA.md — REQUISITOS solo pide "al menos 2, extensibles sin rediseño" (RF-2 / CA-2). La lista de seis que circuló en el encargo original de este evaluador ("Cadena de suministro", "Vulnerabilidades conocidas", "Fraude financiero"…) no sale de ningún documento del proyecto; era una idea suelta. La decisión pendiente no es "reconciliar con una lista externa" sino **el autor definir qué secciones quiere hoy** (ver Prioridades).
+Las secciones son un catálogo dinámico (`src/content/secciones/`). Hoy hay **una sola**:
+**Viajero digital**. El autor fijó como regla de gobierno el **crecimiento orgánico**: una
+sección nace cuando ya hay contenido publicado que la llena, y **mientras haya una sola, la
+navegación por sección se oculta entera** (menú, vitrina de la home, `/secciones`, rutas
+`/seccion/[x]`); el artículo conserva su etiqueta de sección como texto. Desde la 15ª pasada
+esto **está alineado con REQUISITOS**: RF-2 y CA-2 se reescribieron para pedir exactamente ese
+comportamiento (la nav aparece sola al llegar a la 2ª sección), así que ya **no hay
+incumplimiento de CA-2**. La lista de seis que circuló en el encargo original de este evaluador
+("Cadena de suministro", "Vulnerabilidades conocidas", "Fraude financiero"…) no sale de ningún
+documento del proyecto; era una idea suelta.
 
 ---
 
@@ -43,89 +69,328 @@ Se entiende el qué (ciberseguridad explicada) y el a quién (el que se cree a s
 
 ## 2. Nombres y descripciones de las secciones
 
-**Sin cambios desde la 4ª pasada.**
+**Sin cambios desde la 15ª pasada** — se implementó el umbral: con una sola sección, la navegación por sección se oculta entera.
 
-**Textos (nombre — descripción):**
-- **Ingeniería social** — "Cómo se manipula a las personas para que entreguen datos, dinero o accesos: phishing, pretexto, estafas telefónicas y por mensaje."
-- **Infraestructura crítica** — "Ataques a los sistemas que sostienen la vida cotidiana: energía, agua, combustible, salud, transporte. Dónde la seguridad informática se cruza con el mundo físico."
-- **Higiene digital** — "Los hábitos que bajan el riesgo sin volverte loco: contraseñas, segundo factor, actualizaciones, copias de respaldo, qué apps tienen acceso a qué."
+**Texto vigente (única sección):**
 - **Viajero digital** — "Seguridad cuando estás fuera de casa: el WiFi de aeropuertos y hoteles, los puertos de carga públicos, el celular y la notebook en tránsito, y qué mirar con tus cuentas en otro país."
-(Cada `.md` tiene además una o dos frases de cuerpo con voz propia — p. ej. "Todo ataque que empieza por convencer a alguien —y no por romper una máquina— entra acá. Es la puerta más usada y la más barata.")
+- Cuerpo del `.md`: "Aeropuertos, hoteles, cafés: fuera de tu red de siempre, el riesgo cambia. Acá va qué tener en cuenta cuando viajás con tus dispositivos."
+
+**Dónde se renderiza HOY:** en ningún lado como navegación. La home no muestra "Explorar por
+sección", la nav global no muestra "Secciones", `/secciones` redirige a la home, `/seccion/viajero-digital`
+no existe. El único lugar donde el lector va a ver el string "Viajero digital" es en la línea de
+metadatos de la ficha del artículo, **como texto plano** (no enlace), y solo cuando haya un
+artículo publicado (hoy no hay ninguno).
+
+### El texto puntual de "Viajero digital"
 
 **1. ¿Genérico o con identidad propia?**
-Los **nombres** son taxonomía de manual: "Ingeniería social", "Infraestructura crítica" e "Higiene digital" son términos textuales de la industria, intercambiables con cualquier blog. "Viajero digital" es algo más propio. Las **descripciones** sí tienen identidad: son concretas, dan ejemplos ("energía, agua, combustible, salud, transporte"), y mantienen una voz consistente ("sin volverte loco", "el WiFi de aeropuertos y hoteles"). El cuerpo de cada sección refuerza esa voz. Resumen: nombres genéricos, descripciones con carácter.
+Sin cambios respecto de la 14ª pasada. "Viajero digital" no es un término textual de la industria; roza el cliché "nómade digital" pero es evocativo y propio. La descripción es concreta, da ejemplos ("el WiFi de aeropuertos y hoteles", "qué mirar con tus cuentas en otro país") y mantiene la voz del blog. Como pieza aislada, está del lado de la identidad, no del genérico.
 
 **2. ¿Se entiende sin contexto previo?**
-Con la descripción a la vista (home, `/secciones`, página de la sección), sí, sin ambigüedad. **El nombre solo no alcanza** donde aparece sin descripción: nav, breadcrumb del artículo ("En Ingeniería social"), rótulo en `TarjetaArticulo`. Para un lector no técnico, "Ingeniería social" e "Infraestructura crítica" son opacos sueltos.
-Problema de fondo: las cuatro secciones **no comparten un eje**. Dos son tipo-de-amenaza (Ingeniería social, Infraestructura crítica) y dos son tipo-de-hábito/contexto (Higiene digital, Viajero digital). Eso genera solapamiento real: el artículo publicado sobre puertos USB en aeropuertos cae tanto en "Viajero digital" como en "Higiene digital", y el lector no tiene forma de predecir dónde buscar.
+Ahora sí, y sin ruido alrededor. El desajuste que marcaba la 14ª pasada —la intro de `/secciones`
+en plural ("Los ejes temáticos del blog. Elegí uno para ver sus artículos; la lista se filtra sin
+recargar"), el link "Ver todas las secciones →", el layout de dos columnas con un ítem sticky y
+contador "(1)"— **ya no se renderiza para nadie**: la página redirige antes de pintar nada. El
+string de la intro sigue en `es.ts` pero está muerto (no referenciado en render mientras haya <2
+secciones). **El error objetivo "copy en plural describiendo una interacción inexistente" queda
+resuelto** por eliminación de la superficie.
+Queda un residuo mínimo: en la ficha del artículo, "Viajero digital" aparece como palabra suelta
+sin enlace en la línea "Explicativo · Modo humano · Viajero digital". Se lee como etiqueta de
+categoría (que es lo que es); es levemente huérfana (por qué está ahí, por qué no es clickeable)
+pero no es un error ni una contradicción. Prioridad mínima, y hoy invisible porque no hay artículos.
 
 **3. ¿Funciona para las 5 audiencias?**
-- **Audiencia 1 (víctima de estafa):** acá está el hueco más grave. Ninguna sección usa su vocabulario: no hay "Estafas", "Fraude", "Me estafaron". Lo que googlea ("me llegó un SMS de un paquete retenido", "transferí plata a un falso banco") vive bajo "Ingeniería social", una etiqueta que esa persona no va a clickear.
-- **Audiencia 2 (curioso de casos):** "Infraestructura crítica" le sirve para Colonial Pipeline / WannaCry. Bien. Pero si el caso que escuchó no es de infraestructura (una filtración, un ransomware a una empresa), no hay dónde meterlo.
-- **Audiencia 3:** sin problema.
-- **Audiencia 4 (técnico):** las descripciones no le señalan profundidad; describen el tema, no el nivel de análisis. Nada acá le dice "vas a encontrar timeline, causa raíz y fuentes".
-- **Audiencia 5 (reclutador):** las descripciones están bien escritas y son concretas, eso suma. Pero la taxonomía mezclada (amenaza + hábito en la misma grilla) puede leerse como falta de un modelo mental ordenado. Es un costo menor frente al beneficio de que las descripciones no son humo.
+El eje que hoy orienta al lector sobre de qué trata el blog es el de **nivel** (las dos puertas de
+la home con sus descripciones) + tagline + footer, no el de sección. Con eso:
+- **Audiencia 1 (víctima de estafa):** la puerta "Modo humano" abre con "Cómo funcionan las amenazas y estafas más comunes, y qué hacer, contado desde cero" — la nombra. Ya no se topa con una página "Secciones" cuya única entrada es sobre viajes. Neto: mejor que en la 14ª pasada.
+- **Audiencia 2 (curioso de casos):** la puerta "Modo nerd" abre con "Análisis técnicos de incidentes reales" — hay señal de que se analizan casos, aunque soldada a la etiqueta de tecnicidad (eso es la Prioridad 2, sin cambios). Ya no hay una taxonomía visible que le diga "el blog trata de seguridad en viajes".
+- **Audiencia 3 (contacto de LinkedIn):** neutro.
+- **Audiencia 4 (colega/estudiante técnico):** neutro respecto del bloque 2. La ausencia de secciones no le quita nada que hoy exista; la profundidad la tiene que leer del contenido, que aún no está.
+- **Audiencia 5 (reclutador):** **este es el cambio grande.** Ya no ve una página "Secciones" con exactamente una sección montada sobre una UI de filtro para varias. Ve un sitio chico con dos niveles de lectura y (por ahora) poco o nada publicado. Eso se lee como **etapa temprana y honesta**, no como scaffold con demo data a medio borrar. Y "Viajero digital" ya no es "la única cara de la taxonomía" comunicando un blog para turistas: es a lo sumo una etiqueta en la ficha de un artículo futuro. La mala primera impresión que la 14ª pasada marcaba como el golpe más fuerte **queda neutralizada.**
+
+### Frentes nuevos que abre ocultar la navegación por sección
+
+- **(a) `/secciones` como stub de redirección si alguien la tipea.** Borde inofensivo. La ruta
+  no está enlazada en ningún lado, lleva `noindex`, y solo la alcanza quien la tipea a mano, tiene
+  un bookmark viejo o un buscador que la indexó antes. El único reparo menor: el fallback estático
+  de Astro es una pantalla casi en blanco con texto boilerplate en inglés ("Redirecting from
+  /secciones to /") y ~2s de espera antes del salto. Feo para el que caiga ahí, pero es un
+  volumen de tráfico despreciable y no es texto de identidad. Prioridad mínima; si molesta, es
+  tema de UX/routing, no de contenido.
+- **(b) ¿El visitante pierde orientación sobre de qué trata el blog?** Marginal. Las descripciones
+  de sección eran la señal más concreta de "qué temas cubrimos", y hoy no están. Pero con una sola
+  sección y cero artículos no había nada real para navegar, y la orientación la sostienen el
+  tagline, el footer y las dos descripciones de nivel de la home, que entre las dos cubren
+  "amenazas y estafas cotidianas" y "análisis de incidentes". No hay un hueco que el lector note.
+- **(c) Para el reclutador, ¿"sin secciones" se lee como incompleto o como chico y honesto?**
+  Como chico y honesto — **siempre que la ocultación sea total y limpia**, que es el caso: no
+  quedó ningún "Secciones (1)", ningún "Ver todas las secciones" apuntando a plural, ninguna
+  columna vacía. Un sitio de etapa temprana sin una taxonomía inflada artificialmente es una
+  señal de criterio, no de obra sin terminar. (El riesgo que sí persiste para esta audiencia es
+  ajeno al bloque 2: hoy no hay ningún artículo publicado.)
+
+### Qué de la vieja Prioridad 1 (14ª pasada) resuelve este cambio y qué no
+
+| Componente de la vieja Prioridad 1 | Estado |
+|---|---|
+| (a) desajuste **objetivo** copy/render — plural + "elegí uno / se filtra" con una sola sección, contador "(1)", layout de dos columnas a medio armar | **Resuelto por eliminación de la superficie.** Nada de eso se renderiza mientras haya <2 secciones. |
+| (b) primera impresión: página "Secciones" con una sección sobre UI de filtro para varias → "sitio sin terminar" | **Resuelto.** La página ya no existe para el lector. |
+| (c) "Viajero digital" como única cara de la taxonomía → "blog para turistas" | **Resuelto en lo sustancial.** Ya no es la cara de nada; queda como etiqueta de ficha (residuo mínimo, hoy invisible). |
+| (d) el sitio por debajo del "al menos 2" de CA-2 | **Resuelto por cambio de spec.** RF-2 y CA-2 se reescribieron para endosar el crecimiento orgánico y la ocultación hasta la 2ª sección. Decisión de gobierno defendible. |
+
+### Sub-problemas que siguen pospuestos (sin cambios)
+
+| Sub-problema | Estado |
+|---|---|
+| (b) coherencia de ejes a futuro (amenaza vs. hábito/contexto) | **Pospuesto, sin cambios.** El criterio "crecimiento orgánico" fija *cuándo* nace una sección, no *cuál es el eje*. Reaparece intacto al crear la 2ª. → Prioridad 2 de esta pasada. |
+| (c) falta un cajón con el vocabulario de la audiencia 1 ("estafa/fraude") | **Sin cambios.** No existe ni el proxy "Ingeniería social". El primer artículo (juice jacking) ancló la sección más angosta posible. Pendiente natural del crecimiento orgánico. → Prioridad 4 de esta pasada. |
+
+**Los otros 3 nombres (Ingeniería social, Infraestructura crítica, Higiene digital) siguen sin existir** — la observación de la 4ª pasada sobre nombres opacos como etiqueta suelta sigue **dormida**; recurrirá si se recrean secciones con nombres de jerga.
 
 ---
 
-## 3. Rótulos "Modo humano" / "Modo nerd" y sus descripciones
+## 3. Rótulos de nivel — VIGENTE desde la 19ª pasada: "Aprender" / "Profundizar"
 
-**Sin cambios desde la 4ª pasada.**
+**Aplicado al código en la 19ª pasada** (verificado en el build). Esta sección consolida las
+pasadas 13ª (mockup "No sé nada / Algo sé", descartado), 16ª (2.ª propuesta "Aprender /
+Profundizar" declarada adoptable), 17ª (H1 de quiz a tesis) y 18ª (comparación de tres H1, ganó
+H1-C) en una evaluación única del estado actual. Reemplaza a "Modo humano" / "Modo nerd", que
+fue el texto vigente hasta la 18ª pasada.
 
-**Textos:**
-- Rótulos: "Modo humano" / "Modo nerd" (reemplazan "No técnico" / "Técnico"). Aparecen en nav, en las puertas de la home, y como tag suelto en tarjetas y en la ficha del artículo ("Explicativo · Modo humano").
-- Descripción `no-tecnico`: "Cómo funcionan las amenazas y estafas más comunes, y qué hacer, contado desde cero."
-- Descripción `tecnico`: "Análisis técnicos de incidentes reales: cómo pasaron, qué salió mal y qué se puede aprender."
+**Texto vigente:**
+1. Rótulos de nivel = dos **acciones**: **"Aprender"** y **"Profundizar"**. En la nav
+   (Inicio · Aprender · Profundizar · …), en las dos puertas de la home, como **badge** de la
+   ficha ("Explicativo · Aprender · Viajero digital") y como título de las páginas de listado
+   `/aprender` y `/profundizar`.
+2. Descripciones de nivel (`nivel.descripcion`; se renderizan en la home y en los listados):
+   - **Aprender:** "Amenazas y estafas del día a día —en casa, en el trabajo, de viaje—: cómo
+     funcionan y qué hacer, explicado desde cero." CTA "Empezar por acá →".
+   - **Profundizar:** "Incidentes que marcaron a la industria y al mundo, sus consecuencias, y
+     cómo pasaron —con el nivel técnico que cada caso merece. De vez en cuando, algo de
+     actualidad." CTA "Ver los análisis →".
+3. **H1 de la home** (`home.heroH1`): "Todo lo que usás tiene un punto débil. El riesgo más
+   grande no es tenerlo — es ignorarlo." Reemplaza el kicker "Primera vez acá". Es **H1-C**, el
+   candidato mejor rankeado de la 18ª pasada.
+4. Modelo de datos y rutas: el campo `nivel` pasó a `aprender | profundizar`; rutas `/aprender`
+   y `/profundizar` con redirect desde `/no-tecnico` y `/tecnico`. **El rótulo y la ruta ahora
+   coinciden** — se cierra el desajuste cosmético que arrastraban "Modo humano" → `/no-tecnico`
+   y "Modo nerd" → `/tecnico`.
+
+### Comparación con las dos referencias descartadas
+
+| | "Modo humano / nerd" (hasta la 18ª) | "No sé nada / Algo sé" (descartado, 13ª) | "Aprender / Profundizar" (VIGENTE) |
+|---|---|---|---|
+| Naturaleza del rótulo | modo / interruptor | autoetiqueta de conocimiento (oración) | acción / destino (infinitivo) |
+| Parsea como etiqueta suelta (nav, badge) | ambiguo pero sí | no (son oraciones) | **sí** ("Aprender" limpio; "Profundizar" solo, algo vago) |
+| Choca con "no hacer sentir tonto" (MARCA 1.2/1.3) | no | sí ("No sé nada" para clickear) | **no** (nadie se autoetiqueta) |
+| Minimiza el contenido técnico (audiencia 5) | "nerd" resta seriedad | "Algo sé" = "sé poco" | **no** ("Profundizar" es digno) |
+| Coherencia con el tricolon del footer | ortogonal | choca (2 vs 3 en el eje "saber") | **ortogonal** (eje "acción", no eje "saber") |
+
+### Las 3 preguntas
 
 **1. ¿Genérico o con identidad propia?**
-Los rótulos tienen identidad: "Modo humano / Modo nerd" es una elección con voz, muy por encima del insípido "No técnico / Técnico". Pero "Modo nerd" es un lugar común de internet (miles de sitios tienen "modo nerd" / "nerd mode"); "Modo humano" es lo más fresco del par. Las **descripciones** son bastante genéricas: "Análisis técnicos de incidentes reales: cómo pasaron, qué salió mal y qué se puede aprender" es literalmente lo que diría cualquier blog de análisis de incidentes. "contado desde cero" tiene una pizca de voz.
+Los **rótulos** son genéricos. "Aprender / Profundizar" es el par "camino de iniciación / camino
+avanzado" que usa cualquier plataforma de cursos, documentación de producto o blog de divulgación
+("Getting started / Deep dive"). Como etiquetas sueltas son intercambiables — no hay nada que las
+ancle a *este* blog y no evocan para nada al sobreconfiado del nombre. "Modo nerd" tenía una
+pizca de carácter que se pierde, pero costaba seriedad (ver pregunta 3, audiencia 5); el canje es
+neto a favor. La identidad vive en el **envoltorio**: el **H1** —ahora una tesis, "El riesgo más
+grande no es tenerlo — es ignorarlo"— engancha de forma implícita con la tesis de la
+sobreconfianza del nombre y del masthead ("el que cree que a él no le va a pasar"); y las
+**descripciones** ("en casa, en el trabajo, de viaje", "De vez en cuando, algo de actualidad")
+están en la voz del blog y son concretas. **Respuesta directa: envoltorio (H1 + descripciones)
+propio; etiquetas genéricas, taxonomía de nivel con otro nombre.** No es peor que "Modo
+humano/nerd" en esto; es parejo, con la ventaja de que estas etiquetas sí funcionan sueltas.
 
 **2. ¿Se entiende sin contexto previo?**
-"Modo humano" es ambiguo. En un sitio que además tiene una sección sobre "manipular a las personas", "humano" puede leerse como "el factor humano" o incluso "escrito por humanos (no IA)". Necesita la descripción al lado para desambiguar, y como **tag suelto** en la ficha del artículo ("Explicativo · Modo humano") va sin descripción.
-Además la palabra "Modo" implica algo que se conmuta sobre el mismo contenido. Pero según las propias descripciones **no son dos versiones del mismo tema**: "Modo humano" = amenazas y estafas comunes; "Modo nerd" = análisis de incidentes. Son dos líneas de contenido distintas, no dos niveles de lo mismo. Llamarlas "Modo" sugiere un interruptor que no existe.
+En el hero, con H1 + descripciones + CTAs: sí. Fuera del hero, también, con dos matices:
+- "Aprender" solo en la nav o como badge: claro, se lee "lo básico / explicado desde cero".
+- "Profundizar" solo en la nav: **algo vago** — "profundizar ¿en qué?". Se infiere "la sección
+  densa / los análisis", pero no lo dice. Equivalente en vaguedad a "Modo nerd", con más
+  dignidad. No está roto.
+- Badge "Explicativo · Aprender · Viajero digital" en la ficha, sin el H1 a la vista: "Aprender"
+  parsea como etiqueta de categoría ("artículo explicativo / de nivel inicial"). Rareza menor: es
+  un verbo como tag donde se esperaría un sustantivo ("Básico", "Introducción"), y aislado podría
+  leerse un instante como botón de acción; el estilo de píldora lo desambigua. El choque de dos
+  ejes con el punto del medio (tipo · nivel · sección) es preexistente, no lo introduce este
+  cambio.
 
 **3. ¿Funciona para las 5 audiencias?**
-- **Audiencia 1:** "Modo humano" es acogedor, bien. Con la descripción entiende que ahí está su respuesta.
-- **Audiencia 2 (curioso de casos):** acá se rompe. El curioso quiere entender un caso **sin tecnicismos**. El análisis de casos vive en "Modo nerd", rotulado como el lado técnico y descrito como "Análisis técnicos". "Modo humano" es "estafas comunes", no casos. Esta audiencia queda entre dos sillas: la puerta que le corresponde por tema está etiquetada como la que no es para ella.
-- **Audiencia 3:** sin problema.
-- **Audiencia 4 (técnico):** "Modo nerd" en general lo abraza; riesgo bajo. Pero la descripción no le promete rigor (metodología, línea de tiempo, fuentes); es plana.
-- **Audiencia 5 (reclutador):** es la apuesta más arriesgada del sitio. En lectura generosa: marca con voz, confianza, juego. En lectura desconfiada: el trabajo serio —justo el que impresionaría a un reclutador— queda archivado bajo la palabra "nerd", y la descripción que lo acompaña es competente pero anodina. El rótulo puede estar restándole seriedad percibida al contenido que más la necesita.
+- **Audiencia 1 (asustada tras una estafa):** **funciona, y el retroceso que arrastraba la
+  propuesta quedó revertido.** La puerta "Aprender" + "Empezar por acá →" es una invitación a una
+  acción, no un pedido de autoetiquetarse como ignorante ("No sé nada"). Y la descripción
+  **recupera el léxico exacto de esta audiencia**: "Amenazas y **estafas** del día a día… cómo
+  funcionan y **qué hacer**, explicado desde cero" — el mockup había tirado "estafa" y "qué
+  hacer"; la versión aplicada los trae de vuelta y suma el anclaje concreto "en casa, en el
+  trabajo, de viaje". Alguien que googlea "me llegó un SMS raro de un paquete" se siente
+  interpelado. El H1 (H1-C) no le pega el dedo: "es ignorarlo" es una afirmación general, y quien
+  acaba de ser víctima y ahora se informa **no** está ignorando, así que la frase lo valida
+  implícitamente; además no usa la palabra "miedo".
+- **Audiencia 2 (curioso de casos, sin tecnicismos):** **ablandado fuerte, pero la llave no queda
+  del todo entregada.**
+  - A favor: la descripción de "Profundizar" **abre con relato, no con tecnicidad**: "Incidentes
+    que marcaron a la industria y al mundo, sus consecuencias, y cómo pasaron". "Técnico" queda
+    degradado a una cláusula subordinada. Contra el viejo "Análisis técnicos de incidentes
+    reales" (que arrancaba con "técnicos"), es una mejora real: a la audiencia 2 este arranque sí
+    le habla.
+  - En contra: "**con el nivel técnico que cada caso merece**" está escrito desde el punto de
+    vista del autor ("yo calibro"), no desde el de la audiencia 2 ("vos vas a entender esto").
+    Contiene "nivel técnico" de forma prominente y no dice en ningún lado "no necesitás saber de
+    tecnología". Sumado a que "**Profundizar**" connota esfuerzo/inmersión, que es justo lo que
+    una visita casual ("escuché una noticia") puede no tener ganas de hacer. **El sub-problema de
+    fondo persiste: los casos están soldados al nivel "Profundizar", no son una sección propia**
+    → se absorbe en la Prioridad 1 nueva de esta pasada (ex-Prioridad 2). Ningún rótulo lo
+    arregla.
+  - Detalle menor: "marcaron a **la industria**" es encuadre de adentro; la audiencia 2 no piensa
+    en esos términos. "marcaron al mundo" le alcanza.
+- **Audiencia 3 (contacto de LinkedIn):** neutro-a-favor. El quiz que la 13ª pasada marcaba como
+  recibimiento raro ("¿Sabés de ciberseguridad?" cuando venís a ver el trabajo del autor)
+  desapareció: el H1 es una tesis con postura editorial. Rótulos neutros.
+- **Audiencia 4 (colega / estudiante técnico):** **el agujero de la 13ª pasada quedó cerrado.**
+  "Profundizar" + "con el nivel técnico que cada caso merece" + "Ver los análisis →" leen como
+  "acá está el trabajo serio". No minimiza (a diferencia de "Algo sé") y no es condescendiente.
+  El H1-C ("el riesgo más grande no es tenerlo, es ignorarlo") es un principio real de gestión de
+  riesgo y lee con criterio. Matiz de tono menor: "Profundizar" encuadra la lectura como "vos
+  venís a hacerte más profundo", lo que a un senior puede sonarle dirigido a alguien que sube de
+  nivel más que a un par. No es un hueco.
+- **Audiencia 5 (reclutador):** **mejora neta.** El trabajo de análisis queda archivado bajo
+  "**Profundizar**", no bajo "nerd" ni bajo "sé un poco": se saca el costo de "nerd" **sin** meter
+  el costo de minimización de "Algo sé". "Incidentes que marcaron a la industria y al mundo"
+  señala peso. Los rótulos son genéricos pero no suenan amateur; neutros para esta audiencia. El
+  **H1-C** es el que mejor transmite criterio de los tres candidatos comparados en la 18ª pasada:
+  suena a posición razonada sobre el riesgo, no a aforismo de copy. Una home que abre con una
+  postura clara se lee mejor que una que toma examen.
+
+### El H1 vigente (H1-C) — cierre de la comparación de la 18ª pasada
+
+Se adoptó **H1-C**, el candidato #1 del ranking de la 18ª pasada: "Todo lo que usás tiene un
+punto débil. El riesgo más grande no es tenerlo — es ignorarlo."
+- **No es error objetivo:** oración completa, gramatical, sin dato falso ni contradicción de
+  sentido ni link roto.
+- **No nombra "ciberseguridad":** cubierto por el masthead ("Ciberseguridad explicada para…") en
+  el mismo viewport y por `<title>` / `metaHome`. Línea de registro, no bloquea.
+- **Respeta "sin humo y sin alarmismo"** (`sitio.metaHome`): no usa la palabra "miedo" y no
+  personifica un adversario. **Al elegir H1-C en vez de H1-A, el roce de "ignorarlo sí [da
+  miedo]" con "sin alarmismo" que la 17ª y la 18ª pasada anotaban desaparece.** El H1-C lee un
+  poco más como criterio de gestión de riesgo (el riesgo no gestionado es el problema) que como
+  eslogan — leve ventaja para las audiencias 4 y 5.
+- **Único residuo, no bloqueante:** la primera frase ("Todo lo que usás tiene un punto débil") es
+  el lugar común del rubro ("no existe el 100% seguro" / "todo se puede hackear"). Toda la
+  identidad viaja en la segunda frase. Es la misma nota que dejaron la 17ª y la 18ª pasada; no es
+  un problema nuevo, no requiere otra vuelta. Riesgo de lectura parcial ("punto débil" solo, sin
+  la segunda frase): real pero chico — la afirmación se resuelve en la misma línea, sin fold ni
+  clic.
+- Los otros dos candidatos quedan como registro: **H1-A** ("Conocerlo no da miedo, ignorarlo
+  sí.") era adoptable pero metía "miedo" en el hero; **H1-B** ("Los hackers buscan
+  vulnerabilidades todos los días…") no debía adoptarse — el más genérico, el que peor respetaba
+  "sin alarmismo", y "alguien que **decidió** ignorar el riesgo" culpabilizaba a la audiencia 1.
+  El autor eligió el mejor de los tres.
+
+### Desajuste rótulo / ruta — CERRADO
+
+En la propuesta esto era cosmético y preexistente ("Modo humano" ya apuntaba a `/no-tecnico`).
+**Con la aplicación, las rutas pasaron a `/aprender` y `/profundizar`: rótulo y URL coinciden.**
+Un reclutador que mira la barra de direcciones, o alguien que comparte el link, ve una URL que
+describe lo mismo que el rótulo de cara al lector. El desajuste desaparece por completo.
+
+### Coherencia con el footer y con "De vez en cuando, algo de actualidad"
+
+- **Footer** ("Explicando ciberseguridad para los que no saben, para los que creen saber, y para
+  los que realmente saben."): "Aprender / Profundizar" están en el eje **acción**, no en el eje
+  **saber**, así que son **ortogonales** al tricolon — **no reabre el eje "saber" arriba de las
+  puertas** y desaparece la inconsistencia "2 puertas vs 3 niveles" que habría introducido el eje
+  saber/no-saber del mockup descartado. El H1, al ser una tesis y no una pregunta sobre el saber,
+  tampoco lo reabre. "creen saber" —el guiño irónico al nombre— sigue sin expresarse en la nav,
+  pero eso tampoco lo resolvía el texto anterior; no es un retroceso.
+- **"De vez en cuando, algo de actualidad":** **coherente** con REQUISITOS ya aflojado ("Fuera de
+  scope": la nota de coyuntura se publica sin periodicidad fija y una pausa no se lee como
+  incumplimiento). La formulación casual, sin compromiso de frecuencia, calza con ese texto. Sin
+  objeción.
+
+### Qué de la ex-Prioridad 1 cerró este cambio y qué se movió
+
+| Sub-problema de la ex-Prioridad 1 | Estado |
+|---|---|
+| (a) audiencia 2 sin puerta | **Ablandado fuerte, NO cerrado — se absorbe entero en la Prioridad 1 nueva (ex-P2: los casos no son sección).** La descripción de "Profundizar" abre con relato, no con "técnicos" — mejora real. Pero "con el nivel técnico que cada caso merece" está escrito desde el autor y no dice "esto es para vos"; y los casos siguen siendo un *nivel*, no una *sección*. Eso no lo arregla ningún rótulo. |
+| (b) "Modo" implicaba un interruptor inexistente | **Cerrado.** "Aprender / Profundizar" son destinos/acciones, no un toggle sobre el mismo contenido; el campo `nivel` y las rutas también dejaron de decir "modo". |
+| (c) "nerd" restaba seriedad ante el reclutador | **Cerrado, sin canje.** "Profundizar" es digno y no minimiza. A diferencia de "Algo sé", no se cambia un costo por otro. |
+| (d) rótulo ambiguo suelto (nav, badge) | **Cerrado para "Aprender"; casi cerrado para "Profundizar"** (vaguedad leve "¿profundizar en qué?", no ambigüedad). Los infinitivos parsean como etiqueta y badge, y calzan con "Buscar" en la nav. |
+| descripciones genéricas | **Reescritas y en voz.** La de "Profundizar" es concreta. La de "Aprender" recupera el léxico de la audiencia 1 ("estafa", "qué hacer"). |
+| desajuste rótulo / ruta | **Cerrado.** Rutas `/aprender` y `/profundizar`; rótulo y URL coinciden. |
+
+### Veredicto del bloque 3 — CERRADO / publicable
+
+El texto vigente **no tiene ningún error objetivo** (no hay gramática rota, dato falso,
+contradicción de sentido ni link roto). Cierra los sub-problemas (b), (c) y (d) de la
+ex-Prioridad 1, cierra el desajuste rótulo/ruta, disuelve la inconsistencia con el footer,
+**revierte el retroceso de copy de "estafa / qué hacer"** (ex-anexo de la Prioridad 4), y adopta
+el H1 mejor rankeado (H1-C), que deja el bloque sin residuo de tono sobre el H1 salvo el lugar
+común de su primera frase.
+
+**La ex-Prioridad 1 ("rótulos de nivel como eje de navegación") queda CERRADA.** Su único
+residual —la audiencia 2 no recibe un "esto es para vos" explícito porque los casos son un
+*nivel* y no una *sección*— **se absorbe entero en la Prioridad 1 nueva** (ex-Prioridad 2: los
+ejes de sección / los casos no son sección); no es un problema de rótulo.
+
+Las observaciones que quedan vivas sobre el bloque 3 son **todas decisiones de estilo, no
+bloqueantes — el texto ya es publicable tal como está:**
+- (i) "Aprender / Profundizar" son etiquetas genéricas (la identidad la cargan el H1 y las
+  descripciones);
+- (ii) "Profundizar" solo en la nav es algo vago;
+- (iii) "marcaron a la industria" es encuadre de adentro para la audiencia 2 (menor);
+- (iv) la primera frase del H1 es un lugar común del rubro.
+Ninguna requiere otra vuelta salvo que el autor quiera pulir esos puntos deliberadamente.
 
 ---
 
 ## 4. Footer del sitio
 
+**Sin cambios desde la 12ª pasada.** (Reevaluado en la 12ª pasada — iteración 4 de `pie.tagline`, cierre de la línea.)
+
 **Textos renderizados:**
-- Bloque 1 (prominente): "Lo escribe Juan Ignacio García · Alta Gracia, Córdoba, Argentina" — "Esto es ciberseguridad explicada para mi abuela y para el ingeniero de la NASA. Porque acá nadie se las sabe todas." — links "Sobre mí" / "Contacto" + iconos LinkedIn/GitHub.
-- Bloque 2 (`text-xs`, apagado, tras un borde): "RSS" · "Podés compartir este contenido citando la fuente (licencia CC BY 4.0)" (enlazado) · "2026".
+- Bloque 1 (prominente): "Lo escribe Juan Ignacio García · Alta Gracia, Córdoba, Argentina" — **"Explicando ciberseguridad para los que no saben, para los que creen saber, y para los que realmente saben."** — links "Sobre mí" / "Contacto" + iconos LinkedIn/GitHub.
+- Bloque 2 (`text-xs`, apagado, tras un borde): "RSS" · "Podés compartir este contenido citando la fuente (licencia CC BY 4.0)" (enlazado) · año.
 
-### Qué se resolvió
+### Paralelismo del tricolon: cerrado
 
-- **Opacidad de la sigla CC BY (audiencias 1 y 2):** resuelto en la 2ª pasada. "Podés compartir este contenido citando la fuente" carga el significado en lenguaje llano.
-- **Lista plana sin jerarquía:** resuelto en lo estructural en la 3ª pasada (corte en dos bloques con color, tamaño y borde separador).
-- **"Explicada" como participio sin referente + el footer no nombraba el tema:** resuelto en la 4ª pasada al anteponer "Ciberseguridad".
-- **Repetición palabra por palabra con el kicker del masthead (ítem 6 de la 4ª pasada):** **parcialmente resuelto en esta 5ª pasada.** Con "Esto es " delante y "ciberseguridad" en minúscula, el footer ya no arranca con la misma cadena literal que el kicker ("Ciberseguridad explicada para…"). La lectura de "copia-pega" se debilita. **Pero el eco no desaparece:** la fórmula más genérica del sitio, "ciberseguridad explicada para…", sigue apareciendo dos veces en la misma página, ahora solo desfasada por dos palabras de arranque. Un lector atento sigue registrando la rima. Queda como residual de baja prioridad (ver ítem 6 reformulado).
+1. **"los que no saben" / "los que creen saber" / "los que realmente saben".** Los tres miembros arrancan ahora con el mismo "los que" y giran sobre el verbo "saber". El tropiezo que marcaba la 11ª pasada ("quienes" en el primer tiempo, que rompía el molde de los otros dos) está resuelto: el molde es uniforme y el tricolon cierra con cadencia pareja. Queda una asimetría interna menor y deliberada —"no saben" y "realmente saben" son presente de indicativo, "creen saber" es perífrasis— pero es la que produce el contraste de sentido (saber vs. creer que se sabe); no es defecto. **Prioridad 5 de la 11ª pasada: resuelta.**
 
-### Observaciones que siguen / nuevas
+### Punto final: consistencia con el masthead (decisión de estilo, no error)
 
-**Sobre la línea "Esto es ciberseguridad explicada para mi abuela y para el ingeniero de la NASA. Porque acá nadie se las sabe todas."**
+2. **La línea ahora lleva punto; el masthead no.** En la 11ª pasada la observación era que la ausencia de punto era coherente con el masthead ("Ciberseguridad explicada para el que cree que a él no le va a pasar", sin punto). Al agregar el punto, footer y masthead dejan de ser consistentes en ese detalle: dos piezas de identidad de la misma familia, una puntúa el fragmento y la otra no. **No es error objetivo** —un tagline-fragmento se escribe con o sin punto y ambas son defendibles— pero es una inconsistencia de criterio tipográfico entre las dos piezas. Si el autor quiere paridad, la vía es que las dos lleven punto o ninguna. Prioridad mínima, no bloquea.
+
+### Coma antes de "y" en la enumeración
+
+3. **"…los que creen saber, y para los que realmente saben."** La coma antes de "y" no es la norma por defecto en español, pero la RAE la admite en enumeraciones de miembros largos o para marcar una pausa de sentido, que es el caso (cierra un tricolon). No es error; es una elección de puntuación defensible. Se anota para el registro, sin acción.
 
 **1. ¿Genérico o con identidad propia?**
-Identidad media-alta, sin cambios de fondo respecto de la 4ª pasada. "para mi abuela y para el ingeniero de la NASA" sigue siendo la parte con voz (armada con dos clichés localizados: "explicáselo a tu abuela" / "rocket scientist"); "nadie se las sabe todas" sigue siendo la llave irónica del nombre del sitio. El nuevo arranque "Esto es…" no agrega identidad: es un deíctico presentacional que cualquier sitio podría usar. Neutro en este eje, con un matiz negativo: "Esto es X" es una construcción de relleno, no una frase de marca.
+Sin cambio de fondo respecto de la 11ª pasada: "Explicando ciberseguridad para…" sigue siendo un frame de divulgador genérico, y la identidad queda concentrada en el guiño implícito "los que creen saber" → "El Que Se Las Sabe Todas". El retoque de esta pasada es de pulido (paralelismo + punto), no mueve la aguja de identidad. Más limpio y profesional, con la identidad colgando de un hilo fino y no explícito (ver Prioridad 6).
 
 **2. ¿Se entiende sin contexto previo?**
-Sí, en lo esencial. La frase nombra el tema, el arco de público y la actitud sin depender del kicker. **Ambigüedad nueva, menor:** "Esto" no tiene antecedente explícito. Al pie de una página profunda, el lector tiene que inferir que "esto" = el sitio / el blog. Se resuelve solo por contexto (está en el footer, junto al nombre del autor y los links), pero es un pronombre suelto apuntando a nada concreto. La dependencia vieja sigue: "nadie se las sabe todas" necesita el nombre del sitio a la vista para leerse como ironía; el nombre está en la página, así que es menor.
+Sí. Nombra el tema ("ciberseguridad") y a quién (tres niveles de conocimiento). Autocontenida, no necesita el nombre del sitio a la vista para cerrar. Sin cambios respecto de la 11ª pasada.
 
 **3. ¿Funciona para las 5 audiencias?**
-- **Audiencia 1:** "explicada para mi abuela" — cálido, inclusivo. El "Esto es" delante no le quita calidez porque el gancho concreto viene enseguida. Neutro.
-- **Audiencia 2 (curioso de casos):** sin cambio. El footer sigue sin mencionar casos ni incidentes. No le habla. Misma carencia que el tagline del masthead, no un defecto propio del footer.
-- **Audiencia 3:** funciona; el tono conversacional de "Esto es…" no molesta.
-- **Audiencia 4 (técnico):** "el ingeniero de la NASA" sigue haciendo el gesto de "acá hay profundidad para vos". Sigue siendo hipérbole: la audiencia real son estudiantes y colegas.
-- **Audiencia 5 (reclutador):** el cambio corta en dos direcciones. A favor: la 4ª pasada notó que arrancar con el sustantivo abstracto "Ciberseguridad" dejaba el footer un poco rígido / institucional; "Esto es…" lo afloja y lo devuelve a un registro de blog personal. En contra: "Esto es ciberseguridad explicada para…" es un arranque de copy débil —el deíctico de relleno es justo lo que un redactor con oficio recortaría—. Un reclutador que escanea puede leerlo como frase sin pulir. El saldo es chico y probablemente parejo; no mejora ni empeora la percepción de competencia de forma relevante. Sin cambio en el punto de fondo: "acá nadie se las sabe todas", leído literal, puede sonar a que el autor se declara sin autoridad (ítem 5).
+Sin cambios de sustancia respecto de la 11ª pasada:
+- **Audiencia 1 (familiar / no técnica):** "para los que no saben" es directo y sin la condescendencia de "hasta mi abuela". Entiende que hay contenido a su nivel.
+- **Audiencia 2 (curioso de casos):** el pie nombra "ciberseguridad" pero no dice que se analizan casos/incidentes — mismo hueco que el masthead → Prioridad 3, no ítem propio del footer.
+- **Audiencia 3 (contacto de LinkedIn):** funciona; registro medido.
+- **Audiencia 4 (colega / estudiante técnico):** "para los que realmente saben" la incluye y valida explícitamente; el pinchazo se posa en "los que creen saber", categoría en la que el lector ubica a otro, no a sí mismo. Sigue sin prometer método, fuentes ni cronología —gestualiza el nivel, no lo demuestra—, mismo matiz que el masthead, menor.
+- **Audiencia 5 (reclutador):** con el paralelismo unificado desaparece el pequeño ding de prolijidad que marcaba la 11ª pasada. Se lee como enunciado de posicionamiento, correcto y prolijo. Persiste que es un claim genérico de "para todos los niveles" y que el guiño de identidad puede no registrar (Prioridad 6). Net: la frase insignia ya no tiene nada que un lector atento lea como descuido.
+
+### Qué se resolvió / qué sigue
+
+- **Paralelismo del tricolon ("quienes" vs "los que"):** **resuelto** — los tres miembros comparten molde. Era la Prioridad 5 y el único retoque que la 11ª pasada recomendaba antes de fijar la línea.
+- **Punto final:** nuevo detalle. No es error; es una inconsistencia de criterio tipográfico con el masthead (que no puntúa). Decisión de estilo, prioridad mínima.
+- **Pérdida del callback "nadie se las sabe todas" / de la autoironía:** sigue como estaba — decisión de tono/identidad, consecuencia directa de sacar la caricatura. Prioridad mínima, no requiere otra vuelta (Prioridad 6).
+- **Línea de casos no nombrada en el pie:** sigue, mismo hueco del masthead (Prioridad 3), no ítem propio del footer.
+- **Ítems previos** (participio sin referente, eco footer/masthead "Ciberseguridad explicada para…", condescendencia "hasta mi abuela", pinchazo "ingenieros de la NASA", primera oración con dos "para" de función distinta): resueltos en las pasadas 10 y 11, sin recaída.
+- **Bloque 2 (RSS + licencia + año), "Lo escribe" en singular, "2026" huérfano:** sin cambios.
+
+**Veredicto de publicabilidad del footer — cierre:** el footer **no tiene ningún error objetivo** (no hay gramática rota, dato falso, participio colgado ni link roto), y el único retoque que quedaba pendiente de la 11ª pasada —el paralelismo del tricolon— **está aplicado.** La línea está **cerrada y publicable como está.** Las observaciones que quedan vivas son todas decisiones de estilo, no bloqueantes: (a) el punto final rompe la paridad tipográfica con el masthead; (b) la identidad del pie depende de un solo guiño implícito al nombre, sin ancla explícita. Ninguna requiere otra vuelta salvo que el autor quiera abrir esos puntos deliberadamente.
 
 **Otras observaciones del footer (sin cambios):**
-- **Bloque 2 mezcla tres cosas no relacionadas** en una línea a `text-xs`: RSS (prestación para el lector / suscripción), licencia (legal) y año (metadata). RSS es lo más "de lector" de los tres y quedó sepultado en el estrato legal. Para la audiencia 4, principal usuaria de RSS, quedó findable pero deshidratado. Costo menor.
-- "**Lo escribe Juan Ignacio García**" en singular presente: la arquitectura contempla sumar co-autores sin rediseño (RF-5). Esta cadena habría que tocarla. Ajuste de copy futuro, no urgente.
+- **Bloque 2 mezcla tres cosas no relacionadas** en una línea a `text-xs`: RSS (prestación para el lector), licencia (legal) y año (metadata). RSS quedó sepultado en el estrato legal. Para la audiencia 4, principal usuaria de RSS, quedó findable pero deshidratado. Costo menor.
+- "**Lo escribe Juan Ignacio García**" en singular presente: la arquitectura contempla sumar co-autores sin rediseño (RF-5). Ajuste de copy futuro, no urgente.
 - "**2026**" solo, sin "©" ni nombre al lado, queda un poco huérfano. Inocuo.
 
 ---
@@ -134,42 +399,134 @@ Sí, en lo esencial. La frase nombra el tema, el arco de público y la actitud s
 
 Ordenadas de mayor a menor por daño a la identidad/claridad, cantidad de audiencias afectadas y si es decisión de fondo o ajuste de superficie.
 
-1. **"Modo humano / Modo nerd" como eje de navegación.**
-   Problema: (a) la audiencia 2 (curioso de casos, sin tecnicismos) queda sin puerta: el análisis de casos vive en "Modo nerd", rotulado como el lado técnico; (b) "Modo" implica un interruptor sobre el mismo contenido, pero son dos líneas de contenido distintas; (c) "Modo nerd" puede estar restándole seriedad percibida al contenido que impresionaría a un reclutador; (d) "Modo humano" es ambiguo suelto. Las descripciones asociadas son genéricas.
-   Audiencias: 2 (fuerte), 4 y 5 (moderado), 1 (leve).
-   **Decisión de fondo.**
+> **La vieja Prioridad 1 (14ª pasada) — "la UI de taxonomía se publicó con una sola sección visible" — quedó CERRADA en la 15ª pasada.** El umbral `MIN_SECCIONES_NAVEGABLES = 2` oculta toda la superficie de navegación por sección mientras haya <2 secciones. Detalle en el bloque 2.
 
-2. **Taxonomía de secciones + definir la lista real + falta de puerta en el idioma de la víctima.**
-   Problema: (a) el autor todavía no fijó qué secciones quiere: hoy hay 4 semilla que puso el agente desarrollador, y no hay lista canónica en ningún doc; (b) las 4 mezclan dos ejes (tipo-de-amenaza vs. hábito/contexto), lo que genera solapamiento real (Higiene digital vs. Viajero digital); (c) no hay ninguna sección con el vocabulario de la audiencia 1 ("estafa", "fraude", "me estafaron"): eso queda absorbido en "Ingeniería social".
-   Audiencias: 1 (fuerte), 2 (moderado), 5 (percepción de orden).
-   **Decisión de fondo.**
+> **La Prioridad 1 de las pasadas 15ª–18ª — "rótulos de nivel como eje de navegación" — queda CERRADA en la 19ª pasada.** Se aplicó "Aprender / Profundizar" al código: cierra (b) el toggle inexistente, (c) "nerd" resta seriedad y (d) el rótulo ambiguo suelto; cierra también el desajuste rótulo/ruta (rutas `/aprender` y `/profundizar`); y adopta el H1-C, que no reabre ningún reproche de fondo. El único residual —(a) la audiencia 2 no recibe un "esto es para vos" porque los casos son un *nivel* y no una *sección*— **se absorbe entero en la Prioridad 1 nueva (ex-Prioridad 2)**. Detalle en el bloque 3.
 
-3. **El tagline del masthead no cubre la línea de análisis de casos y roza el alarmismo.**
-   Problema: "Ciberseguridad explicada para el que cree que a él no le va a pasar" no da ninguna señal de que el blog también analiza incidentes; deja afuera a la audiencia 2 y 4 desde la portada. Además "no le va a pasar" es encuadre de miedo y contradice la promesa "sin humo y sin alarmismo" de la meta-descripción.
+1. **Secciones: la coherencia de ejes a futuro no está garantizada por el criterio "crecimiento orgánico", y los casos siguen siendo un *nivel* y no una *sección*.**
+   Problema: el autor fijó *cuándo* nace una sección (cuando hay contenido que la llena), no *cuál es el eje de clasificación*. El solapamiento amenaza vs. hábito/contexto que tenían las 4 secciones semilla (p. ej. Higiene digital vs. Viajero digital) no se manifiesta hoy con una sola, pero reaparece intacto al crear la #2 — y se decidirá ad hoc, artículo por artículo, sin modelo previo que lo guíe. **Absorbe el residual (a) de la ex-Prioridad de rótulos:** la audiencia 2 (curioso de casos, sin tecnicismos) recibe una puerta mucho más amable con "Aprender / Profundizar" ("Incidentes que marcaron a la industria y al mundo…"), pero todavía no un "esto es para vos" explícito, porque los casos siguen siendo el *nivel* "Profundizar" —calibrado por tecnicidad, "con el nivel técnico que cada caso merece"— y no una *sección* de casos accesible. Eso no lo arregla ningún rótulo.
+   Audiencias: 1 y 2 (predecir dónde buscar, y —para la 2— entrar a los casos sin sentir que necesita saber de tecnología); 5 (percepción de orden) — latente hoy, activo apenas haya 2+ secciones o cuando se decida si los casos merecen su propio cajón.
+   **Decisión de fondo.** No urgente mientras haya una sola sección.
+
+2. **El tagline del masthead no cubre la línea de análisis de casos y roza el alarmismo.**
+   Problema: "Ciberseguridad explicada para el que cree que a él no le va a pasar" no da ninguna señal de que el blog también analiza incidentes; deja afuera a la audiencia 2 y 4 desde la portada. Además "no le va a pasar" es encuadre de miedo y contradice la promesa "sin humo y sin alarmismo" de la meta-descripción. Nota: el footer nombra el tema ("ciberseguridad") pero tampoco nombra la línea de casos — el hueco de "casos/incidentes" sigue siendo de las dos piezas. **Nota (19ª pasada):** con la aplicación de H1-C ("El riesgo más grande no es tenerlo — es ignorarlo.") el H1 de la home **no** tiene el roce con "sin alarmismo" que sí tenían H1-A ("miedo" en el hero) y H1-B (adversario al acecho). Este ítem queda **circunscripto al masthead.**
    Audiencias: 2 y 4 (no se sienten aludidos), 5 (lo lee como eslogan de marketing, no como criterio).
    **Decisión de fondo** en cuanto al alcance de qué debe abarcar el tagline; **ajuste de copy** en cuanto al tono de miedo.
 
-4. **Nombres de sección opacos como etiqueta suelta.**
-   Problema: "Ingeniería social" e "Infraestructura crítica" son claros con su descripción al lado, pero aparecen sin descripción en nav, breadcrumb ("En Ingeniería social") y tarjetas, donde el lector no técnico no los decodifica.
-   Audiencias: 1 y 2.
-   **Ajuste de copy** (o decisión menor de mostrar un rótulo más llano en esos lugares).
+3. **Secciones: sigue sin haber un cajón con el vocabulario de la audiencia 1 ("estafa", "fraude", "me estafaron").**
+   Problema: antes ese contenido caía —mal— en "Ingeniería social"; hoy no existe ni ese proxy. El primer artículo publicado (juice jacking) ancló la sección más angosta posible ("Viajero digital") en vez de una de "amenazas cotidianas". Pendiente natural del crecimiento orgánico —se cierra cuando se escriba contenido de estafas y nazca su sección—, pero hoy la taxonomía (cuando reaparezca) le dirá a la audiencia 1 "no hay nada para vos". **Nota (19ª pasada): el anexo de copy de este ítem quedó CERRADO.** La descripción de "Aprender" aplicada —"Amenazas y estafas del día a día… cómo funcionan y qué hacer, explicado desde cero"— **recupera** "estafa" y "qué hacer" que el mockup había perdido; el léxico de la audiencia 1 vuelve a tener lugar en una descripción de nivel. Lo que queda es solo el problema de fondo (la *sección* de estafas).
+   Audiencias: 1 (fuerte).
+   **Decisión de fondo** (qué sección abrir primero), ligada al ritmo de publicación.
 
-5. **"Porque acá nadie se las sabe todas" vs. cómo lo lee un reclutador.**
-   Problema: la humildad es buena para la marca y complementa el nombre, pero leída literal y sin el nombre a la vista puede sonar a que el autor se declara sin autoridad. Es una apuesta de tono, defendible, pero conviene decidirla a conciencia. Aparece tanto en el footer como en el concepto general de marca. No la tocó el cambio de esta pasada.
-   Audiencias: 5.
-   **Decisión de fondo** (apuesta de tono), prioridad baja porque es coherente con todo el concepto de marca.
-
-6. **Eco residual footer/kicker + "Esto es" como arranque de relleno.**
-   Estado: el ítem 6 de la 4ª pasada (repetición palabra por palabra footer/kicker) quedó **parcialmente resuelto**. "Esto es " + minúscula rompe la cadena literal idéntica, pero la fórmula genérica "ciberseguridad explicada para…" sigue apareciendo dos veces en la misma página, solo desfasada dos palabras. Además el arreglo introdujo un costo chico: "Esto es…" es un deíctico presentacional de relleno ("esto" sin antecedente claro al pie de página) y un arranque de copy débil que un reclutador puede leer como frase sin pulir. El footer sigue sin nombrar la línea de análisis de casos (misma carencia que el tagline del masthead).
-   Audiencias: 5 (percepción de pulido), 2 (sigue sin verse representada en el pie).
-   **Ajuste de copy**, prioridad baja.
-
-7. **Bloque 2 del footer mezcla RSS con lo legal y lo entierra.**
+4. **Bloque 2 del footer mezcla RSS con lo legal y lo entierra.**
    Problema: RSS es una prestación para el lector y quedó a `text-xs` en el estrato legal/metadata, junto a licencia y año. La audiencia 4 (principal usuaria de RSS) lo encuentra pero deshidratado.
    Audiencias: 4.
    **Ajuste de copy / layout**, prioridad baja.
 
-8. **"Lo escribe Juan Ignacio García" en singular.**
+5. **Footer: pérdida del callback al nombre en `pie.tagline`.**
+   Problema: al sacar "Porque acá nadie se las sabe todas" desaparece el ancla explícita al nombre del sitio y el gesto de autoironía/humildad que incluía al autor. El enganche con "El Que Se Las Sabe Todas" queda colgado de un solo guiño implícito ("los que creen saber"); si el lector no lo agarra, el pie se lee genérico ("explico para todos los niveles").
+   Audiencias: transversal (identidad), 5 (menos distintivo).
+   **Decisión de tono / identidad.** Consecuencia directa de sacar la caricatura de la vieja Prioridad 6; misma tensión de fondo con otras palabras → **aceptable como decisión de estilo, prioridad mínima, no requiere otra vuelta** salvo que el autor quiera recuperar un guiño más explícito al nombre. (Comparte familia con el detalle del punto final, también decisión de estilo no bloqueante.)
+
+6. **"Lo escribe Juan Ignacio García" en singular.**
    Problema: la arquitectura quiere tolerar co-autores sin rediseño (RF-5); esta cadena habría que cambiarla si aparece un segundo autor.
    Audiencias: ninguna hoy; deuda futura.
    **Ajuste de copy**, sin urgencia.
+
+### Ítem que quedó dormido con la poda
+
+- **Nombres de sección opacos como etiqueta suelta** (ex-Prioridad 4, 4ª pasada): "Ingeniería social" e "Infraestructura crítica" —opacos sin su descripción en nav, breadcrumb y tarjetas— **ya no existen**. "Viajero digital", la única sección viva, no es opaca (y hoy ni siquiera se muestra como nav). La observación queda **dormida** y recurrirá si se recrean secciones con nombres de jerga de industria.
+
+### El ranking tras aplicar el bloque 3 (19ª pasada)
+
+Al aplicar "Aprender / Profundizar" + H1-C, la Prioridad 1 de las pasadas 15ª–18ª ("rótulos de
+nivel") **se disuelve** y todo el ranking se corre un lugar hacia arriba:
+- **(b), (c), (d) del bloque de rótulos: cerrados.** Desajuste rótulo/ruta: cerrado. Retroceso
+  de "estafa/qué hacer": revertido.
+- El residual **(a)** —"la audiencia 2 no recibe un 'esto es para vos' y los casos siguen atados
+  al nivel técnico"— **se absorbe en la Prioridad 1 nueva** (los casos no son sección).
+- El **H1** ya no es nota abierta: se adoptó H1-C, el mejor rankeado; su único residuo (primera
+  frase = lugar común) es de estilo, no entra al ranking.
+- **Ranking resultante:** **1.** ejes de secciones / los casos no son sección · **2.** el tagline
+  no cubre casos + roza alarmismo (circunscripto al masthead) · **3.** cajón con el vocabulario
+  de la audiencia 1 (anexo de copy cerrado; queda el fondo) · **4.** bloque 2 del footer mezcla
+  RSS con lo legal · **5.** callback al nombre en el footer · **6.** "Lo escribe" en singular.
+
+### Registro de ítems resueltos
+
+- **6ª pasada:** eco footer/kicker ("ciberseguridad explicada para…" repetida en pie y masthead) + "Esto es" deíctico sin antecedente.
+- **7ª pasada:** asimetría y condescendencia del footer ("que la entienda hasta mi abuela" como piso de comprensión / "el ingeniero de la NASA" como hipérbole de credencial). La contradicción "novedades / bitácora vs. REQUISITOS" dejó de existir al aflojarse la sección "Fuera de scope".
+- **8ª pasada:** separación parcial de "casos" respecto de la bitácora personal en el footer (pasó a ítem propio "casos técnicos a fondo").
+- **9ª pasada:** el footer volvió a su versión original; se descartaron las iteraciones de las pasadas 4-8 sobre `pie.tagline`. Con la reversión se cerró por desaparición el residuo de expectativa de cadencia y se reabrieron dos ítems ("Explicada" sin referente + el pie no nombra el tema; caricatura "mi abuela / ingeniero de la NASA").
+- **10ª pasada:** `pie.tagline` iteración 2. Cerrado el error objetivo de la 9ª pasada (participio sin referente + el pie no nombra el tema): "Ciberseguridad" al frente aporta el referente y nombra el tema. Se reabrió como consecuencia directa el eco con el masthead ("Ciberseguridad explicada para…"), encuadrado como decisión de estilo de prioridad mínima.
+- **11ª pasada:** `pie.tagline` iteración 3 ("Explicando ciberseguridad para quienes no saben, para los que creen saber, y para los que realmente saben"). **Cerrados:** el eco footer/masthead (por eliminación: arranque en gerundio distinto del masthead); la condescendencia "hasta mi abuela" (→ "quienes no saben", neutro); el pinchazo "ingenieros de la NASA" a la audiencia 4 (→ "los que realmente saben" la valida); la primera oración larga con dos "para" de función distinta (→ tricolon con tres "para" en paralelo). **La vieja Prioridad 6 (registro y ritmo del footer, con su caricatura) queda cerrada.** **Nuevo, vivo:** paralelismo del tricolon "quienes" vs "los que" (ajuste de copy cuasi-objetivo, entonces Prioridad 5). **Nuevo, no bloqueante:** pérdida del callback al nombre y de la autoironía al sacar "Porque acá nadie se las sabe todas" (decisión de tono, consecuencia directa de sacar la caricatura, entonces Prioridad 7).
+- **12ª pasada:** `pie.tagline` iteración 4 — texto final: "Explicando ciberseguridad para los que no saben, para los que creen saber, y para los que realmente saben." **Cerrado:** el paralelismo del tricolon (era la Prioridad 5): los tres miembros arrancan con "los que", molde uniforme. Era el único retoque recomendado en la 11ª pasada. **Nuevo, no bloqueante:** se agregó punto final; el masthead no lo lleva → inconsistencia de criterio tipográfico entre las dos piezas, decisión de estilo (se agrupa con la Prioridad 6). **Veredicto de cierre:** el footer no tiene ningún error objetivo y está publicable como está. Las observaciones que quedan (punto vs. masthead; identidad colgada de un guiño implícito) son todas de estilo, no bloqueantes.
+- **13ª pasada:** evaluada la **1.ª PROPUESTA del bloque 3** (mockup `niveles-saber.html`): "No sé nada / Algo sé" bajo el H1 "¿Sabés de ciberseguridad?", más nav y badge. **Veredicto:** no resuelve la Prioridad 1 — cierra (b) "Modo"=interruptor y el literal de (c) "nerd", ablanda (a) audiencia 2, regresa (d) rótulo suelto (ahora son oraciones que no parsean como tag/badge), y abre cinco frentes nuevos. La **dirección** (eje saber/no saber) es válida y es la de la marca; la **ejecución** de este mockup la desaprovecha. **Este mockup quedó descartado.**
+- **14ª pasada:** **BLOQUE 2** — poda a una sola sección ("Viajero digital"), regla de crecimiento orgánico. **Resuelto:** sub-problema (a) de la vieja Prioridad 2. **Dormido:** la vieja Prioridad 4 (nombres de sección opacos). **Pospuesto, no resuelto:** (b) coherencia de ejes. **Sigue pendiente:** (c) cajón con el vocabulario de la audiencia 1. **Nuevo, vivo:** la UI de secciones quedó publicada con una sola sección (nueva Prioridad 1).
+- **15ª pasada:** **BLOQUE 2** — implementado el umbral `MIN_SECCIONES_NAVEGABLES = 2` (`src/lib/secciones.ts`). RF-2 y CA-2 reescritos en REQUISITOS.md. **CERRADA la Prioridad 1 de la 14ª pasada.** **Residuo mínimo, no rankeado:** "Viajero digital" como texto plano huérfano en la ficha del artículo y el stub de redirección de `/secciones`. **Sin cambios:** coherencia de ejes a futuro y cajón con vocabulario de la audiencia 1 siguen pospuestos. Con la Prioridad 1 cerrada, los rótulos de nivel suben a Prioridad 1.
+- **16ª pasada:** evaluada la **2.ª PROPUESTA del bloque 3** (mockup `niveles-aprender-profundizar.html`): rótulos de nivel = dos acciones, **"Aprender" / "Profundizar"**, con las descripciones de nivel reescritas, bajo el H1 "¿Sabés de ciberseguridad?", en nav y badge. **Veredicto: sin catástrofe ni error objetivo — ADOPTABLE.** Cierra (b), (c) y (d); ablanda fuerte (a); disuelve la inconsistencia con el footer. **Residuales, no bloqueantes:** la audiencia 2 no recibe un "esto es para vos" explícito; la descripción de "Aprender" tira "estafa" y "qué hacer" (→ Prioridad 4); el H1 sigue flojo para audiencias 1 y 5.
+- **17ª pasada:** **BLOQUE 3** — cambió **solo el H1** del mockup: de **"¿Sabés de ciberseguridad?"** (quiz) a **"Todo lo que usás tiene un punto débil. Conocerlo no da miedo, ignorarlo sí."** (tesis). **Cerrado:** el reproche de fondo del H1-quiz y la nota de "emparejamiento H1↔puertas aflojado". **Mejora el recibimiento** para audiencias 1, 3 y 5. **Residuales, todos decisión de tono:** (i) "Todo lo que usás tiene un punto débil" es un lugar común; (ii) "ignorarlo sí [da miedo]" roza "sin alarmismo"; (iii) el H1 pierde la palabra "ciberseguridad" (cubierta por el masthead). **Veredicto: mejora. Adoptable.**
+- **18ª pasada:** **BLOQUE 3** — comparados **tres candidatos para el H1**. **RANKING: 1º H1-C · 2º H1-A · 3º H1-B.** — **H1-C:** conserva el giro con postura pero suelta "miedo"; el que mejor respeta "sin alarmismo", el que no le pega el dedo a la audiencia 1, el que más lee como criterio. **Adoptable tal cual.** — **H1-A:** casi empatado; gana en ritmo, pierde por "miedo" en el hero. — **H1-B:** **no debía adoptarse** — el más genérico, el que peor respeta "sin alarmismo", "decidió ignorar el riesgo" culpabiliza a la audiencia 1.
+- **19ª pasada:** **BLOQUE 3** — la 2.ª propuesta **se aplicó al código**: "Aprender / Profundizar" en nav/badge/puertas/listados, campo `nivel` a `aprender | profundizar`, rutas `/aprender` y `/profundizar` (redirects desde las viejas), descripciones de nivel con "estafa/qué hacer" **recuperado** en "Aprender", CTAs "Empezar por acá" / "Ver los análisis", **H1-C** en `home.heroH1` reemplazando el kicker "Primera vez acá", badge "Aprender" + "Viajero digital" como texto, MARCA §3.3 actualizado. **CERRADA la Prioridad 1 de las pasadas 15ª–18ª ("rótulos de nivel"):** (b), (c), (d) cerrados; desajuste rótulo/ruta cerrado; H1-C adoptado sin reproche de fondo; el residual (a) —audiencia 2 sin "esto es para vos", casos como nivel y no sección— se absorbe entero en la Prioridad 1 nueva (ex-P2). **CERRADO el anexo de copy de la Prioridad 4:** la descripción de "Aprender" recupera el léxico de la audiencia 1. El bloque 3 **no tiene ningún error objetivo** y es **publicable / cerrado**; lo que queda (etiquetas genéricas, "Profundizar" solo algo vago, "marcaron a la industria", primera frase del H1) son decisiones de estilo no bloqueantes. Ranking resultante: **1.** ejes de secciones / casos no son sección · **2.** tagline no cubre casos + alarmismo (circunscripto al masthead) · **3.** cajón vocabulario audiencia 1 (fondo) · **4.** RSS en el footer · **5.** callback al nombre · **6.** "Lo escribe" singular.
+
+### Veredicto de la 15ª pasada
+
+El cambio **cierra la que era la Prioridad 1** y no abre ningún frente de contenido nuevo: los
+dos residuos (etiqueta de ficha en texto plano, stub de redirección) son de prioridad mínima y
+uno de ellos es de UX, no de este evaluador. El bloque 2, en su estado actual (una sola sección,
+navegación oculta), **no tiene ningún error objetivo pendiente** y es coherente con REQUISITOS
+tras la reescritura de RF-2/CA-2. Lo que queda sobre secciones (coherencia de ejes, cajón de
+estafas) es **decisión de fondo latente** que solo se activa cuando nazca la 2ª sección; no
+bloquea nada hoy. El foco de la próxima iteración vuelve al **bloque 3** (rótulos de nivel), que
+pasa a ser la Prioridad 1.
+
+### Veredicto de la 16ª pasada
+
+La 2.ª propuesta del bloque 3 ("Aprender / Profundizar") **es adoptable: no hay catástrofe ni
+error objetivo.** Es un avance neto claro sobre el texto vigente y sobre el mockup descartado —
+cierra tres de los cuatro sub-problemas de la Prioridad 1, ablanda fuerte el cuarto, y no
+reintroduce ninguno de los costos del mockup anterior. Lo que queda son tres cosas, todas por
+debajo del umbral de "error grave": (1) la descripción de "Aprender" deja afuera "estafa" y "qué
+hacer"; (2) la audiencia 2 recibe una puerta más amable pero no un "esto es para vos" (Prioridad
+2); (3) el H1 "¿Sabés de ciberseguridad?" sigue flojo (decisión de tono).
+
+### Veredicto de la 17ª pasada
+
+El autor abrió el H1 y lo cambió de quiz a tesis. **El cambio es una mejora y no introduce ningún
+error objetivo.** Cierra el único reproche de fondo que quedaba vivo sobre el bloque 3 (el
+H1-quiz) y disuelve la nota de "emparejamiento H1↔puertas aflojado" de la 16ª. Las tres
+observaciones que quedan sobre el H1 son **todas decisiones de estilo, no bloqueantes.**
+
+### Veredicto de la 18ª pasada
+
+Se compararon tres candidatos para el H1 de la home. **Ninguno es un error objetivo**; la
+elección es de identidad y de tono. **Ranking: 1º H1-C, 2º H1-A, 3º H1-B.** H1-C es el mejor y
+adoptable tal cual; H1-A también adoptable (mete "miedo" en el hero); H1-B **no debía
+adoptarse.** Si se adopta H1-C, el roce del H1 con "sin alarmismo" que anota la Prioridad 3
+desaparece y esa prioridad queda circunscripta al masthead.
+
+### Veredicto de la 19ª pasada
+
+El autor **aplicó al código** la 2.ª propuesta del bloque 3 más el H1-C — la combinación mejor
+rankeada de las pasadas 16ª a 18ª. **El texto vigente no tiene ningún error objetivo.** Cierra:
+(b) el toggle inexistente, (c) "nerd" resta seriedad, (d) el rótulo ambiguo suelto, el desajuste
+rótulo/ruta (rutas `/aprender` y `/profundizar`), y —al elegir H1-C, no H1-A ni H1-B— cualquier
+reproche de fondo sobre el H1 y su roce con "sin alarmismo". **Revierte** además el retroceso de
+copy de "estafa / qué hacer" en la descripción de "Aprender".
+
+**La Prioridad 1 de las pasadas 15ª–18ª queda CERRADA.** Su único residual —(a) la audiencia 2
+no recibe un "esto es para vos" explícito porque los casos son un *nivel* y no una *sección*— **se
+absorbe entero en la Prioridad 1 nueva (ex-Prioridad 2: los ejes de sección / los casos no son
+sección)**; es un problema de arquitectura de contenido, no de rótulo.
+
+**El anexo de copy de la Prioridad 4 (recuperar "estafa / qué hacer") queda CERRADO;** el núcleo
+de esa prioridad —abrir una *sección* con el vocabulario de la audiencia 1— sigue vivo, ligado al
+ritmo de publicación (ahora Prioridad 3).
+
+**Veredicto del bloque 3: publicable / cerrado.** Las observaciones que quedan son todas
+decisiones de estilo, no bloqueantes: "Aprender / Profundizar" son etiquetas genéricas (la
+identidad la cargan el H1 y las descripciones), "Profundizar" solo en la nav es algo vago,
+"marcaron a la industria" es encuadre de adentro para la audiencia 2, y la primera frase del H1
+("Todo lo que usás tiene un punto débil") es un lugar común del rubro. Ninguna requiere otra
+vuelta. El foco pasa a la Prioridad 1 (los casos como sección vs. como nivel) y a la Prioridad 2
+(el tagline del masthead).

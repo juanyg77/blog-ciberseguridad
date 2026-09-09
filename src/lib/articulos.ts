@@ -2,7 +2,7 @@
  * CONSULTA CENTRAL DE CONTENIDO (ARQUITECTURA.md 3.2 + patrón 7).
  *
  * Única fuente de verdad de "qué está publicado". La usan TODOS los consumidores:
- * home, /seccion/[seccion], /no-tecnico, /tecnico, /recientes, rss.xml, el
+ * home, /seccion/[seccion], /aprender, /profundizar, /recientes, rss.xml, el
  * contenido entregado a Pagefind y el getStaticPaths() de [lang]/[...slug].astro.
  *
  * Condición de publicación (ambas, ARQUITECTURA.md 3.2):
@@ -36,6 +36,47 @@ export function instanteDePublicacion(fecha: Date): number {
   return esFechaSinHora ? fecha.getTime() + OFFSET_CORDOBA_MS : fecha.getTime();
 }
 
+/**
+ * Red de seguridad del contenido co-locado (ARQUITECTURA.md 3): cada artículo
+ * real vive en `src/content/articulos/<slugCanonico>/<idioma>.{md,mdx}`. Si el
+ * frontmatter no coincide con esa ruta, el build falla con un mensaje claro en
+ * vez de generar URLs o vínculos de traducción (RF-9) incorrectos en silencio.
+ *
+ * Excepción: `plantilla-articulo.md` está suelta en la raíz de la colección.
+ */
+const RAIZ_ARTICULOS = 'src/content/articulos/';
+
+export function assertArticulosConsistentes(articulos: Articulo[]): void {
+  const errores: string[] = [];
+  for (const a of articulos) {
+    const filePath = a.filePath;
+    if (!filePath) continue;
+    const norm = filePath.replace(/\\/g, '/');
+    const i = norm.indexOf(RAIZ_ARTICULOS);
+    if (i === -1) continue;
+    const rel = norm.slice(i + RAIZ_ARTICULOS.length);
+    const partes = rel.split('/');
+    if (partes.length < 2) continue; // plantilla suelta en la raíz
+    const carpeta = partes[0];
+    const archivoBase = partes[partes.length - 1].replace(/\.(md|mdx)$/, '');
+    if (carpeta !== a.data.slugCanonico) {
+      errores.push(
+        `${rel}: la carpeta es "${carpeta}" pero slugCanonico es "${a.data.slugCanonico}". Deben coincidir.`,
+      );
+    }
+    if (archivoBase !== a.data.idioma) {
+      errores.push(
+        `${rel}: el archivo se llama "${archivoBase}" pero idioma es "${a.data.idioma}". El nombre del archivo debe ser el idioma (es.md / en.md).`,
+      );
+    }
+  }
+  if (errores.length > 0) {
+    throw new Error(
+      `Artículos con ruta y frontmatter inconsistentes (ver CONTRIBUIR.md):\n  - ${errores.join('\n  - ')}`,
+    );
+  }
+}
+
 export function estaPublicado(articulo: Articulo, ahora: number = Date.now()): boolean {
   if (articulo.data.borrador === true) return false;
   return instanteDePublicacion(articulo.data.fechaPublicacion) <= ahora;
@@ -52,6 +93,7 @@ function ordenarPorFechaDesc(a: Articulo, b: Articulo): number {
 export async function getArticulosPublicados(): Promise<Articulo[]> {
   const ahora = Date.now();
   const todos = await getCollection('articulos');
+  assertArticulosConsistentes(todos);
   return todos.filter((a) => estaPublicado(a, ahora)).sort(ordenarPorFechaDesc);
 }
 
@@ -64,7 +106,7 @@ export async function getArticulosPublicadosPorIdioma(
 
 /** RF-1: listado por nivel (la fuente de verdad es el campo, no la carpeta). */
 export async function getArticulosPorNivel(
-  nivel: 'no-tecnico' | 'tecnico',
+  nivel: 'aprender' | 'profundizar',
   idioma = 'es',
 ): Promise<Articulo[]> {
   return (await getArticulosPublicadosPorIdioma(idioma)).filter(
@@ -92,7 +134,7 @@ export async function getTraduccion(articulo: Articulo): Promise<Articulo | unde
   );
 }
 
-/** URL canónica de un artículo: /{idioma}/{nivel}/{slug}. */
+/** URL canónica de un artículo: /{idioma}/{nivel}/{slug}  (nivel = aprender | profundizar). */
 export function rutaArticulo(articulo: Articulo): string {
   return `/${articulo.data.idioma}/${articulo.data.nivel}/${articulo.data.slug}`;
 }

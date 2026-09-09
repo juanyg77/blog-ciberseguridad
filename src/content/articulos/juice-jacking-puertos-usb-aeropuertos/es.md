@@ -3,13 +3,13 @@ titulo: "El puerto USB del aeropuerto: cuando cargar el celular sale más caro d
 slug: "juice-jacking-puertos-usb-aeropuertos"
 slugCanonico: "juice-jacking-puertos-usb-aeropuertos"
 idioma: "es"
-nivel: "no-tecnico"
+nivel: "aprender"
 tipoArticulo: "explicativo"
 secciones: ["viajero-digital"]
 autores: ["juan-garcia"]
-fechaPublicacion: 2026-09-10
+fechaPublicacion: 2026-09-09
 resumen: "15% de batería, el vuelo sale en 40 minutos y al lado del asiento hay un puerto USB. Parece la solución perfecta, pero el FBI lleva años advirtiendo que no lo es. Así funciona el juice jacking y así se evita."
-portada: "../../../../assets/images/articulos/juice-jacking-puertos-usb-aeropuertos/portada.webp"
+portada: "./portada.webp"
 portadaAlt: "Puerto USB de carga en una sala de embarque de un aeropuerto"
 tieneOpinion: false
 borrador: false

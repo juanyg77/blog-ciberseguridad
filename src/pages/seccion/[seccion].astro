@@ -9,9 +9,13 @@ import LayoutBase from '../../layouts/LayoutBase.astro';
 import TarjetaArticulo from '../../components/TarjetaArticulo.astro';
 import { t } from '../../i18n';
 import { getArticulosPorSeccion } from '../../lib/articulos';
+import { MIN_SECCIONES_NAVEGABLES } from '../../lib/secciones';
 
 export async function getStaticPaths() {
   const secciones = await getCollection('secciones');
+  // RF-2: con menos de 2 secciones no se genera navegación por sección
+  // (ver src/lib/secciones.ts). El frontmatter del artículo no cambia.
+  if (secciones.length < MIN_SECCIONES_NAVEGABLES) return [];
   return secciones.map((s) => ({ params: { seccion: s.id }, props: { seccion: s } }));
 }
 

@@ -19,10 +19,10 @@ const es = {
   },
   nav: {
     inicio: 'Inicio',
-    // Etiquetas visibles del "nivel" de RF-1. El campo interno sigue siendo
-    // `nivel: no-tecnico | tecnico` y los slugs de ruta no cambian.
-    noTecnico: 'Modo humano',
-    tecnico: 'Modo nerd',
+    // Etiquetas visibles del "nivel" de RF-1. El valor del campo `nivel` es
+    // ahora `aprender | profundizar` y coincide con el slug de ruta.
+    aprender: 'Aprender',
+    profundizar: 'Profundizar',
     secciones: 'Secciones',
     sobre: 'Sobre mí',
     contacto: 'Contacto',
@@ -41,7 +41,7 @@ const es = {
     alternar: 'Cambiar tema',
   },
   articulo: {
-    porNivel: { 'no-tecnico': 'Modo humano', tecnico: 'Modo nerd' },
+    porNivel: { aprender: 'Aprender', profundizar: 'Profundizar' },
     porTipo: {
       'analisis-caso': 'Análisis de caso',
       explicativo: 'Explicativo',
@@ -83,22 +83,26 @@ const es = {
     siguiente: 'Ver siguientes',
   },
   // Descripción canónica de cada nivel (RF-1). Se usa en la home y en las
-  // páginas de listado /no-tecnico y /tecnico.
+  // páginas de listado /aprender y /profundizar.
   nivel: {
     descripcion: {
-      'no-tecnico':
-        'Cómo funcionan las amenazas y estafas más comunes, y qué hacer, contado desde cero.',
-      tecnico:
-        'Análisis técnicos de incidentes reales: cómo pasaron, qué salió mal y qué se puede aprender.',
+      aprender:
+        'Amenazas y estafas del día a día —en casa, en el trabajo, de viaje—: cómo funcionan y qué hacer, explicado desde cero.',
+      profundizar:
+        'Incidentes que marcaron a la industria y al mundo, sus consecuencias, y cómo pasaron —con el nivel técnico que cada caso merece. De vez en cuando, algo de actualidad.',
     },
   },
   home: {
     destacados: 'Destacados',
+    // H1 del hero: fija la tesis del blog (no es un quiz). Las dos puertas de
+    // abajo hacen la señalización.
+    heroH1:
+      'Todo lo que usás tiene un punto débil. El riesgo más grande no es tenerlo — es ignorarlo.',
     primeraVez: 'Primera vez acá',
-    puertaNoTecnicoTitulo: 'Modo humano',
-    puertaNoTecnicoCta: 'Empezar por lo básico',
-    puertaTecnicoTitulo: 'Modo nerd',
-    puertaTecnicoCta: 'Ir a los análisis',
+    puertaAprenderTitulo: 'Aprender',
+    puertaAprenderCta: 'Empezar por acá',
+    puertaProfundizarTitulo: 'Profundizar',
+    puertaProfundizarCta: 'Ver los análisis',
     ultimo: 'Lo último',
     todosLosArticulos: 'Todos los artículos',
     explorarSecciones: 'Explorar por sección',
@@ -156,7 +160,7 @@ const es = {
   pie: {
     hechoPor: 'Lo escribe {autor} · Alta Gracia, Córdoba, Argentina',
     tagline:
-      'Explicaciones simples para que las entienda hasta mi abuela, y contenido técnico para el ingeniero de la NASA. Porque acá nadie se las sabe todas.',
+      'Explicando ciberseguridad para los que no saben, para los que creen saber, y para los que realmente saben.',
     rss: 'RSS',
   },
   error404: {

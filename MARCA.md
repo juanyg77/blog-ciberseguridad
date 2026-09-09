@@ -50,8 +50,9 @@
     acento celeste. Se **descarta** la dirección "editorial cálida + verde" de la
     iteración 4 (nunca llegó a implementarse).
   - **Identidad verbal actualizada** (sección 3): los niveles de RF-1 se muestran
-    al lector como **"Modo humano"** y **"Modo nerd"**; se fija el principio
-    *"ironía en el envoltorio, rigor en el contenido"*; taglines reescritos.
+    al lector como **"Aprender"** y **"Profundizar"** (2026-09-09; antes
+    "Modo humano" / "Modo nerd", ver 3.3); se fija el principio *"ironía en el
+    envoltorio, rigor en el contenido"*; taglines reescritos.
   - Preguntas abiertas 1, 2, 3, 6, 7 y 8 de la iteración 4: **resueltas** (ver 6).
 
 ---
@@ -142,8 +143,8 @@ pulla; acá se usa con **ironía cariñosa**.
 Del mismo material sale un artículo **candidato**, anotado para no perderlo — **no
 es una promesa de publicación ni tiene fecha**:
 
-> **"Los riesgos de los dispositivos de IPTV pirata"** (nivel: Modo humano, con
-> posible complemento Modo nerd). Puntos a cubrir: malware fuera del control de
+> **"Los riesgos de los dispositivos de IPTV pirata"** (nivel: "Aprender", con
+> posible complemento "Profundizar"). Puntos a cubrir: malware fuera del control de
 > Google Play / tiendas oficiales; movimiento lateral desde el dispositivo hacia
 > el resto de la red de casa; captación en botnets de IoT; ausencia total de
 > parches de seguridad; exfiltración de datos por firmwares modificados. Cierre
@@ -159,7 +160,7 @@ es una promesa de publicación ni tiene fecha**:
 - **El nombre NO fija el tono de todo el blog.** El registro irónico se usa
   **solo cuando el artículo lo amerita** (típicamente los explicativos sobre
   falsa sensación de seguridad, estafas, "a mí no me va a pasar"). **Los análisis
-  técnicos (Modo nerd) siguen siendo neutrales y serios** — ver 3.2.
+  técnicos ("Profundizar") siguen siendo neutrales y serios** — ver 3.2.
 - **El nombre NO se para sobre "diario personal" ni sobre "soy principiante".**
   La historia de reconversión del autor es **capa, no cimiento** (vive en "Sobre
   mí", en el tono y en una eventual serie etiquetada aparte).
@@ -183,9 +184,9 @@ lo sumo, un dominio personal que redirija (ver 6, pregunta 4).
 
 | Línea | Persona | Cómo suena |
 |---|---|---|
-| Explicativos para público no técnico (**Modo humano**) | **Profesor paciente** | Desde cero, sin apurar, con analogías, **sin hacer sentir tonto a nadie**. |
-| Avisos prácticos (phishing, estafas) (**Modo humano**) | **Amigo que sabe y te avisa** | Directo, algo irónico: *"así te la hacen y así lo evitás"*. |
-| Análisis de casos (Colonial Pipeline, WannaCry) (**Modo nerd**) | **Veterano que cuenta batallas** | Narra el incidente como historia, con tensión y **moraleja** — pero **serio y neutral en los hechos**. |
+| Explicativos para público no técnico (**Aprender**) | **Profesor paciente** | Desde cero, sin apurar, con analogías, **sin hacer sentir tonto a nadie**. |
+| Avisos prácticos (phishing, estafas) (**Aprender**) | **Amigo que sabe y te avisa** | Directo, algo irónico: *"así te la hacen y así lo evitás"*. |
+| Análisis de casos (Colonial Pipeline, WannaCry) (**Profundizar**) | **Veterano que cuenta batallas** | Narra el incidente como historia, con tensión y **moraleja** — pero **serio y neutral en los hechos**. |
 
 - **Queda AFUERA** el registro "senior sobrio / neutro / institucional" como
   **tono general** (sí aplica neutralidad al relato de hechos técnicos).
@@ -235,9 +236,12 @@ candados) **NO** como identidad.
    sección 4 provienen de la definición de quien encarga (dirección ya
    implementada en código). Se documentan como **estado actual**, no se
    re-verificaron contra el repositorio.
-3. **S-M3.** "Modo humano / Modo nerd" son **rótulos de cara al lector**. El
-   modelo de datos de `ARQUITECTURA.md` (`nivel: no-tecnico | tecnico`) **no
-   cambia**; es una decisión de presentación/marca sobre la misma taxonomía.
+3. **S-M3.** *(Actualizado 2026-09-09.)* Los rótulos de nivel de cara al lector
+   son **"Aprender" / "Profundizar"** (antes "Modo humano / Modo nerd", ver 3.3).
+   Esta vez el valor del campo `nivel` **sí** acompaña el rótulo: pasó de
+   `no-tecnico | tecnico` a **`aprender | profundizar`**, y las rutas a
+   `/aprender` y `/profundizar`. Sigue siendo la misma taxonomía de dos niveles
+   de RF-1; solo cambian nombre, slug y clave de i18n, todos al mismo valor.
 4. **S-M4.** El chequeo de colisión de "El Que Se Las Sabe Todas" es preliminar
    (búsqueda web, 2026-09-05): **no se encontró** blog, podcast, empresa ni
    herramienta de seguridad con ese nombre. El dominio **ya está comprado**, así
@@ -289,42 +293,54 @@ sobrecargar de modismos** (ver 3.7).
 
 ### 3.2 Principio rector: ironía en el envoltorio, rigor en el contenido
 
-El **marco de la marca** —el nombre "El Que Se Las Sabe Todas", los rótulos
-"Modo humano / Modo nerd", el tagline— es **irónico y con humor**. Eso es
-deliberado y es lo que le da carácter propio.
+El **marco de la marca** —el nombre "El Que Se Las Sabe Todas", el tagline, el
+H1 de la home— es **irónico y con humor**. Eso es deliberado y es lo que le da
+carácter propio. (Los rótulos de nivel "Aprender" / "Profundizar" son neutros:
+la ironía no vive en ellos, ver 3.3.)
 
 Pero la ironía **vive en el envoltorio, no en el rigor**:
 
 | Dónde | Registro |
 |---|---|
 | Nombre, tagline, rótulos de nivel, títulos de secciones, copy de la home, intros de los explicativos sobre falsa sensación de seguridad | **Irónico / con humor permitido.** |
-| Explicativos en general (Modo humano) | **Distendido y claro.** El humor es opcional, "como sal": realza, no es el plato. |
-| **Análisis técnicos de incidentes (Modo nerd)** | **Neutral y serio.** Se narra con tensión (es una historia), pero los hechos, las fechas, la cronología y la parte técnica **no llevan ironía**. La opinión del autor va en su bloque aparte y rotulado (RF-3 / CA-3). |
+| Explicativos en general (**Aprender**) | **Distendido y claro.** El humor es opcional, "como sal": realza, no es el plato. |
+| **Análisis técnicos de incidentes (Profundizar)** | **Neutral y serio.** Se narra con tensión (es una historia), pero los hechos, las fechas, la cronología y la parte técnica **no llevan ironía**. La opinión del autor va en su bloque aparte y rotulado (RF-3 / CA-3). |
 
 Regla corta: **te podés reír de la sobreconfianza; no te reís del incidente, de
 la víctima, ni del dato técnico.**
 
-### 3.3 Rótulos de nivel de cara al lector: "Modo humano" / "Modo nerd"
+### 3.3 Rótulos de nivel de cara al lector: "Aprender" / "Profundizar"
 
-Los dos niveles de RF-1 se le presentan al lector con estos nombres (el modelo de
-datos sigue siendo `no-tecnico` / `tecnico` — S-M3):
+> **Iteración (2026-09-09).** Los rótulos "Modo humano" / "Modo nerd" (y el
+> mockup intermedio "No sé nada" / "Algo sé") se descartaron tras varias pasadas
+> del evaluador de contenido: "Modo" sugería un interruptor sobre el mismo
+> contenido, "nerd" le bajaba seriedad percibida al análisis técnico ante un
+> reclutador, y "Modo humano" era ambiguo como etiqueta suelta. Se adopta el eje
+> **acción**: dos verbos, "Aprender" y "Profundizar".
+
+Los dos niveles de RF-1 se le presentan al lector con estos nombres. El valor del
+campo `nivel` pasó a ser **`aprender` / `profundizar`** (coincide con el rótulo,
+con el slug de ruta y con la clave de i18n). Bajo un H1 que fija la tesis del
+blog: *"Todo lo que usás tiene un punto débil. El riesgo más grande no es
+tenerlo — es ignorarlo."*
 
 | Rótulo | Descripción de cara al lector |
 |---|---|
-| **Modo humano** | *"Cómo funcionan las amenazas y estafas más comunes, y qué hacer, contado desde cero."* |
-| **Modo nerd** | *"Análisis técnicos de incidentes reales: cómo pasaron, qué salió mal y qué se puede aprender."* |
+| **Aprender** | *"Amenazas y estafas del día a día —en casa, en el trabajo, de viaje—: cómo funcionan y qué hacer, explicado desde cero."* |
+| **Profundizar** | *"Incidentes que marcaron a la industria y al mundo, sus consecuencias, y cómo pasaron —con el nivel técnico que cada caso merece. De vez en cuando, algo de actualidad."* |
 
-- Los rótulos son **autoirónicos y amables** (nadie queda excluido: "humano" no
-  es peyorativo, "nerd" es reivindicativo). Encajan con el tono del nombre.
-- **CA-1 sigue igual:** desde la home se llega a cada listado en 1 clic. Los
-  botones/enlaces pueden decir "Modo humano" / "Modo nerd" con un subtítulo
-  aclaratorio.
-- En metadatos, `hreflang` y URLs no cambia nada (las rutas siguen siendo
-  `/no-tecnico` y `/tecnico` o equivalentes que defina la implementación).
+- Son **acciones, no un toggle**: "Aprender" y "Profundizar" son dos maneras de
+  entrar, no dos versiones del mismo artículo. La ironía de la marca vive en el
+  nombre del sitio y en el H1/tagline, no en estos rótulos.
+- **CA-1 sigue igual:** desde la home se llega a cada listado en 1 clic.
+- Las rutas acompañan el rótulo: **`/aprender`** y **`/profundizar`**. Redirects
+  desde `/no-tecnico` y `/tecnico` en `astro.config.mjs` por si quedó algún
+  enlace viejo. `hreflang` y URLs canónicas se arman con el campo `nivel`, así
+  que siguen el cambio solas.
 
 ### 3.4 Las tres personas de escritura, aterrizadas
 
-#### A) Explicativos (Modo humano) — "profesor paciente"
+#### A) Explicativos ("Aprender") — "profesor paciente"
 
 - **Objetivo:** que alguien que nunca pensó en esto termine el artículo
   entendiéndolo **y sin haberse sentido tonto**.
@@ -334,7 +350,7 @@ datos sigue siendo `no-tecnico` / `tecnico` — S-M3):
   concepto por párrafo; cerrar con **"y esto para vos significa…"**.
 - **Nunca:** "obviamente", "es muy simple", "todo el mundo sabe".
 
-#### B) Avisos prácticos (Modo humano) — "amigo que sabe y te avisa"
+#### B) Avisos prácticos ("Aprender") — "amigo que sabe y te avisa"
 
 - **Objetivo:** que en 2 minutos sepas **si te están por estafar y qué hacer**.
 - **Movimientos:** directo al grano (**"Así funciona. Así te das cuenta. Así la
@@ -343,7 +359,7 @@ datos sigue siendo `no-tecnico` / `tecnico` — S-M3):
   pedir esto. Nunca.").
 - **Nunca:** pánico, mayúsculas de urgencia, "PODRÍAS PERDER TODO".
 
-#### C) Análisis de casos (Modo nerd) — "veterano que cuenta batallas"
+#### C) Análisis de casos ("Profundizar") — "veterano que cuenta batallas"
 
 - **Objetivo:** que leas un incidente real **como una historia con tensión** y
   salgas con una **lección** clara.
@@ -750,9 +766,9 @@ comprado**.
 2. **El autor responde la sección 6** (mínimo: preguntas 1, 2 y 5).
 3. **Poner el dominio en Cloudflare** (DNS del proyecto, `ARQUITECTURA.md` D-4) y
    configurar Email Routing para `contacto@`.
-4. **Documentar en `CONTRIBUIR.md`:** los rótulos "Modo humano / Modo nerd" y sus
-   descripciones (3.3); la convención de título en inglés para el nombre del blog
-   (2.1); la regla "ironía en el envoltorio, rigor en el contenido" (3.2).
+4. **Documentar en `CONTRIBUIR.md`:** los rótulos de nivel "Aprender" / "Profundizar"
+   y sus descripciones (3.3); la convención de título en inglés para el nombre del
+   blog (2.1); la regla "ironía en el envoltorio, rigor en el contenido" (3.2).
 5. **(Opcional)** registrar `elquelassabetodas.com.ar` como defensa de marca
    (pregunta 6).
 6. **Etapa posterior y separada — diseño visual concreto:** paleta afinada, logo,

@@ -12,24 +12,38 @@ dentro del repo. Para publicar: `npm run build` + `npx wrangler deploy`
 
 ## 1. Publicar un artículo
 
-1. Elegí **nivel** y **carpeta**:
-   - `src/content/articulos/es/no-tecnico/` — explicativos para público general.
-   - `src/content/articulos/es/tecnico/` — análisis de casos.
-   La carpeta es organización humana y define la URL; **la fuente de verdad para
-   filtrar es el campo `nivel` del frontmatter** (ARQUITECTURA.md 3).
-2. Creá el archivo `mi-slug.md` (o `.mdx` si vas a usar componentes como
-   `<BloqueOpinion>`). El nombre en **kebab-case**.
-3. Completá el frontmatter (ver plantilla abajo). El build **valida** el
-   frontmatter con Zod: si falta un campo obligatorio o hay un valor inválido,
+Cada artículo es **una carpeta** (contenido co-locado): adentro van todas las
+versiones idiomáticas y **todas sus imágenes**. Ni el idioma ni el nivel son
+carpetas: son campos del frontmatter, y **esa es la fuente de verdad para
+filtrar** (ARQUITECTURA.md 3).
+
+```
+src/content/articulos/
+  juice-jacking-puertos-usb-aeropuertos/   ← nombre de la carpeta = slugCanonico
+    es.md                                  ← el nombre del archivo es el idioma
+    en.md                                  ← (opcional) la traducción, RF-9
+    portada.webp
+    diagrama-1.webp
+```
+
+1. Elegí el **slug canónico** del artículo (kebab-case, describe el tema, es
+   estable para siempre) y creá la carpeta `src/content/articulos/<slug-canonico>/`.
+2. Adentro, creá `es.md` (o `es.mdx` si vas a usar componentes como
+   `<BloqueOpinion>`). **El nombre del archivo es el código de idioma**: `es`, `en`.
+   La forma más rápida: copiá `src/content/articulos/plantilla-articulo.md`
+   (es un borrador, no se publica) a `<slug-canonico>/es.md`.
+3. Completá el frontmatter (ver plantilla abajo). `slugCanonico` **debe ser
+   idéntico al nombre de la carpeta**. El build **valida** con Zod (campos y
+   valores) **y** la coherencia carpeta ⇔ frontmatter: si algo no cuadra,
    `npm run build` falla con un mensaje claro. Esa es la red de seguridad.
 
    > Los archivos y carpetas que empiezan con `_` se ignoran (no se publican):
-   > sirven para notas y borradores locales. Como punto de partida, copiá
-   > `src/content/articulos/plantilla-articulo.md` (es un borrador: `borrador:
-   > true`, no se publica) y ponele `borrador: false` en tu copia.
-4. Escribí el cuerpo. Para el bloque de opinión (RF-3), en un `.mdx`:
+   > sirven para notas y borradores locales.
+4. Poné las imágenes **en la misma carpeta** y referencialas con ruta corta
+   (`./portada.webp`). Ver sección 4.
+5. Escribí el cuerpo. Para el bloque de opinión (RF-3), en un `.mdx`:
    ```mdx
-   import BloqueOpinion from '../../../../components/BloqueOpinion.astro';
+   import BloqueOpinion from '../../../components/BloqueOpinion.astro';
 
    ...texto de hechos...
 
@@ -37,25 +51,30 @@ dentro del repo. Para publicar: `npm run build` + `npx wrangler deploy`
    Acá va la interpretación del autor.
    </BloqueOpinion>
    ```
-5. `git add` + `git commit`, y publicá con `npm run build` + `npx wrangler deploy`
+6. `git add` + `git commit`, y publicá con `npm run build` + `npx wrangler deploy`
    (o dejá que corra el deploy automático si está configurado). Ver README → "Deploy".
+
+> **URL** del artículo: `/{idioma}/{nivel}/{slug}` — se arma con los campos
+> `idioma`, `nivel` y `slug` del frontmatter, no con la ruta del archivo. El
+> `slug` puede diferir entre idiomas (`slug` en `en.md` puede ser
+> `juice-jacking-usb-ports-airports`); `slugCanonico` es el que los une (RF-9).
 
 ### Plantilla de frontmatter
 
 ```yaml
 ---
 titulo: "Título del artículo (con el año del hecho entre paréntesis si es análisis de caso)"
-slug: "titulo-del-articulo"
-slugCanonico: "titulo-del-articulo"   # mismo valor para la versión es y en (RF-9)
+slug: "titulo-del-articulo"           # kebab-case; define la URL dentro de su nivel/idioma
+slugCanonico: "titulo-del-articulo"   # = nombre de la carpeta; une la versión es y en (RF-9)
 idioma: "es"                          # es | en
-nivel: "tecnico"                      # no-tecnico | tecnico
+nivel: "profundizar"                  # aprender | profundizar  (rótulo: "Aprender" / "Profundizar")
 tipoArticulo: "analisis-caso"         # analisis-caso | explicativo | coyuntura
-secciones: ["infraestructura-critica"] # slugs de src/content/secciones/ (>= 1)
+secciones: ["viajero-digital"]       # slugs de src/content/secciones/ (>= 1)
 autores: ["juan-garcia"]              # slugs de src/content/autores/ (>= 1)
 fechaPublicacion: 2026-09-10          # ver "Fechas y publicación programada"
 fechaActualizacion: 2026-09-15        # opcional; si difiere, se muestra "Actualizado en <mes año>"
 resumen: "2-3 frases. Máx. 400 caracteres."
-portada: "../../../../assets/images/articulos/mi-slug/portada.webp"  # opcional; ruta relativa al archivo (siempre 4 niveles: es/<nivel>/<archivo>). Ver "Imágenes"
+portada: "./portada.webp"            # opcional; imagen co-locada en la carpeta del artículo. Ver "Imágenes"
 portadaAlt: "Descripción de la portada"
 tieneOpinion: true                   # marca el artículo en los listados
 borrador: false                      # true = NO se publica nunca, sin importar la fecha
@@ -88,6 +107,17 @@ primaria.
 ## 2. Agregar una sección nueva (CA-2)
 
 RF-2: se puede sumar una sección **sin tocar diseño ni navegación**.
+
+Las secciones crecen de forma **orgánica**: creá una sección recién cuando ya
+tenés (o estás por publicar) contenido que la llena. No dejes secciones vacías
+ni armes una taxonomía completa por adelantado.
+
+**Umbral de navegación (`src/lib/secciones.ts`):** con **una sola** sección, toda
+la navegación por sección está oculta — el menú "Secciones", la vitrina de la
+home, la página `/secciones` (redirige a la home) y las rutas `/seccion/[x]` (no
+se generan); en la ficha del artículo la sección se muestra como texto, no como
+enlace. Al crear la **segunda** sección, todo reaparece solo. El campo
+`secciones:` del frontmatter del artículo se completa igual en cualquier caso.
 
 1. Creá `src/content/secciones/mi-seccion.md`:
    ```yaml
@@ -130,26 +160,35 @@ RF-2: se puede sumar una sección **sin tocar diseño ni navegación**.
 
 ## 4. Imágenes: presupuesto de peso (D-16 / ARQUITECTURA.md 3.3)
 
-Todas las imágenes van en el repo, en **`src/assets/images/...`** (no en
-`public/`). Astro las procesa en el build: genera **WebP/AVIF** y **tamaños
-responsivos** automáticamente, y sirve la versión óptima según el dispositivo.
+Todas las imágenes van en el repo (no en `public/`). Astro las procesa en el
+build: genera **WebP/AVIF** y **tamaños responsivos** automáticamente, y sirve la
+versión óptima según el dispositivo.
 
-- Autores: `src/assets/images/autores/nombre-apellido.<ext>`
-- Artículos: `src/assets/images/articulos/<slug>/...`
+- **Artículos: en la carpeta del propio artículo**, junto al `.md`
+  (`src/content/articulos/<slug-canonico>/portada.webp`, `.../diagrama-1.webp`…).
+  Las comparten las dos versiones idiomáticas. Si una imagen lleva texto quemado,
+  hacé una por idioma: `diagrama-1-es.webp` / `diagrama-1-en.webp`.
+- Autores: `src/assets/images/autores/nombre-apellido.<ext>` (colección aparte).
 
 En el frontmatter, `portada:` es una **ruta relativa al archivo del artículo**
-(que Astro resuelve como import de asset), no una URL absoluta:
+(Astro la resuelve como import de asset), no una URL absoluta. Como la imagen
+está en la misma carpeta, siempre es `./`:
 
 ```yaml
-# desde src/content/articulos/es/<nivel>/<archivo>.mdx  (siempre 4 niveles)
-portada: "../../../../assets/images/articulos/mi-slug/portada.webp"
+portada: "./portada.webp"
 ```
 
-Dentro del cuerpo (`.mdx`), usá el componente `<Image>` de Astro:
+Dentro del cuerpo, en un `.md` alcanza con Markdown normal (Astro optimiza igual):
+
+```md
+![Qué muestra la captura](./diagrama-1.webp)
+```
+
+En un `.mdx`, si querés control fino, usá el componente `<Image>` de Astro:
 
 ```mdx
 import { Image } from 'astro:assets';
-import captura from '../../../../assets/images/articulos/mi-slug/captura.png';
+import captura from './diagrama-1.webp';
 
 <Image src={captura} alt="Qué muestra la captura" />
 ```

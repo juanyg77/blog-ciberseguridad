@@ -244,27 +244,24 @@ acotado (cambia el layer de plantillas, no el contenido).
 ├─ ARQUITECTURA.md
 ├─ CONTRIBUIR.md                    # procedimiento de publicación, secciones (CA-2), presupuesto de imágenes, citado de terceros
 ├─ LICENSE-CONTENT                  # D-17 — CC BY 4.0 para el contenido (texto/artículos)
-├─ public/
-│  └─ images/
-│     ├─ autores/
-│     │  └─ juan-garcia.jpg
-│     └─ articulos/
-│        └─ colonial-pipeline/portada.jpg
 ├─ src/
+│  ├─ assets/
+│  │  └─ images/
+│  │     └─ autores/
+│  │        └─ juan-garcia.jpg     # fotos de autor (colección aparte)
 │  ├─ content/
 │  │  ├─ config.ts                 # esquemas (Zod) de todas las colecciones
 │  │  │
-│  │  ├─ articulos/
-│  │  │  ├─ es/
-│  │  │  │  ├─ no-tecnico/
-│  │  │  │  │  ├─ que-es-el-phishing.md
-│  │  │  │  │  └─ estafas-por-sms-paquete-retenido.md
-│  │  │  │  └─ tecnico/
-│  │  │  │     ├─ colonial-pipeline-analisis.md
-│  │  │  │     └─ wannacry-analisis.md
-│  │  │  └─ en/
-│  │  │     └─ tecnico/
-│  │  │        └─ colonial-pipeline-analysis.md   # traducción opcional (RF-9)
+│  │  ├─ articulos/                # CO-LOCADO: 1 carpeta por artículo = slugCanonico
+│  │  │  ├─ que-es-el-phishing/
+│  │  │  │  ├─ es.md               # el nombre del archivo es el idioma
+│  │  │  │  └─ portada.webp        # imágenes junto al .md, ref. como ./portada.webp
+│  │  │  ├─ colonial-pipeline/
+│  │  │  │  ├─ es.md
+│  │  │  │  ├─ en.md               # traducción opcional (RF-9), misma carpeta
+│  │  │  │  ├─ portada.webp        # compartida por ambos idiomas
+│  │  │  │  └─ diagrama-1.webp
+│  │  │  └─ plantilla-articulo.md  # plantilla suelta (borrador: true)
 │  │  │
 │  │  ├─ avisos/                    # RF-11 / CA-12 — NO son artículos
 │  │  │  └─ pausa-2026-marzo.md
@@ -274,9 +271,7 @@ acotado (cambia el layer de plantillas, no el contenido).
 │  │  │  └─ _plantilla-autor.md
 │  │  │
 │  │  └─ secciones/                 # RF-2 — catálogo de secciones como DATO
-│  │     ├─ ingenieria-social.md
-│  │     ├─ infraestructura-critica.md
-│  │     └─ higiene-digital.md
+│  │     └─ viajero-digital.md       # crecen de forma orgánica (una por vez, cuando hay contenido)
 │  │
 │  ├─ i18n/                         # D-10 — cadenas de interfaz (preparación RF-9)
 │  │  ├─ es.ts                      # único idioma de UI activo en el lanzamiento
@@ -308,8 +303,8 @@ acotado (cambia el layer de plantillas, no el contenido).
 │  │  ├─ buscar.astro                       # RF-13 — día 1 (D-9)
 │  │  ├─ recientes.astro                    # 3.1 — listado cronológico SECUNDARIO
 │  │  ├─ rss.xml.ts                         # 3.1 — feed por fechaPublicacion
-│  │  ├─ no-tecnico/index.astro             # CA-1 (1 clic)
-│  │  ├─ tecnico/index.astro                # CA-1 (1 clic)
+│  │  ├─ aprender/index.astro               # CA-1 (1 clic) — nivel "aprender"
+│  │  ├─ profundizar/index.astro            # CA-1 (1 clic) — nivel "profundizar"
 │  │  ├─ seccion/[seccion].astro            # RF-2 — ruta única para toda sección
 │  │  └─ [lang]/[...slug].astro             # artículos es/en — RF-9 (getStaticPaths usa lib/articulos.ts)
 │  └─ styles/
@@ -320,21 +315,38 @@ acotado (cambia el layer de plantillas, no el contenido).
 
 Puntos clave del modelado:
 
-- **Nivel (no técnico / técnico) — RF-1:** campo `nivel` en el frontmatter. La
-  carpeta `no-tecnico/ | tecnico/` es organización humana y afecta la URL; **la
-  fuente de verdad para filtrar es el campo.** Listados `/no-tecnico` y
-  `/tecnico` son consultas por ese campo (CA-1: 1 clic desde la home).
+- **Contenido co-locado:** un artículo = **una carpeta** cuyo nombre es el
+  `slugCanonico`. Adentro viven las versiones idiomáticas (`es.md`, `en.md`, …
+  — el nombre del archivo es el idioma) y **todas sus imágenes**, referenciadas
+  con ruta corta (`./portada.webp`). Ni el idioma ni el nivel son carpetas: son
+  campos del frontmatter. `src/lib/articulos.ts` valida en build que carpeta y
+  frontmatter (slugCanonico, idioma) coincidan. La plantilla
+  `plantilla-articulo.md` queda suelta en la raíz de la colección.
+- **Nivel — RF-1:** campo `nivel` en el frontmatter, valores **`aprender` /
+  `profundizar`** (rótulos de cara al lector "Aprender" / "Profundizar", ver
+  `MARCA.md` 3.3). Es **la única fuente de verdad para filtrar.** No hay carpeta
+  de nivel: la URL `/{idioma}/{nivel}/{slug}` se arma con los campos, así que las
+  rutas de artículo son `/es/aprender/...` y `/es/profundizar/...`. Listados
+  `/aprender` y `/profundizar` son consultas por ese campo (CA-1: 1 clic desde la
+  home). Redirects desde `/no-tecnico` y `/tecnico` en `astro.config.mjs`.
 - **Secciones — RF-2 / CA-2:** colección `secciones`, un archivo por sección
   (nombre, descripción, ícono opcional). Cada artículo referencia una o varias
   por `slug`. Agregar una sección = **crear un archivo en `secciones/` y etiquetar
   artículos**; la ruta `/seccion/[seccion]` y la navegación se generan solas.
   Cero cambios de diseño. El procedimiento se documenta en `CONTRIBUIR.md`
   (satisface el "se documenta el procedimiento" de CA-2).
-- **Idiomas por artículo — RF-9 / CA-9:** carpetas `es/` y `en/`. Dos artículos
-  que son traducción mutua comparten `slugCanonico`. Si no hay versión en inglés,
-  no existe el archivo en `en/` y no pasa nada: no se ofrece cambio de idioma
-  para ese artículo. Se emiten `<link rel="alternate" hreflang>` solo cuando hay
-  par.
+  **Crecimiento orgánico (RF-2):** las secciones se crean de a una, cuando hay
+  contenido que las llena. `src/lib/secciones.ts` define el umbral: con **menos
+  de 2** secciones, toda la UI de navegación por sección se oculta (menú,
+  vitrina de la home, `/secciones` redirige a la home, `/seccion/[x]` no se
+  generan, y en la ficha del artículo la sección va como texto, no como enlace).
+  Al crear la 2.ª sección todo reaparece solo. El campo `secciones` del
+  frontmatter no cambia nunca.
+- **Idiomas por artículo — RF-9 / CA-9:** archivos `es.md` / `en.md` **en la
+  misma carpeta**, que comparten el `slugCanonico` (= nombre de la carpeta) y las
+  imágenes. Si no hay versión en inglés, no existe `en.md` y no pasa nada: no se
+  ofrece cambio de idioma para ese artículo. Se emiten
+  `<link rel="alternate" hreflang>` solo cuando hay par.
 - **UI traducible — D-10:** todas las cadenas de interfaz (menús, botones,
   rótulos "Fuentes", "Opinión del autor", "Compartir", etc.) viven en
   `src/i18n/es.ts` desde el día 1, aunque solo exista español. Activar la UI en
@@ -370,18 +382,18 @@ Puntos clave del modelado:
 ```yaml
 ---
 titulo: "Análisis del ataque a Colonial Pipeline (2021)"
-slug: "colonial-pipeline-analisis"
-slugCanonico: "colonial-pipeline"         # RF-9: une la versión es y en
+slug: "colonial-pipeline-analisis"        # kebab-case; define la URL dentro de su nivel/idioma
+slugCanonico: "colonial-pipeline"         # = nombre de la carpeta; RF-9: une la versión es y en
 idioma: "es"                              # es | en
-nivel: "tecnico"                          # RF-1: no-tecnico | tecnico
+nivel: "profundizar"                      # RF-1: aprender | profundizar
 tipoArticulo: "analisis-caso"             # analisis-caso | explicativo | coyuntura
-secciones: ["infraestructura-critica", "ransomware"]
+secciones: ["viajero-digital"]           # >= 1 slug de src/content/secciones/
 autores: ["juan-garcia"]                  # array desde el día 1 (RF-5/RF-6)
 fechaPublicacion: 2026-09-10              # 3.1: orden, RSS, "recientes" · 3.2: filtro (<= ahora, zona America/Argentina/Cordoba)
 fechaActualizacion: 2026-09-15            # 3.1: opcional. Si existe, se muestra "Actualizado en <mes año>"
 resumen: "Qué pasó, cómo ocurrió y qué se aprende del incidente de ransomware
           que paralizó el mayor oleoducto de combustible de EE. UU."
-portada: "/images/articulos/colonial-pipeline/portada.jpg"   # Open Graph (RF-7) · 3.3: ≤ 200 KB
+portada: "./portada.webp"                 # co-locada en la carpeta · Open Graph (RF-7) · 3.3: ≤ 200 KB
 tieneOpinion: true                       # RF-3
 borrador: false                          # 3.2: true = no se publica NUNCA, sin importar la fecha
 destacado: false
@@ -478,7 +490,7 @@ bien hecho; la periodicidad no es un compromiso).
 
 Existe una **única consulta central de contenido** (`src/lib/articulos.ts`,
 función tipo `getArticulosPublicados()`) que usan **todos** los consumidores:
-home, `/seccion/[seccion]`, `/no-tecnico`, `/tecnico`, `/recientes`, el feed
+home, `/seccion/[seccion]`, `/aprender`, `/profundizar`, `/recientes`, el feed
 `rss.xml`, el contenido que se entrega a Pagefind para indexar, y el
 `getStaticPaths()` de `[lang]/[...slug].astro`. Esa consulta aplica **dos
 condiciones**:
@@ -689,8 +701,8 @@ retrabajo** si el análisis de canales lo amerita.
 ### Cómo se obtiene el desglose
 
 - **Por artículo:** cada artículo tiene URL propia y estable
-  (`/es/tecnico/colonial-pipeline-analisis`). Toda herramienta moderna filtra por
-  ruta → "visitas del artículo" = visitas de esa ruta.
+  (`/es/profundizar/colonial-pipeline-analisis`). Toda herramienta moderna filtra
+  por ruta → "visitas del artículo" = visitas de esa ruta.
 - **Por canal:**
   1. **Referrer:** distingue buscadores, redes y otros sitios; las herramientas
      ya lo agrupan en Search / Social / Referral / Direct.
