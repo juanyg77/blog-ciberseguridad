@@ -22,21 +22,24 @@ const activo = (href: string) => {
   return ruta === base || ruta.startsWith(base + '/');
 };
 
-// Grupo 1: los dos modos de lectura (lo principal). Grupo 2: utilitarios.
+// Grupo 1: Inicio + los dos modos de lectura (lo principal). Grupo 2: utilitarios.
+const inicio = { href: '/', texto: t('nav.inicio') };
 const modos = [
   { href: '/aprender', texto: t('nav.aprender') },
   { href: '/profundizar', texto: t('nav.profundizar') },
 ];
+const modosMovil = [inicio, ...modos];
 const utilidades = [
   ...(navSecciones ? [{ href: '/secciones', texto: t('nav.secciones') }] : []),
   { href: '/sobre', texto: t('nav.sobre') },
   { href: '/buscar', texto: t('nav.buscar') },
   { href: '/contacto', texto: t('nav.contacto') },
 ];
-const todos = [...modos, ...utilidades];
+const todos = [inicio, ...modos, ...utilidades];
 ---
-<header class="mx-auto max-w-5xl px-6 pt-7 sm:px-10 sm:pt-8">
-  <div class="flex flex-wrap items-start justify-between gap-x-4 gap-y-3 border-b border-borde pb-4">
+<header class="border-b border-borde-fuerte bg-superficie">
+  <div class="mx-auto max-w-5xl px-6 pt-7 sm:px-10 sm:pt-8">
+  <div class="flex items-start justify-between gap-x-4 pb-5">
     <div class="min-w-0">
       <a
         href="/"
@@ -44,13 +47,16 @@ const todos = [...modos, ...utilidades];
       >
         {t('sitio.nombre')}
       </a>
-      <p class="mt-2 max-w-md text-xs leading-snug text-tinta-tenue">
+      <p class="mt-2 max-w-md text-[13px] leading-snug text-tinta-tenue">
         {t('sitio.tagline')}
       </p>
     </div>
 
     <div class="flex shrink-0 items-center gap-2">
-      <ToggleTema />
+      {/* Desktop: toggle en el masthead. Mobile: va dentro del menú (abajo). */}
+      <div class="hidden sm:flex sm:items-center">
+        <ToggleTema />
+      </div>
 
       {/* Menú móvil (< sm) — panel a pantalla completa, fondo opaco */}
       <details id="menu-movil" class="sm:hidden">
@@ -81,7 +87,7 @@ const todos = [...modos, ...utilidades];
           <nav aria-label="Principal" class="flex-1 overflow-y-auto overscroll-contain px-4 py-5">
             <div class="flex flex-col gap-1">
               {
-                modos.map((e) => (
+                modosMovil.map((e) => (
                   <a
                     href={e.href}
                     aria-current={activo(e.href) ? 'page' : undefined}
@@ -116,28 +122,37 @@ const todos = [...modos, ...utilidades];
                 ))
               }
             </div>
+            <hr class="my-4 border-0 border-t border-borde" />
+            <ToggleTema variante="fila" />
           </nav>
         </div>
       </details>
     </div>
   </div>
+  </div>
 
-  {/* Nav inline (sm+) */}
-  <nav
-    class="hidden flex-wrap items-center gap-x-5 gap-y-2 pt-3 font-mono text-[11px] uppercase tracking-[0.14em] sm:flex"
-    aria-label="Principal"
-  >
-    {
-      todos.map((e) => (
-        <a
-          href={e.href}
-          aria-current={activo(e.href) ? 'page' : undefined}
-          class:list={['hover:text-acento', activo(e.href) ? 'text-acento' : 'text-tinta']}
-        >
-          {e.texto}
-        </a>
-      ))
-    }
+  {/* Nav inline (sm+) — franja propia dentro del chrome, separada del masthead */}
+  <nav class="hidden border-t border-borde sm:block" aria-label="Principal">
+    <div
+      class="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-1 px-6 font-mono text-[11px] font-medium uppercase tracking-[0.14em] sm:px-10"
+    >
+      {
+        todos.map((e) => (
+          <a
+            href={e.href}
+            aria-current={activo(e.href) ? 'page' : undefined}
+            class:list={[
+              'border-b-2 py-2.5 transition-colors hover:text-acento',
+              activo(e.href)
+                ? 'border-acento text-acento'
+                : 'border-transparent text-tinta hover:border-borde-fuerte',
+            ]}
+          >
+            {e.texto}
+          </a>
+        ))
+      }
+    </div>
   </nav>
 </header>
 
@@ -163,6 +178,9 @@ const todos = [...modos, ...utilidades];
     const cerrar = () => menu.removeAttribute('open');
     menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', cerrar));
     menu.querySelector<HTMLButtonElement>('.menu-cerrar')?.addEventListener('click', cerrar);
+    // El toggle de tema del menú: cambia el tema (su propio script) y cierra el
+    // panel, para que se vea el cambio detrás.
+    menu.querySelector<HTMLButtonElement>('[data-toggle-tema]')?.addEventListener('click', cerrar);
     // Panel a pantalla completa: bloquear el scroll del fondo mientras está abierto.
     menu.addEventListener('toggle', () => {
       document.documentElement.classList.toggle('menu-lock', menu.open);

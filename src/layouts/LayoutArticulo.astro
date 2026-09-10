@@ -67,19 +67,26 @@ if (d.portada) {
   alternates={alternates}
 >
   <article class="mx-auto max-w-2xl" data-pagefind-body data-pagefind-meta={`nivel:${d.nivel}`}>
-    <p class="font-mono text-[11px] uppercase tracking-[0.12em] text-acento">
-      <span>{tipoLabel}</span>
-      <span class="text-tinta-tenue"> · {nivelLabel}</span>
+    {/* Kicker: tipo · nivel · secciones. El separador va pegado con NBSP a la
+        palabra anterior, así al envolver (mobile) el "·" nunca queda solo al
+        inicio de un renglón: el corte cae antes del nombre de la sección. */}
+    <p class="font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-tinta-tenue">
       {
-        secciones.map((s) => (
-          <span class="text-tinta-tenue">
-            {' · '}
-            {seccionEnlazable ? (
-              <a href={`/seccion/${s.id}`} class="underline underline-offset-2 hover:text-acento">{s.data.nombre}</a>
+        [
+          { texto: tipoLabel, acento: true },
+          { texto: nivelLabel },
+          ...secciones.map((s) => ({
+            texto: s.data.nombre,
+            href: seccionEnlazable ? `/seccion/${s.id}` : undefined,
+          })),
+        ].map((seg, i, arr) => (
+          <>
+            {seg.href ? (
+              <a href={seg.href} class="underline underline-offset-2 hover:text-acento">{seg.texto}</a>
             ) : (
-              s.data.nombre
-            )}
-          </span>
+              <span class:list={[seg.acento && 'text-acento']}>{seg.texto}</span>
+            )}{i < arr.length - 1 && <span>{' ·'}</span>}{i < arr.length - 1 && ' '}
+          </>
         ))
       }
     </p>
@@ -106,7 +113,7 @@ if (d.portada) {
           {t('articulo.tambienEnIdioma', {
             idioma: dict().articulo.idioma[traduccion.data.idioma as 'es' | 'en'],
           })}{' '}
-          <a href={rutaArticulo(traduccion)} class="border-b border-current text-acento">
+          <a href={rutaArticulo(traduccion)} class="border-b border-current text-acento hover:text-acento-fuerte">
             {traduccion.data.titulo}
           </a>
         </p>
@@ -161,8 +168,8 @@ if (d.portada) {
     </div>
 
     <p class="mt-8" data-pagefind-ignore>
-      <a href={`/${d.nivel}`} class="border-b border-current text-sm text-acento">
-        ← {t('articulo.volverAlListado')}
+      <a href={`/${d.nivel}`} class="enlace-flecha atras text-sm text-acento hover:text-acento-fuerte">
+        <span class="flecha">←</span> {t('articulo.volverAlListado')}
       </a>
     </p>
   </article>

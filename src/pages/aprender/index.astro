@@ -13,8 +13,8 @@ const descripcion = t('nivel.descripcion.aprender');
     {t('nav.aprender')}
   </h1>
   <p class="mt-3 max-w-2xl text-tinta-suave">{descripcion}</p>
-  <div class="mt-8 grid gap-8 sm:grid-cols-2">
-    {articulos.map((a) => <TarjetaArticulo articulo={a} />)}
+  <div class="mt-8 grid gap-x-6 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
+    {articulos.map((a) => <TarjetaArticulo articulo={a} variante="grilla" />)}
     {articulos.length === 0 && <p class="text-tinta-tenue">{t('articulo.sinResultados')}</p>}
   </div>
 </LayoutBase>

@@ -28,7 +28,7 @@ const { fuentes } = Astro.props;
       <ol class="mt-4 space-y-3">
         {fuentes.map((f) => (
           <li class="text-sm [overflow-wrap:anywhere]">
-            <a href={f.url} rel="noopener nofollow" target="_blank" class="border-b border-current text-acento">
+            <a href={f.url} rel="noopener nofollow" target="_blank" class="border-b border-current text-acento hover:text-acento-fuerte">
               {f.titulo}
             </a>
             <span class="text-tinta-tenue">

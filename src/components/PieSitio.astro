@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import { t } from '../i18n';
 import AvisoLicencia from './AvisoLicencia.astro';
 import Icono from './Icono.astro';
+import { seccionesNavegables } from '../lib/secciones';
 
 // Autor principal para los enlaces sociales del pie (URLs aún placeholder).
 const autor = (await getCollection('autores'))
@@ -15,39 +16,77 @@ const sociales = autor
       { red: 'github' as const, url: autor.data.enlaces.github, nombre: 'GitHub' },
     ]
   : [];
+
+const navSecciones = await seccionesNavegables();
+
+const explorar = [
+  { href: '/aprender', texto: t('nav.aprender') },
+  { href: '/profundizar', texto: t('nav.profundizar') },
+  ...(navSecciones ? [{ href: '/secciones', texto: t('nav.secciones') }] : []),
+  { href: '/recientes', texto: t('nav.recientes') },
+];
+const elBlog = [
+  { href: '/sobre', texto: t('nav.sobre') },
+  { href: '/contacto', texto: t('nav.contacto') },
+  { href: '/rss.xml', texto: t('pie.rss') },
+];
 ---
-<footer class="mx-auto mt-16 max-w-5xl px-6 sm:px-10">
-  <div class="border-t border-borde-fuerte pt-5">
-    {/* --- Bloque 1: identidad y navegación (peso normal/alto) --- */}
-    <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-8">
+{/* Cierre de página: sin fondo, se separa solo por la línea fuerte + las
+   columnas. Más liviano que un panel de interfaz. */}
+<footer class="mt-16 border-t border-borde-fuerte">
+  <div class="mx-auto max-w-5xl px-6 py-12 sm:px-10">
+    {/* --- Bloque 1: identidad + navegación en columnas (sensación de sitio con recorrido) --- */}
+    <div class="grid gap-8 sm:grid-cols-[1.4fr_1fr_1fr]">
       <div class="text-sm text-tinta-suave">
-        <p class="m-0 text-tinta">{t('pie.hechoPor', { autor: 'Juan Ignacio García' })}</p>
-        <p class="m-0 mt-1.5 max-w-sm text-pretty">{t('pie.tagline')}</p>
+        <p class="m-0 font-serif text-base font-semibold text-tinta">{t('sitio.nombre')}</p>
+        <p class="m-0 mt-2 max-w-sm text-pretty">{t('pie.tagline')}</p>
+        <div class="mt-4 flex flex-wrap items-center gap-x-1 -mx-2">
+          {
+            sociales.map((s) => (
+              <a
+                href={s.url}
+                rel="me noopener"
+                target="_blank"
+                aria-label={`${s.nombre} de ${autor!.data.nombre}`}
+                class="toque-comodo min-w-[44px] justify-center px-2 text-tinta-tenue hover:text-acento"
+              >
+                <Icono nombre={s.red} size={20} />
+              </a>
+            ))
+          }
+        </div>
       </div>
 
-      {/* M-2: cada enlace/ícono es un objetivo de toque de 44px con separación clara */}
-      <div class="flex flex-wrap items-center gap-x-1 gap-y-1 -mx-2 sm:mx-0 sm:justify-end">
-        <a href="/sobre" class="toque-comodo px-2 text-sm font-medium text-tinta hover:text-acento">{t('nav.sobre')}</a>
-        <a href="/contacto" class="toque-comodo px-2 text-sm font-medium text-tinta hover:text-acento">{t('nav.contacto')}</a>
-        {
-          sociales.map((s) => (
-            <a
-              href={s.url}
-              rel="me noopener"
-              target="_blank"
-              aria-label={`${s.nombre} de ${autor!.data.nombre}`}
-              class="toque-comodo min-w-[44px] justify-center px-2 text-tinta-tenue hover:text-acento"
-            >
-              <Icono nombre={s.red} size={20} />
-            </a>
-          ))
-        }
-      </div>
+      <nav aria-label={t('pie.explorar')} class="text-sm">
+        <p class="m-0 font-mono text-[10.5px] uppercase tracking-[0.14em] text-tinta-tenue">
+          {t('pie.explorar')}
+        </p>
+        <ul class="mt-3 flex flex-col gap-2">
+          {explorar.map((e) => (
+            <li>
+              <a href={e.href} class="text-tinta hover:text-acento">{e.texto}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <nav aria-label={t('pie.elBlog')} class="text-sm">
+        <p class="m-0 font-mono text-[10.5px] uppercase tracking-[0.14em] text-tinta-tenue">
+          {t('pie.elBlog')}
+        </p>
+        <ul class="mt-3 flex flex-col gap-2">
+          {elBlog.map((e) => (
+            <li>
+              <a href={e.href} class="text-tinta hover:text-acento">{e.texto}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </div>
 
-    {/* --- Bloque 2: metadata técnica y legal (peso bajo, no compite con el bloque 1) --- */}
-    <div class="mt-5 flex flex-wrap items-start gap-x-3 gap-y-1 border-t border-borde pt-3 text-xs leading-relaxed text-tinta-tenue">
-      <a href="/rss.xml" class="hover:text-acento">{t('pie.rss')}</a>
+    {/* --- Bloque 2: metadata técnica y legal (peso bajo) --- */}
+    <div class="mt-8 flex flex-wrap items-start gap-x-3 gap-y-1 border-t border-borde pt-4 text-xs leading-relaxed text-tinta-tenue">
+      <span class="text-tinta-suave">{t('pie.hechoPor', { autor: 'Juan Ignacio García' })}</span>
       <AvisoLicencia variante="pie" />
       <span>{new Date().getFullYear()}</span>
     </div>

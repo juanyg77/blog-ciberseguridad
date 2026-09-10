@@ -21,29 +21,22 @@
   TOKENS DE DISEÑO — ÚNICO LUGAR (ARQUITECTURA.md D-13 / sección 2).
   Dirección visual definida por el autor: minimalismo, fondo + texto + UN acento.
 
-  MODO OSCURO: fondo gris muy oscuro (nunca negro), texto claro, acento celeste
-  eléctrico #4DA3FF (7.18:1 sobre el fondo).
+  MODO OSCURO (por defecto): fondo carbón #181920 (nunca negro), `superficie`
+  bien separada para distinguir bloques sin color; texto claro; acento celeste
+  eléctrico #4DA3FF (identidad).
 
-  MODO CLARO: NO es "pantalla blanca". Fondo papel cálido (#ECE6DA, HSL-L ~89%,
-  matiz cálido de croma bajísimo), texto marrón-gris muy oscuro cálido (#2A2621),
-  acento azul petróleo #1C5875 (no "vibra" sobre el crema). Contraste general
-  más bajo y cómodo, pero TODO el texto cumple WCAG AA.
+  MODO CLARO (.light): NO es "pantalla blanca". Papel cálido pero NEUTRO
+  (#F2F0EA — se le sacó el amarillo que ensuciaba el azul); texto marrón-gris
+  muy oscuro casi neutro (#262420); acento azul petróleo hondo #0F6083.
+  `--color-acento-fuerte` es el estado HOVER en ambos temas: MÁS claro que el
+  acento (que "se prenda"), nunca más oscuro.
 
-  ESTADOS: para errores reales (validación, callouts de peligro) se usa UN rojo
-  apagado (--color-error). Para avisos/notas se usa el acento o énfasis
-  tipográfico. No hay ámbar.
-   - Error oscuro  #E58E82 sobre #111114 -> 7.65:1  (sobre superficie 7.04:1)
-   - Error claro   #9C3226 sobre #ECE6DA -> 5.83:1  (sobre superficie 5.46:1)
+  ESTADOS: para errores reales se usa UN rojo apagado (--color-error). Para
+  avisos/notas, el acento o énfasis tipográfico. No hay ámbar.
 
-  Ratios modo claro (WCAG 2.x, sobre papel / sobre superficie):
-   - tinta       #2A2621  -> 12.09 / 11.33   (AAA)
-   - tinta-suave #554B3B  ->  6.88 /  6.45   (AAA)
-   - tinta-tenue #655C4B  ->  5.30 /  4.97   (AA)
-   - acento      #1C5875  ->  6.25 /  5.86   (AA + AAA)  azul petróleo / prusia:
-              mismo azul de identidad que el #4DA3FF del oscuro, pero hondo y
-              con un toque de calidez para leerse como "tinta sobre papel".
-   - acento-fuerte #123F52 -> 9.09 / 8.52    (AAA)
-   - borde-fuerte #463D30 ->  8.57 / 8.03    (divisorias / subrayados)
+  ⚠ PENDIENTE: los ratios WCAG de contraste hay que RECALCULARLOS para esta
+  paleta (cambiaron papel oscuro, papel claro y ambos acentos respecto de la
+  versión anterior). Ver ARQUITECTURA.md / AUDITORIA-UX.md.
 */
 @theme {
   --font-serif: 'IBM Plex Serif', Georgia, 'Times New Roman', serif;
@@ -51,16 +44,18 @@
   --font-mono: 'IBM Plex Mono', Consolas, ui-monospace, monospace;
 
   /* --- MODO OSCURO (por defecto) --- */
-  /* Fondo: gris muy oscuro, nunca negro puro */
-  --color-papel: #111114;
-  --color-superficie: #1a1a1f;
-  --color-borde: #2b2b33;
-  --color-borde-fuerte: #4a4a55;
+  /* Fondo: carbón, no negro. Se levanta ~L11% con un matiz azul-neutro frío
+     para que no se lea como pozo, y `superficie` se separa más de `papel`
+     para que los bloques de la home se distingan sin necesitar color. */
+  --color-papel: #181920;
+  --color-superficie: #21232d;
+  --color-borde: #33363f;
+  --color-borde-fuerte: #545867;
 
   /* Texto: blanco / gris claro */
-  --color-tinta: #f3f3f5;
-  --color-tinta-suave: #c4c4cc;
-  --color-tinta-tenue: #8b8b96;
+  --color-tinta: #f2f3f5;
+  --color-tinta-suave: #c5c8d2;
+  --color-tinta-tenue: #8b8f9d;
 
   /* Único acento: celeste / azul eléctrico */
   --color-acento: #4da3ff;
@@ -76,23 +71,25 @@
 
 /* --- MODO CLARO (.light) — papel cálido, no pantalla blanca --- */
 .light {
-  /* Fondo: blanco roto / crema cálido, croma muy bajo (hue ~43°) */
-  --color-papel: #ece6da;
-  --color-superficie: #e6dfd0;
-  --color-borde: #d7cdb8;
-  --color-borde-fuerte: #463d30;
+  /* Fondo: papel cálido pero NEUTRO — se le sacó el amarillo (hue ~43° -> ~35°
+     y croma más bajo) que peleaba con el azul y ensuciaba el acento. Sigue sin
+     ser "pantalla blanca". */
+  --color-papel: #f2f0ea;
+  --color-superficie: #e9e6dd;
+  --color-borde: #dcd7ca;
+  --color-borde-fuerte: #454239;
 
-  /* Texto: marrón-gris muy oscuro cálido, nunca negro */
-  --color-tinta: #2a2621;
-  --color-tinta-suave: #554b3b;
-  --color-tinta-tenue: #655c4b;
+  /* Texto: marrón-gris muy oscuro casi neutro, nunca negro */
+  --color-tinta: #262420;
+  --color-tinta-suave: #524d43;
+  --color-tinta-tenue: #6b6559;
 
-  /* Acento: mismo azul de identidad que el oscuro (#4da3ff) pero en azul
-     petróleo / prusia profundo — apenas desaturado y algo cálido — para leerse
-     como tinta sobre papel y armonizar con el crema, no destacar en frío. */
-  --color-acento: #1c5875;
-  --color-acento-fuerte: #123f52;
-  --color-senal: #1c5875;
+  /* Acento: azul petróleo hondo y limpio sobre papel neutro (no vibra ni
+     ensucia). `acento-fuerte` es el estado HOVER: MÁS CLARO/brillante que el
+     acento (que "se prenda", no que "se apague"), igual que en oscuro. */
+  --color-acento: #0f6083;
+  --color-acento-fuerte: #1c7fa6;
+  --color-senal: #0f6083;
 
   --color-error: #9c3226;
 }
@@ -166,6 +163,38 @@ body {
   }
   @media (hover: hover) {
     a:hover { color: var(--color-acento); }
+  }
+}
+
+/*
+  Enlace-CTA con flecha (home, listados: "Empezar por acá →", "Todos los
+  artículos →"…). Estos <a> ya están pintados en `text-acento`, así que un
+  hover que cambia el color a acento NO se ve. Acá el hover se nota por
+  MOVIMIENTO (la flecha se corre) + subrayado, además del color más claro
+  (`hover:text-acento-fuerte` en el marcado). Uso: class="enlace-flecha" y
+  envolver la flecha en <span class="flecha">→</span>.
+*/
+.enlace-flecha {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 1px;
+}
+.enlace-flecha .flecha {
+  transition: transform 130ms ease;
+}
+@media (hover: hover) {
+  .enlace-flecha:hover .flecha {
+    transform: translateX(0.2em);
+  }
+  .enlace-flecha.atras:hover .flecha {
+    transform: translateX(-0.2em);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .enlace-flecha .flecha {
+    transition: none;
   }
 }
 

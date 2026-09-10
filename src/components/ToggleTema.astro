@@ -5,41 +5,61 @@
  * estado sin clase; el claro agrega .light en <html>. El script anti-parpadeo
  * (LayoutBase) aplica .light antes del render si corresponde.
  *
- * Ícono + label de ACCIÓN visible (el autor prefiere que se entienda):
+ * Ícono + label de ACCIÓN (el autor prefiere que se entienda):
  *  - En OSCURO: sol  + "Modo claro"  -> tocar = pasar a claro.
  *  - En CLARO:  luna + "Modo oscuro" -> tocar = pasar a oscuro.
- * `aria-label` dinámico para lectores de pantalla. Toque de 44px.
+ *
+ * Puede haber MÁS DE UNA instancia por página (masthead en desktop, fila del
+ * menú en mobile). Por eso se marca con `data-toggle-tema` en vez de `id`, y el
+ * script engancha todas las instancias.
+ *
+ * `variante`:
+ *  - 'chip' (default) — pastilla mono chica del masthead.
+ *  - 'fila'           — fila ancha para el panel del menú mobile.
  */
 import { t } from '../i18n';
 import Icono from './Icono.astro';
+
+interface Props {
+  variante?: 'chip' | 'fila';
+  class?: string;
+}
+const { variante = 'chip', class: klass } = Astro.props;
+
+const base =
+  variante === 'fila'
+    ? 'flex min-h-[52px] w-full items-center gap-2 rounded px-4 text-base text-tinta hover:bg-superficie'
+    : 'toque-comodo gap-1.5 rounded px-2 font-mono text-[11px] uppercase tracking-[0.14em] text-tinta-tenue hover:text-tinta';
 ---
 <button
   type="button"
-  id="toggle-tema"
-  class="toque-comodo gap-1.5 rounded px-2 font-mono text-[11px] uppercase tracking-[0.14em] text-tinta-tenue hover:text-tinta"
+  data-toggle-tema
+  class:list={[base, klass]}
   aria-label={t('tema.alternar')}
 >
-  <span class="tema-en-oscuro inline-flex items-center gap-1.5">
+  <span class="tema-en-oscuro inline-flex items-center gap-2">
     <Icono nombre="sol" size={18} />{t('tema.claro')}
   </span>
-  <span class="tema-en-claro inline-flex items-center gap-1.5">
+  <span class="tema-en-claro inline-flex items-center gap-2">
     <Icono nombre="luna" size={18} />{t('tema.oscuro')}
   </span>
 </button>
 <style>
-  #toggle-tema .tema-en-claro { display: none; }
-  :global(html.light) #toggle-tema .tema-en-oscuro { display: none; }
-  :global(html.light) #toggle-tema .tema-en-claro { display: inline-flex; }
+  [data-toggle-tema] .tema-en-claro { display: none; }
+  :global(html.light) [data-toggle-tema] .tema-en-oscuro { display: none; }
+  :global(html.light) [data-toggle-tema] .tema-en-claro { display: inline-flex; }
 </style>
 <script>
-  const btn = document.getElementById('toggle-tema');
   const raiz = document.documentElement;
+  const botones = document.querySelectorAll<HTMLButtonElement>('[data-toggle-tema]');
 
   const sincronizar = () => {
     const claro = raiz.classList.contains('light');
-    btn?.setAttribute(
-      'aria-label',
-      claro ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro',
+    botones.forEach((b) =>
+      b.setAttribute(
+        'aria-label',
+        claro ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro',
+      ),
     );
   };
   sincronizar();
@@ -47,16 +67,18 @@ import Icono from './Icono.astro';
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let limpiar: ReturnType<typeof setTimeout> | undefined;
 
-  btn?.addEventListener('click', () => {
-    if (!reduce) {
-      raiz.classList.add('tema-cambiando');
-      clearTimeout(limpiar);
-      limpiar = setTimeout(() => raiz.classList.remove('tema-cambiando'), 240);
-    }
-    const claro = raiz.classList.toggle('light');
-    try {
-      localStorage.setItem('tema', claro ? 'claro' : 'oscuro');
-    } catch {}
-    sincronizar();
+  botones.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (!reduce) {
+        raiz.classList.add('tema-cambiando');
+        clearTimeout(limpiar);
+        limpiar = setTimeout(() => raiz.classList.remove('tema-cambiando'), 240);
+      }
+      const claro = raiz.classList.toggle('light');
+      try {
+        localStorage.setItem('tema', claro ? 'claro' : 'oscuro');
+      } catch {}
+      sincronizar();
+    });
   });
 </script>

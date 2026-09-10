@@ -18,7 +18,7 @@ const es = {
     descripcion:
       'Ciberseguridad en dos niveles: las amenazas de todos los días explicadas desde cero, y el análisis técnico de los grandes incidentes. Sin humo y sin alarmismo.',
     tagline:
-      'De la estafa que te llega por SMS al ataque que dejó a media región haciendo cola por combustible.',
+      'De la estafa que te llega por SMS al ataque que dejó a media región haciendo fila por combustible.',
     metaHome:
       'Blog de ciberseguridad en dos niveles: explicaciones desde cero sobre estafas y amenazas comunes, y análisis técnicos de incidentes reales. Sin humo y sin alarmismo.',
   },
@@ -167,6 +167,8 @@ const es = {
     tagline:
       'Explicando ciberseguridad para los que no saben, para los que creen saber, y para los que realmente saben.',
     rss: 'RSS',
+    explorar: 'Explorar',
+    elBlog: 'El blog',
   },
   error404: {
     titulo: 'Esta página no existe',

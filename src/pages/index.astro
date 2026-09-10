@@ -1,8 +1,14 @@
 ---
 /**
- * Home. Eje de navegación: SECCIÓN (RF-2) y NIVEL (RF-1), nunca la fecha
- * (ARQUITECTURA.md 3.1). Muestra el aviso activo si lo hay (RF-11), un carrusel
- * de destacados arriba, y un listado cronológico SECUNDARIO ("Lo último").
+ * Home. Eje declarado por el arquitecto: SECCIÓN (RF-2) y NIVEL (RF-1); la fecha
+ * es secundaria (ARQUITECTURA.md 3.1). Muestra el aviso activo si lo hay (RF-11).
+ *
+ * Orden:
+ *   Entrada:   hero (tesis + puertas) · carrusel de destacados (curado)
+ *   Contenido: "Lo último" (feed cronológico, tarjetas iguales) · "Explorá por
+ *              sección" (lista nombre + descripción; solo con >= 2 secciones)
+ * "Lo último" va alto en el orden pero SIN el mayor peso visual: ese lo tiene el
+ * carrusel curado, no la fecha.
  */
 import { getCollection } from 'astro:content';
 import LayoutBase from '../layouts/LayoutBase.astro';
@@ -19,19 +25,21 @@ import { seccionesNavegables } from '../lib/secciones';
 
 const aviso = await getAvisoActivo();
 const articulos = await getArticulosPublicadosPorIdioma('es');
-const ultimos = articulos.slice(0, 6);
 
-// Carrusel: hasta 4 destacados más recientes (los artículos ya vienen ordenados
-// por fecha desc desde la consulta central).
+// Carrusel: hasta 4 destacados más recientes (ya vienen ordenados por fecha).
 const destacados = articulos.filter((a) => a.data.destacado).slice(0, 4);
+
+// "Lo último": feed cronológico, excluyendo lo que ya está en el carrusel para
+// que no se repita apenas entrás.
+const idsCarrusel = new Set(destacados.map((a) => a.id));
+const ultimos = articulos.filter((a) => !idsCarrusel.has(a.id)).slice(0, 6);
 
 // RF-2 — vitrina de secciones: solo si la navegación por sección está activa
 // (>= 2 secciones; ver src/lib/secciones.ts).
 const navSecciones = await seccionesNavegables();
+const seccionesCol = await getCollection('secciones');
 const secciones = navSecciones
-  ? (await getCollection('secciones')).sort(
-      (a, b) => (a.data.orden ?? 99) - (b.data.orden ?? 99),
-    )
+  ? seccionesCol.sort((a, b) => (a.data.orden ?? 99) - (b.data.orden ?? 99))
   : [];
 const conteoPorSeccion = new Map<string, number>();
 for (const s of secciones) {
@@ -39,16 +47,16 @@ for (const s of secciones) {
 }
 ---
 <LayoutBase titulo={t('sitio.nombre')} descripcion={t('sitio.metaHome')}>
+  {/* ─────────────── Acto 1 · Entrada ─────────────── */}
   {aviso && (
     <div class="mx-auto mb-10 max-w-3xl">
       <AvisoDestacado aviso={aviso} />
     </div>
   )}
 
-  {destacados.length > 0 && <CarruselDestacados articulos={destacados} />}
-
-  {/* Hero: tesis del blog + las dos puertas — CA-1 (1 clic a cada nivel) */}
-  <section class="mt-14">
+  {/* Hero: tesis del blog + las dos puertas — CA-1 (1 clic a cada nivel).
+      Va PRIMERO: orienta antes de mostrar artículos. */}
+  <section>
     <h1 class="max-w-2xl font-serif text-2xl font-semibold leading-snug sm:text-3xl">
       {t('home.heroH1')}
     </h1>
@@ -56,56 +64,71 @@ for (const s of secciones) {
       <div class="border-l-2 border-acento pl-4">
         <h2 class="font-serif text-xl font-semibold">{t('home.puertaAprenderTitulo')}</h2>
         <p class="mt-1 text-tinta-suave">{t('nivel.descripcion.aprender')}</p>
-        <a href="/aprender" class="mt-2 inline-block border-b border-current text-sm text-acento">
-          {t('home.puertaAprenderCta')} →
+        <a href="/aprender" class="enlace-flecha mt-2 text-sm text-acento hover:text-acento-fuerte">
+          {t('home.puertaAprenderCta')} <span class="flecha">→</span>
         </a>
       </div>
       <div class="border-l-2 border-borde pl-4">
         <h2 class="font-serif text-xl font-semibold">{t('home.puertaProfundizarTitulo')}</h2>
         <p class="mt-1 text-tinta-suave">{t('nivel.descripcion.profundizar')}</p>
-        <a href="/profundizar" class="mt-2 inline-block border-b border-current text-sm text-acento">
-          {t('home.puertaProfundizarCta')} →
+        <a href="/profundizar" class="enlace-flecha mt-2 text-sm text-acento hover:text-acento-fuerte">
+          {t('home.puertaProfundizarCta')} <span class="flecha">→</span>
         </a>
       </div>
     </div>
   </section>
 
-  {/* Secciones (RF-2) — vitrina; solo cuando la navegación por sección está
-      activa (>= 2 secciones). Con una sola sección se oculta: ver
-      src/lib/secciones.ts. */}
-  {navSecciones && (
-    <section id="secciones" class="mt-14 scroll-mt-6">
-      <div class="flex flex-col gap-1 border-b border-borde-fuerte pb-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
-        <h2 class="font-serif text-2xl font-semibold">{t('home.explorarSecciones')}</h2>
-        <a href="/secciones" class="font-mono text-[11px] uppercase tracking-[0.14em] text-acento hover:text-acento-fuerte">
-          {t('home.verTodasLasSecciones')} →
-        </a>
-      </div>
-      <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {secciones.map((s) => (
-          <a href={`/seccion/${s.id}`} class="block border-t border-borde pt-4 text-tinta hover:text-acento">
-            <h3 class="font-serif text-lg font-semibold">{s.data.nombre}</h3>
-            <p class="mt-1 text-sm text-tinta-suave">{s.data.descripcion}</p>
-            <p class="mt-2 font-mono text-[10.5px] uppercase tracking-[0.12em] text-tinta-tenue">
-              {t('secciones.conteo', { n: conteoPorSeccion.get(s.id) ?? 0 })}
-            </p>
-          </a>
-        ))}
-      </div>
-    </section>
+  {/* Destacados — curado, con el peso visual "empezá por acá". */}
+  {destacados.length > 0 && (
+    <div class="mt-16">
+      <CarruselDestacados articulos={destacados} />
+    </div>
   )}
 
-  {/* Lo último — cronológico SECUNDARIO */}
-  <section class="mt-14">
-    <div class="flex flex-col gap-1 border-b border-borde-fuerte pb-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
-      <h2 class="font-serif text-2xl font-semibold">{t('home.ultimo')}</h2>
-      <a href="/recientes" class="font-mono text-[11px] uppercase tracking-[0.14em] text-acento hover:text-acento-fuerte">
-        {t('home.todosLosArticulos')} →
+  {/* ─────────────── Acto 2 · Contenido ─────────────── */}
+
+  {/* Lo último — feed cronológico. Tarjetas IGUALES, sin tarjeta grande. */}
+  <section class="mt-24 sm:mt-28">
+    <div class="flex flex-col gap-1 border-b border-borde-fuerte pb-3.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+      <h2 class="font-serif text-2xl font-semibold sm:text-3xl">{t('home.ultimo')}</h2>
+      <a href="/recientes" class="enlace-flecha font-mono text-[11px] uppercase tracking-[0.14em] text-acento hover:text-acento-fuerte">
+        {t('home.todosLosArticulos')} <span class="flecha">→</span>
       </a>
     </div>
-    <div class="mt-6 grid gap-8 sm:grid-cols-2">
-      {ultimos.map((a) => <TarjetaArticulo articulo={a} />)}
+    <div class="mt-6 grid gap-x-6 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
+      {ultimos.map((a) => <TarjetaArticulo articulo={a} variante="grilla" />)}
       {ultimos.length === 0 && <p class="text-tinta-tenue">{t('articulo.sinResultados')}</p>}
     </div>
   </section>
+
+  {/* Explorá por sección — lista con nombre + una línea de descripción (opción B:
+      mantiene el valor de "enseñar" sin competir con "Lo último"). Sin bordes de
+      tarjeta ni imágenes. Solo con navegación por sección activa (>= 2). */}
+  {navSecciones && (
+    <section id="secciones" class="mt-14 scroll-mt-6">
+      <div class="flex flex-col gap-1 border-b border-borde pb-2.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+        <h2 class="font-serif text-lg font-semibold">{t('home.explorarSecciones')}</h2>
+        <a href="/secciones" class="enlace-flecha font-mono text-[11px] uppercase tracking-[0.14em] text-acento hover:text-acento-fuerte">
+          {t('home.verTodasLasSecciones')} <span class="flecha">→</span>
+        </a>
+      </div>
+      <ul class="mt-5 grid gap-x-10 gap-y-5 sm:grid-cols-2">
+        {secciones.map((s) => (
+          <li>
+            <a href={`/seccion/${s.id}`} class="group block">
+              <span class="flex items-baseline justify-between gap-3">
+                <span class="font-serif text-base font-semibold text-tinta group-hover:text-acento">
+                  {s.data.nombre}
+                </span>
+                <span class="shrink-0 font-mono text-[11px] tabular-nums text-tinta-tenue">
+                  {conteoPorSeccion.get(s.id) ?? 0}
+                </span>
+              </span>
+              <span class="mt-1 block text-sm text-tinta-suave">{s.data.descripcion}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
 </LayoutBase>
