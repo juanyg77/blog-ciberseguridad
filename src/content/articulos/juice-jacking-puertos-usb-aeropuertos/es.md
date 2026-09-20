@@ -89,3 +89,7 @@ transferencia de datos, a los cuales muchas veces se los conoce popularmente com
 "condón USB", y tienen un precio de referencia internacional de unos 10 USD.
 
 Siempre será mejor terminar con 0% de batería que con 100% de dolores de cabeza.
+
+## También te puede interesar
+
+- [¿Cansado de las publicidades de VPN? Qué son y qué no hacen](https://elquelassabetodas.com/es/aprender/vpn-que-es-y-que-no-hace)
